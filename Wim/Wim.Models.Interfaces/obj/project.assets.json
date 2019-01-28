@@ -688,23 +688,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\penev\\.nuget\\packages\\": {},
+    "C:\\Users\\Mitizaro\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\work\\Telerik\\Projects\\OOPTeamworkAssignment\\work-item-management-console-app\\Wim\\Wim.Models.Interfaces\\Wim.Models.Interfaces.csproj",
+      "projectUniqueName": "C:\\TelerikAlphaAcademyRepository\\OfficialProjects\\OOP-Project-1\\work-item-management-console-app\\Wim\\Wim.Models.Interfaces\\Wim.Models.Interfaces.csproj",
       "projectName": "Wim.Models.Interfaces",
-      "projectPath": "D:\\work\\Telerik\\Projects\\OOPTeamworkAssignment\\work-item-management-console-app\\Wim\\Wim.Models.Interfaces\\Wim.Models.Interfaces.csproj",
-      "packagesPath": "C:\\Users\\penev\\.nuget\\packages\\",
-      "outputPath": "D:\\work\\Telerik\\Projects\\OOPTeamworkAssignment\\work-item-management-console-app\\Wim\\Wim.Models.Interfaces\\obj\\",
+      "projectPath": "C:\\TelerikAlphaAcademyRepository\\OfficialProjects\\OOP-Project-1\\work-item-management-console-app\\Wim\\Wim.Models.Interfaces\\Wim.Models.Interfaces.csproj",
+      "packagesPath": "C:\\Users\\Mitizaro\\.nuget\\packages\\",
+      "outputPath": "C:\\TelerikAlphaAcademyRepository\\OfficialProjects\\OOP-Project-1\\work-item-management-console-app\\Wim\\Wim.Models.Interfaces\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\penev\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Mitizaro\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
