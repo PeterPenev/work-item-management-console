@@ -704,23 +704,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Vasil\\.nuget\\packages\\": {},
+    "C:\\Users\\penev\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\OOP-Project-#1\\work-item-management-console-app\\Wim\\Wim.Models\\Wim.Models.csproj",
+      "projectUniqueName": "D:\\work\\Telerik\\Projects\\OOPTeamworkAssignment\\work-item-management-console-app\\Wim\\Wim.Models\\Wim.Models.csproj",
       "projectName": "Wim.Models",
-      "projectPath": "C:\\OOP-Project-#1\\work-item-management-console-app\\Wim\\Wim.Models\\Wim.Models.csproj",
-      "packagesPath": "C:\\Users\\Vasil\\.nuget\\packages\\",
-      "outputPath": "C:\\OOP-Project-#1\\work-item-management-console-app\\Wim\\Wim.Models\\obj\\",
+      "projectPath": "D:\\work\\Telerik\\Projects\\OOPTeamworkAssignment\\work-item-management-console-app\\Wim\\Wim.Models\\Wim.Models.csproj",
+      "packagesPath": "C:\\Users\\penev\\.nuget\\packages\\",
+      "outputPath": "D:\\work\\Telerik\\Projects\\OOPTeamworkAssignment\\work-item-management-console-app\\Wim\\Wim.Models\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Vasil\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\penev\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -733,8 +733,8 @@
       "frameworks": {
         "netcoreapp2.1": {
           "projectReferences": {
-            "C:\\OOP-Project-#1\\work-item-management-console-app\\Wim\\Wim.Models.Interfaces\\Wim.Models.Interfaces.csproj": {
-              "projectPath": "C:\\OOP-Project-#1\\work-item-management-console-app\\Wim\\Wim.Models.Interfaces\\Wim.Models.Interfaces.csproj"
+            "D:\\work\\Telerik\\Projects\\OOPTeamworkAssignment\\work-item-management-console-app\\Wim\\Wim.Models.Interfaces\\Wim.Models.Interfaces.csproj": {
+              "projectPath": "D:\\work\\Telerik\\Projects\\OOPTeamworkAssignment\\work-item-management-console-app\\Wim\\Wim.Models.Interfaces\\Wim.Models.Interfaces.csproj"
             }
           }
         }
