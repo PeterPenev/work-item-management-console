@@ -6,10 +6,10 @@ namespace Wim.Models.Interfaces
 {
     public interface IBug
     {
-        Guid Id { get; set }
+        Guid Id { get; set; }
         List<string> StepsToReproduce { get; set; }
-        Priority Priority { get; set; }
-        Severity Severity { get; set; }
+        Priority Priority { get; }
+        Severity Severity { get; }
         Member Asignee { get; set; }
     }
 }
