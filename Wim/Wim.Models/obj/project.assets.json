@@ -207,6 +207,16 @@
         "build": {
           "build/netstandard2.0/NETStandard.Library.targets": {}
         }
+      },
+      "Wim.Models.Interfaces/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.1",
+        "compile": {
+          "bin/placeholder/Wim.Models.Interfaces.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Wim.Models.Interfaces.dll": {}
+        }
       }
     }
   },
@@ -680,31 +690,37 @@
         "netstandard.library.2.0.3.nupkg.sha512",
         "netstandard.library.nuspec"
       ]
+    },
+    "Wim.Models.Interfaces/1.0.0": {
+      "type": "project",
+      "path": "../Wim.Models.Interfaces/Wim.Models.Interfaces.csproj",
+      "msbuildProject": "../Wim.Models.Interfaces/Wim.Models.Interfaces.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
-      "Microsoft.NETCore.App >= 2.1.0"
+      "Microsoft.NETCore.App >= 2.1.0",
+      "Wim.Models.Interfaces >= 1.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Mitizaro\\.nuget\\packages\\": {},
+    "C:\\Users\\Vasil\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\TelerikAlphaAcademyRepository\\OfficialProjects\\OOP-Project-1\\work-item-management-console-app\\Wim\\Wim.Models\\Wim.Models.csproj",
+      "projectUniqueName": "C:\\OOP-Project-#1\\work-item-management-console-app\\Wim\\Wim.Models\\Wim.Models.csproj",
       "projectName": "Wim.Models",
-      "projectPath": "C:\\TelerikAlphaAcademyRepository\\OfficialProjects\\OOP-Project-1\\work-item-management-console-app\\Wim\\Wim.Models\\Wim.Models.csproj",
-      "packagesPath": "C:\\Users\\Mitizaro\\.nuget\\packages\\",
-      "outputPath": "C:\\TelerikAlphaAcademyRepository\\OfficialProjects\\OOP-Project-1\\work-item-management-console-app\\Wim\\Wim.Models\\obj\\",
+      "projectPath": "C:\\OOP-Project-#1\\work-item-management-console-app\\Wim\\Wim.Models\\Wim.Models.csproj",
+      "packagesPath": "C:\\Users\\Vasil\\.nuget\\packages\\",
+      "outputPath": "C:\\OOP-Project-#1\\work-item-management-console-app\\Wim\\Wim.Models\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Mitizaro\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Vasil\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -716,7 +732,11 @@
       },
       "frameworks": {
         "netcoreapp2.1": {
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\OOP-Project-#1\\work-item-management-console-app\\Wim\\Wim.Models.Interfaces\\Wim.Models.Interfaces.csproj": {
+              "projectPath": "C:\\OOP-Project-#1\\work-item-management-console-app\\Wim\\Wim.Models.Interfaces\\Wim.Models.Interfaces.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
