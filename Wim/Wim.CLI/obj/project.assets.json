@@ -688,23 +688,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Mitizaro\\.nuget\\packages\\": {},
+    "C:\\Users\\Vasil\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\TelerikAlphaAcademyRepository\\OfficialProjects\\OOP-Project-1\\work-item-management-console-app\\Wim\\Wim.CLI\\Wim.CLI.csproj",
+      "projectUniqueName": "C:\\OOP-Project-#1\\project-develop\\work-item-management-console-app\\Wim\\Wim.CLI\\Wim.CLI.csproj",
       "projectName": "Wim.CLI",
-      "projectPath": "C:\\TelerikAlphaAcademyRepository\\OfficialProjects\\OOP-Project-1\\work-item-management-console-app\\Wim\\Wim.CLI\\Wim.CLI.csproj",
-      "packagesPath": "C:\\Users\\Mitizaro\\.nuget\\packages\\",
-      "outputPath": "C:\\TelerikAlphaAcademyRepository\\OfficialProjects\\OOP-Project-1\\work-item-management-console-app\\Wim\\Wim.CLI\\obj\\",
+      "projectPath": "C:\\OOP-Project-#1\\project-develop\\work-item-management-console-app\\Wim\\Wim.CLI\\Wim.CLI.csproj",
+      "packagesPath": "C:\\Users\\Vasil\\.nuget\\packages\\",
+      "outputPath": "C:\\OOP-Project-#1\\project-develop\\work-item-management-console-app\\Wim\\Wim.CLI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Mitizaro\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Vasil\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

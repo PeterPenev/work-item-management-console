@@ -6,9 +6,9 @@ namespace Wim.Models.Interfaces
 {
     public interface IWorkItems
     {
-        string Title { get; set; }
-        string Description { get; set; }
-        List<string> Comments { get; set; }
-        List<string> History { get; set; }
+        string Title { get; }
+        string Description { get; }
+        List<string> Comments { get; }
+        List<string> History { get; }
     }
 }
