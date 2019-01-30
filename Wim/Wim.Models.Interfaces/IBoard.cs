@@ -6,8 +6,10 @@ namespace Wim.Models.Interfaces
 {
     public interface IBoard
     {
-        string Name { get; set; }
-        List<WorkItem> WorkItems { get; set; }
-        List<ActivityHistory> ActivityHistory { get; set; }
+        string Name { get; }
+
+        List<IWorkItem> WorkItems { get; }
+
+        List<IActivityHistory> ActivityHistory { get; }
     }
 }

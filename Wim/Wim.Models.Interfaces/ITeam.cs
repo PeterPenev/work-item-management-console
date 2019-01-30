@@ -6,8 +6,10 @@ namespace Wim.Models.Interfaces
 {
     public interface ITeam
     {
-        string Name { get; set; }
-        List<Board> Boards { get; set; }
-        List<Member> Members { get; set; }
+        string Name { get; }
+
+        List<IBoard> Boards { get; }
+
+        List<IMember> Members { get; }
     }
 }
