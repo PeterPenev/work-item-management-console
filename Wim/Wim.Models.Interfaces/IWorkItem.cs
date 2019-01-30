@@ -6,6 +6,8 @@ namespace Wim.Models.Interfaces
 {
     public interface IWorkItem
     {
+        Guid Id { get;  }
+
         string Title { get; }
 
         string Description { get; }

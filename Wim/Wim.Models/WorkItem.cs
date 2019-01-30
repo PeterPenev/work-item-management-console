@@ -12,6 +12,17 @@ namespace Wim.Models
         private List<string> comments;
         private List<string> history;
 
+        public WorkItem(string title, string description)
+        {
+            this.Title = title;
+            this.Description = description;
+            this.Id = Guid.NewGuid();
+            this.comments = new List<string>();
+            this.history = new List<string>();
+        }
+
+        public Guid Id { get; private set; }
+
         public string Title
         {
             get
