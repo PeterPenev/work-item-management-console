@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Wim.Models.Enums;
 using Wim.Models.Interfaces;
 
 namespace Wim.Models
@@ -11,10 +12,10 @@ namespace Wim.Models
 
         private int rating;
 
-        public Feedback(int rating, Status status)
+        public Feedback(int rating, FeedbackStatus feedbackStatus)
         {
             this.rating = rating;
-            this.Status = status;
+            this.FeedbackStatus = feedbackStatus;
         }
 
         public int Rating
@@ -29,6 +30,6 @@ namespace Wim.Models
             }
         }
 
-        public Status Status { get; }
+        public FeedbackStatus FeedbackStatus { get; }
     }
 }

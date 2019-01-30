@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using Wim.Models.Enums;
 
 namespace Wim.Models.Interfaces
 {
@@ -14,6 +14,8 @@ namespace Wim.Models.Interfaces
 
         Severity Severity { get; }
 
-        Member Asignee { get; set; }
+        BugStatus BugStatus { get; }
+
+        IMember Asignee { get; set; }
     }
 }

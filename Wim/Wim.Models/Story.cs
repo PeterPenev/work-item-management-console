@@ -1,4 +1,5 @@
 ﻿using System;
+using Wim.Models.Enums;
 using Wim.Models.Interfaces;
 
 namespace Wim.Models
@@ -8,16 +9,16 @@ namespace Wim.Models
         //fields
         private Priority priority;
         private Size size;
-        private Status status;
+        private StoryStatus storyStatus;
         private Member assignee;
 
         //constructor
-        public Story(string title, string description, Priority priority, Size size, Status status, Member assignee)
+        public Story(string title, string description, Priority priority, Size size, StoryStatus storyStatus, Member assignee)
             : base(title, description)
         {
             this.Priority = priority;
             this.Size = size;
-            this.Status = status;
+            this.StoryStatus = storyStatus;
             this.Assignee = assignee;
         }
 
@@ -44,15 +45,15 @@ namespace Wim.Models
                 this.size = value;
             }
         }
-        public Status Status
+        public StoryStatus StoryStatus
         {
             get
             {
-                return this.status;
+                return this.storyStatus;
             }
             set
             {
-                this.status = value;
+                this.storyStatus = value;
             }
         }
 

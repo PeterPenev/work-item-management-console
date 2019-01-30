@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Wim.Models.Enums;
 
 namespace Wim.Models.Interfaces
 {
@@ -10,6 +11,6 @@ namespace Wim.Models.Interfaces
 
         int Rating { get; set; }
 
-        Status Status { get; }
+        FeedbackStatus FeedbackStatus { get; }
     }
 }

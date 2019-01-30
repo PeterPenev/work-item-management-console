@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Wim.Models.Enumerations
+namespace Wim.Models.Enums
 {
-    public enum BugSeverity
+    public enum Severity
     {
-        Critical,
+        Minor,
         Major,
-        Minor
+        Critical
     }
 }
