@@ -13,7 +13,7 @@ namespace Wim.Models
         //constructor
         public Board(string name)
         {
-            this.name = name;
+            this.Name = name;
         }
 
         //properties
