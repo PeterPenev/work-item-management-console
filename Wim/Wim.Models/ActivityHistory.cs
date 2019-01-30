@@ -6,30 +6,18 @@ namespace Wim.Models
     class ActivityHistory : IActivityHistory
     {
         //field
-        private Guid id;
         private string message;
-        private DateTime logDate;
+        private DateTime loggingDate;
 
         //constructor
         public ActivityHistory(string message)
-            {
+        {
             this.Id = Guid.NewGuid();
             this.Message = message;
-            this.LogDate = DateTime.Now;
-            }
-
-        //properties
-        public Guid Id
-        {
-            get
-            {
-                return this.id;
-            }
-            set
-            {
-                this.id = value;
-            }
+            this.LoggingDate = DateTime.Now;
         }
+
+        public Guid Id { get; private set; }      
 
         public string Message
         {
@@ -43,15 +31,15 @@ namespace Wim.Models
             }
         }
 
-        public DateTime LogDate
+        public DateTime LoggingDate
         {
             get
             {
-                return this.logDate;
+                return this.loggingDate;
             }
             set
             {
-                this.logDate = value;
+                this.loggingDate = value;
             }
         }
 
