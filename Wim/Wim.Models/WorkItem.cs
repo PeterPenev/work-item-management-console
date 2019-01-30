@@ -5,7 +5,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Models
 {
-    public abstract class WorkItems : IWorkItems
+    public abstract class WorkItem : IWorkItem
     {
         private string title;
         private string description;
