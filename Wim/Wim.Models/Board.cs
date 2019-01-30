@@ -7,7 +7,7 @@ namespace Wim.Models
     {
         //fiels
         private string name;
-        private List<WorkItem> workItems;
+        private List<IWorkItem> workItems;
         private List<ActivityHistory> activityHistory;
 
         //constructor
@@ -29,19 +29,19 @@ namespace Wim.Models
             }
         }
 
-        public List<WorkItem> WorkItems
+        public List<IWorkItem> WorkItems
         {
             get
             {
-                return new List<WorkItem>(this.workItems);
+                return new List<IWorkItem>(this.workItems);
             }
         }
 
-        public List<ActivityHistory> ActivityHistory
+        public List<IActivityHistory> ActivityHistory
         {
             get
             {
-                return new List<ActivityHistory>(this.activityHistory);
+                return new List<IActivityHistory>(this.activityHistory);
             }
         }
 

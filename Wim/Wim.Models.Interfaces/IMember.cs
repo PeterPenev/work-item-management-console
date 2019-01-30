@@ -6,7 +6,12 @@ namespace Wim.Models.Interfaces
 {
     public interface IMember
     {
-        List<WorkItem> WorkItems { get; set; }
-        List<ActivityHistory> ActivityHistory { get; set; }
+        string Name { get; }
+
+        bool IsAssigned { get; set; }
+
+        List<IWorkItem> WorkItems { get; }
+
+        List<IActivityHistory> ActivityHistory { get; }
     }
 }

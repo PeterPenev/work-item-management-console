@@ -23,7 +23,7 @@ namespace Wim.Models
             {
                 return this.rating;
             }
-            private set
+            set
             {
                 this.rating = value;
             }

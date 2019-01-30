@@ -5,33 +5,34 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Models
 {
-    class Team : ITeam
+    public class Team : ITeam
     {
-        private List<Board> boards;
+        private List<IBoard> boards;
 
-        private List<Member> members;
+        private List<IMember> members;
 
         public Team(string name)
         {
             this.Name = name;
-            boards = new List<Board>();
-            members = new List<Member>();
+            boards = new List<IBoard>();
+            members = new List<IMember>();
         }
 
         public string Name { get; private set; }
 
-        List<Board> Boards
+        public List<IBoard> Boards
         {
             get
             {
-                return new List<Board>(this.board);
+                return new List<IBoard>(this.boards);
             }
         }
-        List<Member> Members
+
+        public List<IMember> Members
         {
             get
             {
-                return new List<Member>(this.member);
+                return new List<IMember>(this.members);
             }
         }
     }

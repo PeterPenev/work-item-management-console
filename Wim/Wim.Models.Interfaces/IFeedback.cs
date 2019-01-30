@@ -6,8 +6,10 @@ namespace Wim.Models.Interfaces
 {
     public interface IFeedback
     {
-        Guid Id { get; set; }
+        Guid Id { get; }
+
         int Rating { get; set; }
+
         Status Status { get; }
     }
 }
