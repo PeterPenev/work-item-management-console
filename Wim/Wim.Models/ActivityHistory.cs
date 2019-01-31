@@ -3,7 +3,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Models
 {
-    class ActivityHistory : IActivityHistory
+    public class ActivityHistory : IActivityHistory
     {
         //field
         private string message;
