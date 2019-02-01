@@ -5,10 +5,8 @@ using Wim.Models.Enums;
 
 namespace Wim.Models.Interfaces
 {
-    public interface IFeedback
-    {
-        Guid Id { get; }
-
+    public interface IFeedback : IWorkItem
+    {     
         int Rating { get; set; }
 
         FeedbackStatus FeedbackStatus { get; }

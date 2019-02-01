@@ -6,15 +6,14 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Models
 {
-    public class Feedback : IFeedback
+    public class Feedback : WorkItem, IFeedback
     {
-        public Guid Id { get; private set; }
-
         private int rating;
 
-        public Feedback(int rating, FeedbackStatus feedbackStatus)
+        public Feedback(string title, string description, int rating, FeedbackStatus feedbackStatus)
+            :base(title, description)
         {
-            this.rating = rating;
+            this.Rating = rating;
             this.FeedbackStatus = feedbackStatus;
         }
 
