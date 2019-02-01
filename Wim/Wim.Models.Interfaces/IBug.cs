@@ -4,10 +4,8 @@ using Wim.Models.Enums;
 
 namespace Wim.Models.Interfaces
 {
-    public interface IBug
+    public interface IBug : IWorkItem
     {
-        Guid Id { get; set; }
-
         List<string> StepsToReproduce { get; set; }
 
         Priority Priority { get; }
