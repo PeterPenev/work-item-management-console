@@ -3,7 +3,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Models
 {
-    class Board : IBoard
+    public class Board : IBoard
     {
         //fiels
         private string name;

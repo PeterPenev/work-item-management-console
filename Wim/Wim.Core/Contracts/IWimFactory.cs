@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Wim.Models.Interfaces;
 
 namespace Wim.Core.Contracts
 {
     public interface IWimFactory
     {
-        Team CreateTeam(string name);
+        ITeam CreateTeam(string name);
 
-        Person CreatePerson(string name);
+        IMember CreateMember(string name);
 
-        Member CreateMember(string name);
-
-        Board CreateMember(string name);
+        IBoard CreateBoard(string name);
     }
 }
