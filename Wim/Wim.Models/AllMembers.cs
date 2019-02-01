@@ -3,7 +3,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Models
 {
-    public class AllMembers
+    public class AllMembers : IAllMembers
     {
         //fields
         private List<IMember> allMembersList;
@@ -21,6 +21,12 @@ namespace Wim.Models
             {
                 return new List<IMember>(this.allMembersList);
             }
+        }
+
+        //methods
+        public void AddMember(IMember member)
+        {
+            allMembersList.Add(member);
         }
     }
 }

@@ -3,7 +3,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Models
 {
-    public class AllTeams
+    public class AllTeams : IAllTeams
     {
         //field
         private List<ITeam> allTeamsList;

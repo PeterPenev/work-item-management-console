@@ -6,6 +6,8 @@ namespace Wim.Models.Interfaces
 {
     public interface IAllMembers
     {
-        List<IMember> AllMembers { get; }
+        List<IMember> AllMembersList { get; }
+
+        void AddMember(IMember member);
     }
 }

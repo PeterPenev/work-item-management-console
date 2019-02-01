@@ -6,6 +6,6 @@ namespace Wim.Models.Interfaces
 {
     public interface IAllTeams
     {
-        List<ITeam> AllTeams { get; }
+        List<ITeam> AllTeamsList { get; }
     }
 }

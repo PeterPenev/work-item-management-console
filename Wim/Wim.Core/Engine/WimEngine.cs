@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Wim.Core.Contracts;
+using Wim.Models;
 using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine
@@ -169,15 +170,25 @@ namespace Wim.Core.Engine
             Console.Write(output.ToString());
         }
 
+
+        //FOR IMPROVING!!!
         private string CreatePerson(string personName)
         {
-            if (allMembers.AllMembersList.ContainsKey(personName))
+
+            var allNames2 = (allMembers.AllMembersList.GetType().GetProperties());
+            List<string> allNames = new List<string>();
+            foreach (var item in allNames2)
+            {
+                allNames.Add(item.ToString());
+            }
+
+            if (allNames.Contains(personName))
             {
                 return string.Format(PersonExists, personName);
             }
 
             var person = this.factory.CreateMember(personName);
-            allMembers.AllMembersList.Add(personName);
+            allMembers.AddMember(person);
 
             return string.Format(PersonCreated, personName);
         }

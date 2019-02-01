@@ -1,4 +1,5 @@
 ﻿using System;
+using Wim.Core.Engine;
 
 namespace Wim.CLI
 {
@@ -6,7 +7,7 @@ namespace Wim.CLI
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            WimEngine.Instance.Start();
         }
     }
 }
