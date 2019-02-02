@@ -9,6 +9,7 @@ namespace Wim.Models
         private string message;
         private DateTime loggingDate;
 
+
         //constructor
         public ActivityHistory(string message)
         {

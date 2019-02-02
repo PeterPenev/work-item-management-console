@@ -9,5 +9,7 @@ namespace Wim.Models.Interfaces
         IDictionary<string, IMember> AllMembersList { get; }
 
         void AddMember(IMember member);
+
+        string ShowAllMembersToString(IDictionary<string, IMember> allMembersList);
     }
 }
