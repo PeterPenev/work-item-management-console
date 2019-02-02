@@ -36,17 +36,17 @@ namespace Wim.Models
             }
         }
 
-        public string ShowTeamsActivityToString(List<IMember> allMembersList)
+        public string ShowTeamActivityToString(List<IMember> allTeamMembersList)
         {
             StringBuilder sb = new StringBuilder();
             int numberOfActivities = 1;
 
-           foreach(var member in allMembersList)
+           foreach(var member in allTeamMembersList)
             {
-                sb.AppendLine($"======={member.Key}'s Activity History=======");
-                var memberActivityHistory = member.Value.ShowMemberActivityToString(member.Value.ActivityHistory);
+                sb.AppendLine($"======={member.Name}'s Activity History=======");
+                var memberActivityHistory = member.ShowMemberActivityToString(member.ActivityHistory);
                 sb.AppendLine(memberActivityHistory);
-                sb.AppendLine($"===========End Of {member.Key}'s Activity History================");
+                sb.AppendLine($"===========End Of {member.Name}'s Activity History================");
             }
 
             return sb.ToString().Trim();

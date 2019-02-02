@@ -12,6 +12,6 @@ namespace Wim.Models.Interfaces
 
         List<IMember> Members { get; }
 
-        string ShowTeamsActivityToString(List<IMember> allMembersList);
+        string ShowTeamActivityToString(List<IMember> allTeamMembersList);
     }
 }

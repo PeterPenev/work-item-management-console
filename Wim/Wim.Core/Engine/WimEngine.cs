@@ -124,13 +124,7 @@ namespace Wim.Core.Engine
                     var team = command.Parameters[0];
                     return this.ShowTeamsActivity(team);
 
-                //case "CreateToothpaste":
-                //    var toothpasteName = command.Parameters[0];
-                //    var toothpasteBrand = command.Parameters[1];
-                //    var toothpastePrice = decimal.Parse(command.Parameters[2]);
-                //    var toothpasteGender = this.GetGender(command.Parameters[3]);
-                //    var toothpasteIngredients = command.Parameters[4].Trim().Split(',').ToList();
-                //    return this.CreateToothpaste(toothpasteName, toothpasteBrand, toothpastePrice, toothpasteGender, toothpasteIngredients);
+
 
                 //case "CreateCream":
                 //    var creamName = command.Parameters[0];
@@ -150,6 +144,12 @@ namespace Wim.Core.Engine
 
                 //case "TotalPrice":
                 //    return this.shoppingCart.ProductList.Any() ? string.Format(TotalPriceInShoppingCart, this.shoppingCart.TotalPrice()) : $"No product in shopping cart!";
+
+                ////InternalUseOnly
+                //case "IsPersonAssigned":
+                //    var personName2 = command.Parameters[0];
+
+                //    return this.IsPersonAssigned(personName2);
 
                 default:
                     return string.Format(InvalidCommand, command.Name);
@@ -265,10 +265,12 @@ namespace Wim.Core.Engine
             }
 
             var teamToCheckHistoryFor = allTeams.AllTeamsList[team];
-            var teamActivityHistory = teamToCheckHistoryFor.ShowTeamsActivityToString(teamToCheckHistoryFor.Members);
+            var teamActivityHistory = teamToCheckHistoryFor.ShowTeamActivityToString(teamToCheckHistoryFor.Members);
 
             return string.Format(teamActivityHistory);
         }
+
+
 
         //private string CreateToothpaste(string toothpasteName, string toothpasteBrand, decimal toothpastePrice, GenderType toothpasteGender, IList<string> toothpasteIngredients)
         //{
@@ -370,5 +372,15 @@ namespace Wim.Core.Engine
         //            throw new InvalidOperationException(InvalidUsageType);
         //    }
         //}
+
+        ////Internal Use Only !
+        // private string IsPersonAssigned(string personName)
+        // {
+        //     var personToCheckFor = allMembers.AllMembersList[personName];
+
+        //     var result = personToCheckFor.FindIfMemberIsAssigned(allTeams.AllTeamsList);
+
+        //     return string.Format(result.ToString());
+        // }
     }
 }

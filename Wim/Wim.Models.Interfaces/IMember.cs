@@ -8,12 +8,12 @@ namespace Wim.Models.Interfaces
     {
         string Name { get; }
 
-        bool IsAssigned { get; set; }
-
         List<IWorkItem> WorkItems { get; }
 
         List<IActivityHistory> ActivityHistory { get; }
 
         string ShowMemberActivityToString(IList<IActivityHistory> activityHistoryInput);
+
+        bool FindIfMemberIsAssigned(IDictionary<string, ITeam> allTeamsInput);
     }
 }
