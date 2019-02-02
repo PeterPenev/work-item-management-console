@@ -8,6 +8,6 @@ namespace Wim.Models.Interfaces
     {
         IDictionary<string,ITeam> AllTeamsList { get; }
 
-        string ShowAllTeamsToString(IDictionary<string, IMember> allTeamsInput);
+        string ShowAllTeamsToString(IDictionary<string, ITeam> allTeamsInput);
     }
 }

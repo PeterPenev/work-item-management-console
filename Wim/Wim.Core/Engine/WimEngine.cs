@@ -13,7 +13,7 @@ namespace Wim.Core.Engine
         private const string PersonExists = "Person with name {0} already exists!";
         private const string PersonCreated = "Person with name {0} was created!";
         private const string NoPeopleInApplication = "There are no people!";
-        //private const string ProductDoesNotExist = "Product {0} does not exist!";
+        private const string NoTeamsInApplication = "There are no teams in application!";
         //private const string ProductAddedToCategory = "Product {0} added to category {1}!";
         //private const string ProductRemovedCategory = "Product {0} removed from category {1}!";
         //private const string ShampooAlreadyExist = "Shampoo with name {0} already exists!";
@@ -108,10 +108,10 @@ namespace Wim.Core.Engine
                     //var productToAdd = command.Parameters[1];
                     return this.ShowAllPeople();
 
-                //case "RemoveFromCategory":
-                //    var categoryNameToRemove = command.Parameters[0];
-                //    var productToRemove = command.Parameters[1];
-                //    return this.RemoveCategory(categoryNameToRemove, productToRemove);
+                case "ShowAllTeams":
+                    //var categoryNameToRemove = command.Parameters[0];
+                    //var productToRemove = command.Parameters[1];
+                    return this.ShowAllTeams();
 
                 //case "ShowCategory":
                 //    var categoryToShow = command.Parameters[0];
@@ -201,30 +201,22 @@ namespace Wim.Core.Engine
                 return string.Format(NoPeopleInApplication);
             }
 
-            var peopleToDisplay = allMembers.ShowAllMembersToString(allMembers.AllMembersList); 
+            var peopleToDisplay = allMembers.ShowAllMembersToString(allMembers.AllMembersList);
 
             return string.Format(peopleToDisplay);
         }
 
-        //private string RemoveCategory(string categoryNameToAdd, string productToRemove)
-        //{
-        //    if (!this.categories.ContainsKey(categoryNameToAdd))
-        //    {
-        //        return string.Format(CategoryDoesNotExist, categoryNameToAdd);
-        //    }
+        private string ShowAllTeams()
+        {
+            if (this.allTeams.AllTeamsList.Count == 0)
+            {
+                return string.Format(NoTeamsInApplication);
+            }
 
-        //    if (!this.products.ContainsKey(productToRemove))
-        //    {
-        //        return string.Format(ProductDoesNotExist, productToRemove);
-        //    }
+            var teamsToDisplay = allTeams.ShowAllTeamsToString(allTeams.AllTeamsList);            
 
-        //    var category = this.categories[categoryNameToAdd];
-        //    var product = this.products[productToRemove];
-
-        //    category.RemoveProduct(product);
-
-        //    return string.Format(ProductRemovedCategory, productToRemove, categoryNameToAdd);
-        //}
+            return string.Format(teamsToDisplay);
+        }
 
         //private string ShowCategory(string categoryToShow)
         //{

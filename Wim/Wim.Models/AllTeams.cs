@@ -26,7 +26,7 @@ namespace Wim.Models
 
         //methods
         //Returning String Representation of the Teams'names in the Dictionary of allTeamsInput
-        public string ShowAllTeamsToString(IDictionary<string, IMember> allTeamsInput)
+        public string ShowAllTeamsToString(IDictionary<string, ITeam> allTeamsInput)
         {
             StringBuilder sb = new StringBuilder();
 
