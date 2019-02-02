@@ -35,5 +35,21 @@ namespace Wim.Models
                 return new List<IMember>(this.members);
             }
         }
+
+        public string ShowTeamsActivityToString(Dictionary<string, IMember> allMembersList)
+        {
+            StringBuilder sb = new StringBuilder();
+            int numberOfActivities = 1;
+
+           foreach(var member in allMembersList)
+            {
+                sb.AppendLine($"======={member.Key}'s Activity History=======");
+                var memberActivityHistory = member.Value.ShowMemberActivityToString(member.Value.ActivityHistory);
+                sb.AppendLine(memberActivityHistory);
+                sb.AppendLine($"===========End Of {member.Key}'s Activity History================");
+            }
+
+            return sb.ToString().Trim();
+        }
     }
 }
