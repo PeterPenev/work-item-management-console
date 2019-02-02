@@ -43,11 +43,15 @@ namespace Wim.Models
 
         public string ShowAllTeamMembers(IList<ITeam> members)
         {
+            int teamMembers = 1;
             StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"Team name: {this.Name}");
             foreach(var member in members)
             {
-                sb.AppendLine($"");
+                sb.AppendLine($"{teamMembers}. {member.Name}");
             }
+
+            return sb.ToString().Trim();
         }
 
         public string ShowTeamActivityToString(List<IMember> allTeamMembersList)
