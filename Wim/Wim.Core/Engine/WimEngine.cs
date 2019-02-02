@@ -15,10 +15,9 @@ namespace Wim.Core.Engine
         private const string NoPeopleInApplication = "There are no people!";
         private const string NoTeamsInApplication = "There are no teams in application!";
         private const string MemberDoesNotExist = "The member does not exist!";
-        
-        //private const string ProductAddedToCategory = "Product {0} added to category {1}!";
-        //private const string ProductRemovedCategory = "Product {0} removed from category {1}!";
-        //private const string ShampooAlreadyExist = "Shampoo with name {0} already exists!";
+        private const string NullOrEmptyTeamName = "Team Name can't be null or empty!";
+        private const string TeamNameExists = "Team Name {0} already exists!";
+        private const string TeamCreated = "Team with name {0} was created!";
         //private const string ShampooCreated = "Shampoo with name {0} was created!";
         //private const string ToothpasteAlreadyExist = "Toothpaste with name {0} already exists!";
         //private const string ToothpasteCreated = "Toothpaste with name {0} was created!";
@@ -119,6 +118,10 @@ namespace Wim.Core.Engine
                       var memberName = command.Parameters[0];
                     //    return this.ShowCategory(categoryToShow);
                     return this.ShowMemberActivityToString(memberName);
+
+                case "CreateTeam":
+                    var teamName = command.Parameters[0];
+                    return this.CreateTeam(teamName);
 
                 //case "CreateShampoo":
                 //    var shampooName = command.Parameters[0];
@@ -237,6 +240,24 @@ namespace Wim.Core.Engine
             var category = this.categories[categoryToShow];
 
             return category.Print();
+        }
+
+        private string CreateTeam (string teamName)
+        {
+            if (string.IsNullOrEmpty(teamName))
+            {
+                return string.Format(NullOrEmptyTeamName);
+            }
+
+            if (this.allTeams.AllTeamsList.ContainsKey(teamName))
+            {
+                return string.Format(TeamNameExists);
+            }
+
+            var team = this.factory.CreateTeam(teamName);
+            allTeams.AddTeam(team);
+
+            return string.Format(TeamCreated, teamName);
         }
 
         //private string CreateShampoo(string shampooName, string shampooBrand, decimal shampooPrice, GenderType shampooGender, uint shampooMilliliters, UsageType shampooUsage)
