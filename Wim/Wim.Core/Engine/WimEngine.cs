@@ -120,9 +120,9 @@ namespace Wim.Core.Engine
                     var teamName = command.Parameters[0];
                     return this.CreateTeam(teamName);
 
-                case "ShowTeamsActivity":
+                case "ShowTeamActivity":
                     var team = command.Parameters[0];
-                    return this.ShowTeamsActivity(team);
+                    return this.ShowTeamActivity(team);
 
                 //case "CreateToothpaste":
                 //    var toothpasteName = command.Parameters[0];
@@ -252,7 +252,7 @@ namespace Wim.Core.Engine
             return string.Format(TeamCreated, teamName);
         }
 
-        private string ShowTeamsActivity(string team)
+        private string ShowTeamActivity(string team)
         {
             if (string.IsNullOrEmpty(team))
             {
@@ -265,7 +265,7 @@ namespace Wim.Core.Engine
             }
 
             var teamToCheckHistoryFor = allTeams.AllTeamsList[team];
-            var teamActivityHistory = teamToCheckHistoryFor.ShowTeamsActivityToString(teamToCheckHistoryFor.Members);
+            var teamActivityHistory = teamToCheckHistoryFor.ShowTeamActivityToString(teamToCheckHistoryFor.Members);
 
             return string.Format(teamActivityHistory);
         }
