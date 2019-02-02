@@ -37,12 +37,12 @@ namespace Wim.Models
         {
             StringBuilder sb = new StringBuilder();
 
-            int count = 1;
+            int numberOfPerson = 1;
 
             foreach (var item in allMembersInput)
             {                
-                sb.AppendLine($"{count}) {item.Key}");
-                count++;
+                sb.AppendLine($"{numberOfPerson}) {item.Key}");
+                numberOfPerson++;
             }
 
             return sb.ToString().Trim();
