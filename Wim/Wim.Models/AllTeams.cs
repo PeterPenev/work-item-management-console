@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using Wim.Models.Interfaces;
 
 namespace Wim.Models
@@ -23,6 +24,22 @@ namespace Wim.Models
             }
         }
 
+        //methods
+        //Returning String Representation of the Teams'names in the Dictionary of allTeamsInput
+        public string ShowAllTeamsToString(IDictionary<string, IMember> allTeamsInput)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            int numberOfTeam = 1;
+
+            foreach (var team in allTeamsInput)
+            {
+                sb.AppendLine($"{numberOfTeam}. {team.Key}");
+                numberOfTeam++;
+            }
+
+            return sb.ToString().Trim();
+        }
 
     }
 }

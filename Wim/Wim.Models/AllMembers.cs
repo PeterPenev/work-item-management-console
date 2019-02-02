@@ -41,7 +41,7 @@ namespace Wim.Models
 
             foreach (var item in allMembersInput)
             {                
-                sb.AppendLine($"{numberOfPerson}) {item.Key}");
+                sb.AppendLine($"{numberOfPerson}. {item.Key}");
                 numberOfPerson++;
             }
 
