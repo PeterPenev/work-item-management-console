@@ -8,6 +8,9 @@ namespace Wim.Models.Interfaces
     {
         IDictionary<string,ITeam> AllTeamsList { get; }
 
+        void AddTeam(ITeam team);
+
         string ShowAllTeamsToString(IDictionary<string, ITeam> allTeamsInput);
+
     }
 }

@@ -25,6 +25,14 @@ namespace Wim.Models
         }
 
         //methods
+
+        //Adding Person to the Global Dictionary of Members
+        public void AddTeam(ITeam team)
+        {
+            allTeamsList.Add(team.Name, team);
+        }
+
+
         //Returning String Representation of the Teams'names in the Dictionary of allTeamsInput
         public string ShowAllTeamsToString(IDictionary<string, ITeam> allTeamsInput)
         {
