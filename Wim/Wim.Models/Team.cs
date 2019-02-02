@@ -41,16 +41,18 @@ namespace Wim.Models
             members.Add(addToTeam);
         }
 
-        public string ShowAllTeamMembers(IList<ITeam> members)
+        public string ShowAllTeamMembers()
         {
             int teamMembers = 1;
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"Team name: {this.Name}");
-            foreach(var member in members)
-            {
-                sb.AppendLine($"{teamMembers}. {member.Name}");
-            }
 
+            foreach(var selectedMember in this.members)
+            {
+                sb.AppendLine($"{teamMembers}. {selectedMember.Name}");
+                teamMembers++;
+            }
+           
             return sb.ToString().Trim();
         }
 
