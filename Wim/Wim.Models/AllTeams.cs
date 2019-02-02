@@ -6,20 +6,20 @@ namespace Wim.Models
     public class AllTeams : IAllTeams
     {
         //field
-        private List<ITeam> allTeamsList;
+        private Dictionary<string, ITeam> allTeamsList;
 
         //constructor
         public AllTeams()
         {
-            this.allTeamsList = new List<ITeam>();
+            this.allTeamsList = new Dictionary<string, ITeam>();
         }
 
         //properties
-        public List<ITeam> AllTeamsList
+        public IDictionary<string, ITeam> AllTeamsList
         {
             get
             {
-                return new List<ITeam>(this.allTeamsList);
+                return new Dictionary<string, ITeam>(this.allTeamsList);
             }
         }
 

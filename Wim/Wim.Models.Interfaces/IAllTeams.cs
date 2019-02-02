@@ -6,6 +6,6 @@ namespace Wim.Models.Interfaces
 {
     public interface IAllTeams
     {
-        Dictionary<string,ITeam> AllTeamsList { get; }
+        IDictionary<string,ITeam> AllTeamsList { get; }
     }
 }
