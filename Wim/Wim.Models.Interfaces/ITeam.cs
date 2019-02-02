@@ -11,5 +11,7 @@ namespace Wim.Models.Interfaces
         List<IBoard> Boards { get; }
 
         List<IMember> Members { get; }
+
+        string ShowTeamsActivityToString(Dictionary<string, IMember> allMembersList);
     }
 }
