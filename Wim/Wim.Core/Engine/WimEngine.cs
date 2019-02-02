@@ -122,7 +122,7 @@ namespace Wim.Core.Engine
 
                 case "ShowTeamsActivity":
                     var team = command.Parameters[0];
-                    return this.ShowTeamsActivity(team);
+                    return this.ShowTeamActivityToString(team);
 
 
 
@@ -252,7 +252,7 @@ namespace Wim.Core.Engine
             return string.Format(TeamCreated, teamName);
         }
 
-        private string ShowTeamsActivity(string team)
+        private string ShowTeamActivityToString(string team)
         {
             if (string.IsNullOrEmpty(team))
             {
@@ -269,7 +269,6 @@ namespace Wim.Core.Engine
 
             return string.Format(teamActivityHistory);
         }
-
 
 
         //private string CreateToothpaste(string toothpasteName, string toothpasteBrand, decimal toothpastePrice, GenderType toothpasteGender, IList<string> toothpasteIngredients)
