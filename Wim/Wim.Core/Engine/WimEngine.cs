@@ -9,10 +9,10 @@ namespace Wim.Core.Engine
 {
     public sealed class WimEngine : IEngine
     {
-          private const string InvalidCommand = "Invalid command name: {0}!";
-          private const string PersonExists = "Person with name {0} already exists!";
-          private const string PersonCreated = "Person with name {0} was created!";
-        //private const string CategoryDoesNotExist = "Category {0} does not exist!";
+        private const string InvalidCommand = "Invalid command name: {0}!";
+        private const string PersonExists = "Person with name {0} already exists!";
+        private const string PersonCreated = "Person with name {0} was created!";
+        private const string NoPeopleInApplication = "There are no people!";
         //private const string ProductDoesNotExist = "Product {0} does not exist!";
         //private const string ProductAddedToCategory = "Product {0} added to category {1}!";
         //private const string ProductRemovedCategory = "Product {0} removed from category {1}!";
@@ -103,10 +103,10 @@ namespace Wim.Core.Engine
                     var personName = command.Parameters[0];
                     return this.CreatePerson(personName);
 
-                //case "AddToCategory":
-                //    var categoryNameToAdd = command.Parameters[0];
-                //    var productToAdd = command.Parameters[1];
-                //    return this.AddToCategory(categoryNameToAdd, productToAdd);
+                case "ShowAllPeople":
+                    //var categoryNameToAdd = command.Parameters[0];
+                    //var productToAdd = command.Parameters[1];
+                    return this.ShowAllPeople();
 
                 //case "RemoveFromCategory":
                 //    var categoryNameToRemove = command.Parameters[0];
@@ -193,25 +193,18 @@ namespace Wim.Core.Engine
             return string.Format(PersonCreated, personName);
         }
 
-        //private string AddToCategory(string categoryNameToAdd, string productToAdd)
-        //{
-        //    if (!this.categories.ContainsKey(categoryNameToAdd))
-        //    {
-        //        return string.Format(CategoryDoesNotExist, categoryNameToAdd);
-        //    }
+        private string ShowAllPeople()
+        {
 
-        //    if (!this.products.ContainsKey(productToAdd))
-        //    {
-        //        return string.Format(ProductDoesNotExist, productToAdd);
-        //    }
+            if (this.allMembers.AllMembersList.Count == 0)
+            {
+                return string.Format(NoPeopleInApplication);
+            }
 
-        //    var category = this.categories[categoryNameToAdd];
-        //    var product = this.products[productToAdd];
+            var peopleToDisplay = allMembers.ShowAllMembersToString(allMembers.AllMembersList); 
 
-        //    category.AddProduct(product);
-
-        //    return string.Format(ProductAddedToCategory, productToAdd, categoryNameToAdd);
-        //}
+            return string.Format(peopleToDisplay);
+        }
 
         //private string RemoveCategory(string categoryNameToAdd, string productToRemove)
         //{
