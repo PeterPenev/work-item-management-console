@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Wim.Models.Interfaces;
 
@@ -18,18 +19,6 @@ namespace Wim.Models
         public Member(string name)
         {
             this.Name = name;
-        }
-
-        public bool IsAssigned
-        {
-            get
-            {
-                return this.isAssigned;
-            }
-            set
-            {
-                this.isAssigned = value;
-            }
         }
 
         public string Name
@@ -59,6 +48,26 @@ namespace Wim.Models
             {
                 return new List<IActivityHistory>(this.activityHistory);
             }
+        }
+
+        //methods
+
+        public bool FindIfMemberIsAssigned(IDictionary<string, ITeam> allTeamsInput)
+        {
+
+            foreach (var team in allTeamsInput)
+            {
+                if (team.Value.Members.Contains(this))
+                {
+                    this.isAssigned = true;
+                }
+                else
+                {
+                    this.isAssigned = false;
+                }
+            }
+
+            return isAssigned;
         }
 
         public string ShowMemberActivityToString(IList<IActivityHistory> activityHistoryInput)
