@@ -15,7 +15,8 @@ namespace Wim.Core.Engine
         private const string NoPeopleInApplication = "There are no people!";
         private const string NoTeamsInApplication = "There are no teams in application!";
         private const string MemberDoesNotExist = "The member does not exist!";
-        private const string NullOrEmptyTeamName = "Team Name can't be null or empty!";
+        private const string NullOrEmptyTeamName = "Team Name cannot be null or empty!";
+        private const string NullOrEmptyMemberName = "Member Name cannot be null or empty!";
         private const string TeamNameExists = "Team Name {0} already exists!";
         private const string TeamCreated = "Team with name {0} was created!";
         //private const string ShampooCreated = "Shampoo with name {0} was created!";
@@ -228,8 +229,7 @@ namespace Wim.Core.Engine
         {
             if (string.IsNullOrEmpty(memberName))
             {
-                return string.Format(MemberDoesNotExist);
-
+                return string.Format(NullOrEmptyMemberName);
             }
 
             if (!allMembers.AllMembersList.ContainsKey(memberName))
@@ -237,9 +237,10 @@ namespace Wim.Core.Engine
                 return string.Format(MemberDoesNotExist);
             }
 
-            var category = this.categories[categoryToShow];
+            var selectedMember = this.allMembers.AllMembersList[memberName];
+            var memberActivities = selectedMember.ShowMemberActivityToString(selectedMember.ActivityHistory);
 
-            return category.Print();
+            return string.Format(memberActivities);
         }
 
         private string CreateTeam (string teamName)

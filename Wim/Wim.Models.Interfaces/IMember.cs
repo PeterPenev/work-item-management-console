@@ -13,5 +13,7 @@ namespace Wim.Models.Interfaces
         List<IWorkItem> WorkItems { get; }
 
         List<IActivityHistory> ActivityHistory { get; }
+
+        string ShowMemberActivityToString(IList<IActivityHistory> activityHistoryInput);
     }
 }
