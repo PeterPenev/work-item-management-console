@@ -19,6 +19,7 @@ namespace Wim.Core.Engine
         private const string NullOrEmptyMemberName = "Member Name cannot be null or empty!";
         private const string TeamNameExists = "Team Name {0} already exists!";
         private const string TeamCreated = "Team with name {0} was created!";
+        private const string TeamNameDoesntExists = "Team Name {0} does not exists!";
         //private const string ShampooCreated = "Shampoo with name {0} was created!";
         //private const string ToothpasteAlreadyExist = "Toothpaste with name {0} already exists!";
         //private const string ToothpasteCreated = "Toothpaste with name {0} was created!";
@@ -106,32 +107,22 @@ namespace Wim.Core.Engine
                     return this.CreatePerson(personName);
 
                 case "ShowAllPeople":
-                    //var categoryNameToAdd = command.Parameters[0];
-                    //var productToAdd = command.Parameters[1];
                     return this.ShowAllPeople();
 
                 case "ShowAllTeams":
-                    //var categoryNameToRemove = command.Parameters[0];
-                    //var productToRemove = command.Parameters[1];
                     return this.ShowAllTeams();
 
                 case "ShowPersonsActivity":
-                      var memberName = command.Parameters[0];
-                    //    return this.ShowCategory(categoryToShow);
+                    var memberName = command.Parameters[0];
                     return this.ShowMemberActivityToString(memberName);
 
                 case "CreateTeam":
                     var teamName = command.Parameters[0];
                     return this.CreateTeam(teamName);
 
-                //case "CreateShampoo":
-                //    var shampooName = command.Parameters[0];
-                //    var shampooBrand = command.Parameters[1];
-                //    var shampooPrice = decimal.Parse(command.Parameters[2]);
-                //    var shampooGender = this.GetGender(command.Parameters[3]);
-                //    var shampooMilliliters = uint.Parse(command.Parameters[4]);
-                //    var shampooUsage = this.GetUsage(command.Parameters[5]);
-                //    return this.CreateShampoo(shampooName, shampooBrand, shampooPrice, shampooGender, shampooMilliliters, shampooUsage);
+                case "ShowTeamsActivity":
+                    var team = command.Parameters[0];
+                    return this.ShowTeamsActivity(team);
 
                 //case "CreateToothpaste":
                 //    var toothpasteName = command.Parameters[0];
@@ -220,7 +211,7 @@ namespace Wim.Core.Engine
                 return string.Format(NoTeamsInApplication);
             }
 
-            var teamsToDisplay = allTeams.ShowAllTeamsToString(allTeams.AllTeamsList);            
+            var teamsToDisplay = allTeams.ShowAllTeamsToString(allTeams.AllTeamsList);
 
             return string.Format(teamsToDisplay);
         }
@@ -243,7 +234,7 @@ namespace Wim.Core.Engine
             return string.Format(memberActivities);
         }
 
-        private string CreateTeam (string teamName)
+        private string CreateTeam(string teamName)
         {
             if (string.IsNullOrEmpty(teamName))
             {
@@ -261,18 +252,23 @@ namespace Wim.Core.Engine
             return string.Format(TeamCreated, teamName);
         }
 
-        //private string CreateShampoo(string shampooName, string shampooBrand, decimal shampooPrice, GenderType shampooGender, uint shampooMilliliters, UsageType shampooUsage)
-        //{
-        //    if (this.products.ContainsKey(shampooName))
-        //    {
-        //        return string.Format(ShampooAlreadyExist, shampooName);
-        //    }
+        private string ShowTeamsActivity(string team)
+        {
+            if (string.IsNullOrEmpty(team))
+            {
+                return string.Format(NullOrEmptyTeamName);
+            }
 
-        //    var shampoo = this.factory.CreateShampoo(shampooName, shampooBrand, shampooPrice, shampooGender, shampooMilliliters, shampooUsage);
-        //    this.products.Add(shampooName, (IProduct)shampoo);
+            if (!allTeams.AllTeamsList.ContainsKey(team))
+            {
+                return string.Format(TeamNameDoesntExists);
+            }
 
-        //    return string.Format(ShampooCreated, shampooName);
-        //}
+            var teamToCheckHistoryFor = allTeams.AllTeamsList[team];
+            var teamActivityHistory = teamToCheckHistoryFor.ShowTeamsActivityToString(teamToCheckHistoryFor.Members);
+
+            return string.Format(teamActivityHistory);
+        }
 
         //private string CreateToothpaste(string toothpasteName, string toothpasteBrand, decimal toothpastePrice, GenderType toothpasteGender, IList<string> toothpasteIngredients)
         //{

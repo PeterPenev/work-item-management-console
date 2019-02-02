@@ -36,7 +36,7 @@ namespace Wim.Models
             }
         }
 
-        public string ShowTeamsActivityToString(Dictionary<string, IMember> allMembersList)
+        public string ShowTeamsActivityToString(List<IMember> allMembersList)
         {
             StringBuilder sb = new StringBuilder();
             int numberOfActivities = 1;
