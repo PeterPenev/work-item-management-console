@@ -14,6 +14,8 @@ namespace Wim.Core.Engine
         private const string PersonCreated = "Person with name {0} was created!";
         private const string NoPeopleInApplication = "There are no people!";
         private const string NoTeamsInApplication = "There are no teams in application!";
+        private const string MemberDoesNotExist = "The member does not exist!";
+        
         //private const string ProductAddedToCategory = "Product {0} added to category {1}!";
         //private const string ProductRemovedCategory = "Product {0} removed from category {1}!";
         //private const string ShampooAlreadyExist = "Shampoo with name {0} already exists!";
@@ -113,9 +115,10 @@ namespace Wim.Core.Engine
                     //var productToRemove = command.Parameters[1];
                     return this.ShowAllTeams();
 
-                //case "ShowCategory":
-                //    var categoryToShow = command.Parameters[0];
-                //    return this.ShowCategory(categoryToShow);
+                case "ShowPersonsActivity":
+                      var memberName = command.Parameters[0];
+                    //    return this.ShowCategory(categoryToShow);
+                    return this.ShowMemberActivityToString(memberName);
 
                 //case "CreateShampoo":
                 //    var shampooName = command.Parameters[0];
@@ -218,17 +221,23 @@ namespace Wim.Core.Engine
             return string.Format(teamsToDisplay);
         }
 
-        //private string ShowCategory(string categoryToShow)
-        //{
-        //    if (!this.categories.ContainsKey(categoryToShow))
-        //    {
-        //        return string.Format(CategoryDoesNotExist, categoryToShow);
-        //    }
+        private string ShowMemberActivityToString(string memberName)
+        {
+            if (string.IsNullOrEmpty(memberName))
+            {
+                return string.Format(MemberDoesNotExist);
 
-        //    var category = this.categories[categoryToShow];
+            }
 
-        //    return category.Print();
-        //}
+            if (!allMembers.AllMembersList.ContainsKey(memberName))
+            {
+                return string.Format(MemberDoesNotExist);
+            }
+
+            var category = this.categories[categoryToShow];
+
+            return category.Print();
+        }
 
         //private string CreateShampoo(string shampooName, string shampooBrand, decimal shampooPrice, GenderType shampooGender, uint shampooMilliliters, UsageType shampooUsage)
         //{

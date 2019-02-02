@@ -60,5 +60,23 @@ namespace Wim.Models
                 return new List<IActivityHistory>(this.activityHistory);
             }
         }
+
+        public string ShowMemberActivityToString(IList<IActivityHistory> activityHistoryInput)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            int numberOfHistories = 1;
+
+            foreach (var history in activityHistoryInput)
+            {
+                sb.AppendLine($"{numberOfHistories}. Activity with date: {history.LoggingDate}");
+                sb.AppendLine($"Activity Message:");
+                sb.AppendLine($"{history.Message}");
+                numberOfHistories++;
+            }
+
+            return sb.ToString().Trim();
+        }
+
     }
 }
