@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using Wim.Models.Interfaces;
 
 namespace Wim.Models
@@ -24,9 +25,27 @@ namespace Wim.Models
         }
 
         //methods
+
+        //Adding Person to the Global Dictionary of Members
         public void AddMember(IMember member)
         {               
             allMembersList.Add(member.Name, member);                  
+        }
+
+        //Returning String Representation of the Members'names in the Dictionary of allMembersInput
+        public string ShowAllMembersToString(IDictionary<string, IMember> allMembersInput)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            int count = 1;
+
+            foreach (var item in allMembersInput)
+            {                
+                sb.AppendLine($"{count}) {item.Key}");
+                count++;
+            }
+
+            return sb.ToString().Trim();
         }
     }
 }
