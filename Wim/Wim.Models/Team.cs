@@ -36,6 +36,11 @@ namespace Wim.Models
             }
         }
 
+        public void Add(IMember addToTeam)
+        {
+            members.Add(addToTeam);
+        }
+
         public string ShowTeamActivityToString(List<IMember> allTeamMembersList)
         {
             StringBuilder sb = new StringBuilder();
