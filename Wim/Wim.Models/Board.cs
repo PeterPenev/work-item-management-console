@@ -63,5 +63,10 @@ namespace Wim.Models
             return sb.ToString().Trim();
         }
 
+        public void AddWorkitemToBoard(IWorkItem workItemToAdd)
+        {
+            workItems.Add(workItemToAdd);
+        }
+
     }
 }

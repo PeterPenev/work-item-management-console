@@ -26,6 +26,7 @@ namespace Wim.Core.Engine
         private const string BoardAddedToTeam = "Board {0} was added to team {1}!";
         private const string BoardAlreadyExists = "Board with name {0} already exists!";
         private const string NoBoardsInTeam = "There are no boards in this team!";
+        private const string StoryCreated = "Story in Team {0} was created!";
         //private const string CreamAlreadyExist = "Cream with name {0} already exists!";
         //private const string CreamCreated = "Cream with name {0} was created!";
         //private const string ProductAddedToShoppingCart = "Product {0} was added to the shopping cart!";
@@ -147,6 +148,11 @@ namespace Wim.Core.Engine
                     var teamToShowBoards = command.Parameters[0];
                     return this.ShowAllTeamBoards(teamToShowBoards);
 
+                case "ShowBoardActivityToString":
+                    var team = command.Parameters[0];
+                    var boardToShowHistory = command.Parameters[1];
+                    return this.ShowBoardActivityToString(boardActivityToShow);
+
                 //case "TotalPrice":
                 //    return this.shoppingCart.ProductList.Any() ? string.Format(TotalPriceInShoppingCart, this.shoppingCart.TotalPrice()) : $"No product in shopping cart!";
 
@@ -161,6 +167,13 @@ namespace Wim.Core.Engine
                     var personName2 = command.Parameters[0];
 
                     return this.IsPersonAssigned(personName2);
+
+                  
+                case "CreateStory":
+                    var teamToAddStoryFor = command.Parameters[0];
+                    var boardToAddStoryFor = command.Parameters[1];
+
+                    return this.CreateStory(personName2);
 
                 default:
                     return string.Format(InvalidCommand, command.Name);
@@ -379,7 +392,6 @@ namespace Wim.Core.Engine
 
         }
 
-        //DOING
         private string CreateBug(string teamToAddBugFor, string boardToAddBugFor)
         {
             if (string.IsNullOrEmpty(teamToAddBugFor))
@@ -412,6 +424,31 @@ namespace Wim.Core.Engine
             return string.Format(ProductRemovedFromShoppingCart, productName);
         }
 
+        private string ShowBoardActivityToString(string team, string boardActivityToShow)
+        {
+            if (string.IsNullOrEmpty(team))
+            {
+                return string.Format(NullOrEmptyTeamName); 
+            }
+
+            if (!allTeams.AllTeamsList.ContainsKey(team))
+            {
+                return string.Format(TeamDoesNotExist);
+            }
+
+            if(string.IsNullOrEmpty(boardActivityToShow))
+            {
+                return string.Format(NullOrEmptyMemberName);
+            }
+
+            if(!)
+
+        }
+
+        //    var product = this.products[productName];
+        //    this.shoppingCart.AddProduct(product);
+
+     
         //private GenderType GetGender(string genderAsString)
         //{
         //    switch (genderAsString.ToLower())
@@ -454,6 +491,32 @@ namespace Wim.Core.Engine
         //            throw new InvalidOperationException(InvalidUsageType);
         //    }
         //}
+
+        private string CreateStory(string teamToAddStoryTo, string boardToAddStoryTo)
+        {
+            if (string.IsNullOrEmpty(teamToAddStoryTo))
+            {
+                return string.Format(NullOrEmptyTeamName); 
+            }
+
+            if (string.IsNullOrEmpty(boardToAddStoryTo))
+            {
+                return string.Format(NullOrEmptyBoardName);
+            }
+
+            if (!allTeams.AllTeamsList.ContainsKey(teamToAddStoryTo))
+            {
+                return string.Format(TeamDoesNotExist);
+            }
+
+            if (allTeams.AllTeamsList[teamToAddStoryTo].Boards.Count() == 0)
+            {
+                return string.Format(NoBoardsInTeam);
+            }
+
+            var allTeamBoardsResult = allTeams.AllTeamsList[teamToAddStoryTo].ShowAllTeamBoards();
+            return string.Format(StoryCreated, teamToAddStoryTo);
+        }
 
         //Internal Use Only !
         private string IsPersonAssigned(string personName)
