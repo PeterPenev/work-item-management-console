@@ -36,12 +36,12 @@ namespace Wim.Models
             }
         }
 
-        public void Add(IMember addToTeam)
+        public void AddMember(IMember addToTeam)
         {
             members.Add(addToTeam);
         }
 
-        public void Add(IBoard addToBoard)
+        public void AddBoard(IBoard addToBoard)
         {
             boards.Add(addToBoard);
         }
