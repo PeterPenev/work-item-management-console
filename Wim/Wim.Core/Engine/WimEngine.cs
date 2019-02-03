@@ -25,6 +25,7 @@ namespace Wim.Core.Engine
         private const string NullOrEmptyBoardName = "Board Name cannot be null or empty!!";
         private const string BoardAddedToTeam = "Board {0} was added to team {1}!";
         private const string BoardAlreadyExists = "Board with name {0} already exists!";
+        private const string NoBoardsInTeam = "There are no boards in this team!";
         //private const string CreamAlreadyExist = "Cream with name {0} already exists!";
         //private const string CreamCreated = "Cream with name {0} was created!";
         //private const string ProductAddedToShoppingCart = "Product {0} was added to the shopping cart!";
@@ -318,9 +319,7 @@ namespace Wim.Core.Engine
         }
 
         private string CreateBoardToTeam(string boardToAddToTeam, string teamForAddingBoardTo)
-        {
-            var boardMatches = allTeams.AllTeamsList[teamForAddingBoardTo].Boards
-                .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddToTeam);
+        {          
 
             if (string.IsNullOrEmpty(boardToAddToTeam))
             {
@@ -330,12 +329,15 @@ namespace Wim.Core.Engine
             if (string.IsNullOrEmpty(teamForAddingBoardTo))
             {
                 return string.Format(NullOrEmptyTeamName);
-            }
+            }           
 
             if (!allTeams.AllTeamsList.ContainsKey(teamForAddingBoardTo))
             {
                 return string.Format(TeamDoesNotExist, teamForAddingBoardTo);
-            }              
+            }
+
+            var boardMatches = allTeams.AllTeamsList[teamForAddingBoardTo].Boards
+              .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddToTeam);
 
             if (boardMatches.Count() > 0)
             {
@@ -356,10 +358,14 @@ namespace Wim.Core.Engine
                 return string.Format(NullOrEmptyTeamName);
             }
 
-
             if (!allTeams.AllTeamsList.ContainsKey(teamToShowBoards))
             {
                 return string.Format(TeamDoesNotExist);
+            }
+
+            if (allTeams.AllTeamsList[teamToShowBoards].Boards.Count() == 0)
+            {
+                return string.Format(NoBoardsInTeam);
             }
 
             var allTeamBoardsResult = allTeams.AllTeamsList[teamToShowBoards].ShowAllTeamBoards();
