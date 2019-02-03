@@ -11,5 +11,7 @@ namespace Wim.Models.Interfaces
         List<IWorkItem> WorkItems { get; }
 
         List<IActivityHistory> ActivityHistory { get; }
+
+        string ShowBoardActivityToString(IList<IActivityHistory> activityHistoryInput);
     }
 }

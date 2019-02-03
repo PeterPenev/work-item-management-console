@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using Wim.Models.Interfaces;
 
 namespace Wim.Models
@@ -46,6 +47,21 @@ namespace Wim.Models
         }
 
         //methods
+        public string ShowBoardActivityToString(IList<IActivityHistory> activityHistoryInput)
+        {
+            int activityCounter = 1;
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var history in activityHistoryInput)
+            {
+                sb.AppendLine($"{activityCounter}. Activity with date: {history.LoggingDate}");
+                sb.AppendLine($"Activity Message:");
+                sb.AppendLine($"{history.Message}");
+                activityCounter++;
+            }
+
+            return sb.ToString().Trim();
+        }
 
     }
 }
