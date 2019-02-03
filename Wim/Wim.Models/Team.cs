@@ -46,6 +46,23 @@ namespace Wim.Models
             boards.Add(addToBoard);
         }
 
+        public string ShowAllBoards()
+        {
+            int teamBoards = 1;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"Team name: {this.Name}");
+
+            foreach (var selectedBoard in this.boards)
+            {
+                sb.AppendLine($"{teamBoards}. {selectedBoard.Name}");
+                teamBoards++;
+            }
+
+            return sb.ToString().Trim();
+
+
+        }
+
         public string ShowAllTeamMembers()
         {
             int teamMembers = 1;
