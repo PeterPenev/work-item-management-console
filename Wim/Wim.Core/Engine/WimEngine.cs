@@ -21,7 +21,7 @@ namespace Wim.Core.Engine
         private const string TeamCreated = "Team with name {0} was created!";
         private const string TeamDoesNotExist = "Team Name {0} does not exists!";
         private const string PersonAddedToTeam = "Person {0} was added to team {1}!";
-        //private const string ToothpasteAlreadyExist = "Toothpaste with name {0} already exists!";
+        private const string NullOrEmptyBoardName = "Board Name cannot be null or empty!!";
         //private const string ToothpasteCreated = "Toothpaste with name {0} was created!";
         //private const string CreamAlreadyExist = "Cream with name {0} already exists!";
         //private const string CreamCreated = "Cream with name {0} was created!";
@@ -131,12 +131,13 @@ namespace Wim.Core.Engine
 
                 case "ShowAllTeamMembers":
                     var teamToShowMembersFor = command.Parameters[0];
-                   
+
                     return this.ShowAllTeamMembers(teamToShowMembersFor);
 
-                //case "AddToShoppingCart":
-                //    var productToAddToCart = command.Parameters[0];
-                //    return this.AddToShoppingCart(productToAddToCart);
+                case "CreateBoard":
+                    var boardToAddToTeam = command.Parameters[0];
+                    var teamForAddingBoardTo = command.Parameters[1];
+                    return this.CreateBoardToTeam(boardToAddToTeam, teamForAddingBoardTo);
 
                 //case "RemoveFromShoppingCart":
                 //    var productToRemoveFromCart = command.Parameters[0];
@@ -293,12 +294,12 @@ namespace Wim.Core.Engine
                 return string.Format(TeamDoesNotExist);
             }
 
-            allTeams.AllTeamsList[teamToAddPersonTo].Add(allMembers.AllMembersList[personToAddToTeam]);
+            allTeams.AllTeamsList[teamToAddPersonTo].AddMember(allMembers.AllMembersList[personToAddToTeam]);
             return string.Format(PersonAddedToTeam, personToAddToTeam, teamToAddPersonTo);
         }
 
         private string ShowAllTeamMembers(string teamToShowMembersFor)
-        {           
+        {
             if (string.IsNullOrEmpty(teamToShowMembersFor))
             {
                 return string.Format(NullOrEmptyTeamName);
@@ -313,18 +314,30 @@ namespace Wim.Core.Engine
             return string.Format(allTeamMembersStringResult);
         }
 
-        //private string CreateCream(string creamName, string creamBrand, decimal creamPrice, GenderType creamGender, Scent scent)
-        //{
-        //    if (this.products.ContainsKey(creamName))
-        //    {
-        //        return string.Format(CreamAlreadyExist, creamName);
-        //    }
+        //doing , teamForAddingBoardTo;
+        private string CreateBoardToTeam(string boardToAddToTeam, string teamForAddingBoardTo)
+        {
+            if (string.IsNullOrEmpty(boardToAddToTeam))
+            {
+                return string.Format(NullOrEmptyBoardName);
+            }
 
-        //    var cream = this.factory.CreateCream(creamName, creamBrand, creamPrice, creamGender, scent);
-        //    this.products.Add(creamName, (IProduct)cream);
+            if (string.IsNullOrEmpty(teamForAddingBoardTo))
+            {
+                return string.Format(NullOrEmptyTeamName);
+            }
 
-        //    return string.Format(CreamCreated, creamName);
-        //}
+            if (!allTeams.AllTeamsList.ContainsKey(teamForAddingBoardTo))
+            {
+                return string.Format(TeamDoesNotExist);
+            }
+
+            var board = this.factory.CreateBoard(boardToAddToTeam);
+            allTeams.AllTeamsList[teamForAddingBoardTo].AddBoard(board);
+
+            return string.Format(PersonAddedToTeam, personToAddToTeam, teamToAddPersonTo);
+        }
+
 
         //private string AddToShoppingCart(string productName)
         //{

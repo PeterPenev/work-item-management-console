@@ -19,7 +19,7 @@ namespace Wim.Core.Engine
             return new Member(name);
         }
 
-        IBoard IWimFactory.CreateBoard(string name)
+        public IBoard CreateBoard(string name)
         {
             return new Board(name);
         }       
