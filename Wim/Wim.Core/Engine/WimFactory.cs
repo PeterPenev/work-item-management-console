@@ -25,14 +25,14 @@ namespace Wim.Core.Engine
             return new Board(name);
         }
 
-        public IBoard CreateBug(string name)
+        public IBug CreateBug(string title, Priority priority, Severity severity, IMember asignee, IList<string> stepsToReproduce, string description)
         {
-            return new Bug(name);
+            return new Bug(title, priority, severity, asignee, stepsToReproduce, description);
         }
 
-        public IBoard CreateStory(string title, Priority priority, Size size, StoryStatus storyStatus, IMember asignee, string description)
-        {
-            return new Story(title, priority, size, storyStatus, asignee, description);
-        }
+        //public IBoard CreateStory(string title, Priority priority, Size size, StoryStatus storyStatus, IMember asignee, string description)
+        //{
+        //    return new Story(title, priority, size, storyStatus, asignee, description);
+        //}
     }
 }

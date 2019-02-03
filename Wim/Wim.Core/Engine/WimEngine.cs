@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Wim.Core.Contracts;
 using Wim.Models;
+using Wim.Models.Enums;
 using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine
@@ -35,7 +36,8 @@ namespace Wim.Core.Engine
         //private const string ProductDoesNotExistInShoppingCart = "Shopping cart does not contain product with name {0}!";
         //private const string ProductRemovedFromShoppingCart = "Product {0} was removed from the shopping cart!";
         //private const string TotalPriceInShoppingCart = "${0} total price currently in the shopping cart!";
-        //private const string InvalidGenderType = "Invalid gender type!";
+        private const string InvalidPriorityType = "Invalid Priority type!";
+        private const string InvalidStatusType = "Invalid Status type!";
         //private const string InvalidUsageType = "Invalid usage type!";
         //private const string InvalidScentType = "Invalid scent type!";
 
@@ -160,10 +162,19 @@ namespace Wim.Core.Engine
 
                 case "CreateBug":
                     var bugToAdd = command.Parameters[0];
-                    var boardToAddBugFor = command.Parameters[1];
-                    var teamToAddBugFor = command.Parameters[2];
+                    var teamToAddBugFor = command.Parameters[1];
+                    var boardToAddBugFor = command.Parameters[2];
+                    var bugPriority = command.Parameters[3];
+                    var bugSeverity = command.Parameters[4];
+                    var bugStatus = command.Parameters[5];
+                    var bugAsignee = command.Parameters[6];
 
-                    return this.CreateBug(bugToAdd,teamToAddBugFor,boardToAddBugFor);
+                    var stepsAndDescription = string.Join(' ', command.Parameters);
+                    var stepsAndDescriptionArr = stepsAndDescription.Split("!Steps").ToArray();
+                    var bugSteps = stepsAndDescriptionArr[1].Split('#').ToList();
+                    var bugDescription = stepsAndDescriptionArr[2].ToString().Trim();
+
+                    return this.CreateBug(bugToAdd, teamToAddBugFor, boardToAddBugFor, bugPriority, bugSeverity, bugAsignee, bugSteps, bugDescription);
 
                 //InternalUseOnly
                 case "IsPersonAssigned":
@@ -394,14 +405,12 @@ namespace Wim.Core.Engine
             return string.Format(allTeamBoardsResult);           
         }
 
-        private string CreateBug(string bugToAdd, string teamToAddBugFor, string boardToAddBugFor)
+        private string CreateBug(string teamToAddBugFor, string boardToAddBugFor, string bugTitle, string bugPriority, string bugSeverity, string bugAsignee, IList<string> bugStepsToReproduce, string bugDescription)
         {
-            if (string.IsNullOrEmpty(bugToAdd))
+            if (string.IsNullOrEmpty(bugTitle))
             {
                 return string.Format(NullOrEmptyBugName);
-            }
-
-            
+            }            
 
             if (string.IsNullOrEmpty(teamToAddBugFor))
             {
@@ -412,7 +421,6 @@ namespace Wim.Core.Engine
             {
                 return string.Format(TeamDoesNotExist, teamToAddBugFor);
             }
-
 
             if (string.IsNullOrEmpty(boardToAddBugFor))
             {
@@ -432,15 +440,22 @@ namespace Wim.Core.Engine
 
             var doesBugExistInBoard = boardToCheckBugFor.WorkItems
                 .Where(boardInSelectedTeam => boardInSelectedTeam.GetType().Name == "Bug")
-                    .Select(bug => bug.Title == bugToAdd).First();
+                    .Select(bugThatExists => bugThatExists.Title == bugTitle).First();
 
             if (doesBugExistInBoard)
             {
                 return string.Format(BugAlreadyExists, boardToAddBugFor);
             }
 
-            //var bug = this.factory.CreateBoard(boardToAddToTeam);
-            //allTeams.AllTeamsList[teamForAddingBoardTo].AddBoard(board);
+            Priority bugPriorityEnum = this.GetPriority(bugPriority);
+            Severity bugSeverityEnum = this.GetSeverity(bugSeverity);
+            IMember bugAsigneeMember = allMembers.AllMembersList[bugAsignee];
+
+            IBug bug = this.factory.CreateBug(bugTitle, bugPriorityEnum, bugSeverityEnum, bugAsigneeMember, bugStepsToReproduce, bugDescription);
+
+           //AddBugToList OR Make Dictionary
+
+
 
             return string.Format(BugCreated, boardToAddBugFor);
         }
@@ -480,7 +495,7 @@ namespace Wim.Core.Engine
         //    var product = this.products[productName];
         //    this.shoppingCart.AddProduct(product);
 
-     
+
         //private GenderType GetGender(string genderAsString)
         //{
         //    switch (genderAsString.ToLower())
@@ -511,18 +526,48 @@ namespace Wim.Core.Engine
         //    }
         //}
 
-        //private UsageType GetUsage(string usageAsString)
-        //{
-        //    switch (usageAsString.ToLower())
-        //    {
-        //        case "everyday":
-        //            return UsageType.EveryDay;
-        //        case "medical":
-        //            return UsageType.Medical;
-        //        default:
-        //            throw new InvalidOperationException(InvalidUsageType);
-        //    }
-        //}
+        private Priority GetPriority(string priorityString)
+        {
+            switch (priorityString.ToLower())
+            {
+                case "high":
+                    return Priority.High;
+                case "medium":
+                    return Priority.Medium;
+                case "low":
+                    return Priority.Low;
+                default:
+                    throw new InvalidOperationException(InvalidPriorityType);
+            }
+        }
+
+        private Severity GetSeverity(string severityString)
+        {
+            switch (severityString.ToLower())
+            {
+                case "critical":
+                    return Severity.Critical;
+                case "major":
+                    return Severity.Major;
+                case "minor":
+                    return Severity.Minor;
+                default:
+                    throw new InvalidOperationException(InvalidPriorityType);
+            }
+        }
+
+        private BugStatus Status(string bugStatusString)
+        {
+            switch (bugStatusString.ToLower())
+            {
+                case "active":
+                    return BugStatus.Active;
+                case "fixed":
+                    return BugStatus.Fixed;
+                default:
+                    throw new InvalidOperationException(InvalidStatusType);
+            }
+        }
 
         private string CreateStory(string teamToAddStoryTo, string boardToAddStoryTo)
         {

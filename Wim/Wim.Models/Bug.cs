@@ -8,32 +8,27 @@ namespace Wim.Models
 {
     public class Bug : WorkItem, IBug
     {
-        private List<string> stepsToReproduce;
+        private IList<string> stepsToReproduce;
         private Priority priority;
         private Severity severity;
-        private BugStatus bugStatus;
+        private BugStatus bugStatus = BugStatus.Active;
         private IMember asignee;
 
         //Constructor
-        public Bug(string title, string description, List<string> stepsToReproduce, Priority priority, Severity severity, BugStatus bugStatus, IMember asignee)
+        public Bug(string title, Priority priority, Severity severity, IMember asignee, IList<string> stepsToReproduce, string description)
             : base(title, description)
         {
-            this.StepsToReproduce = stepsToReproduce;
+            this.stepsToReproduce = new List<string>(stepsToReproduce);
             this.Priority = priority;
             this.Severity = severity;
-            this.BugStatus = bugStatus;
             this.Asignee = asignee;
 
         }
-        public List<string> StepsToReproduce
+        public IList<string> StepsToReproduce
         {
             get
             {
-                return this.stepsToReproduce;
-            }
-            set
-            {
-                this.stepsToReproduce = value;
+                return new List<string>(stepsToReproduce);
             }
         }
 
@@ -95,6 +90,7 @@ namespace Wim.Models
             //Check if the Asignee is a member of the team
         }
 
+       
 
         
     }

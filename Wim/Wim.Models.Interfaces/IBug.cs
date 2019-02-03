@@ -6,7 +6,7 @@ namespace Wim.Models.Interfaces
 {
     public interface IBug : IWorkItem
     {
-        List<string> StepsToReproduce { get; set; }
+        IList<string> StepsToReproduce { get;}
 
         Priority Priority { get; }
 

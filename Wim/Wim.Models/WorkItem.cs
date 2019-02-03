@@ -9,8 +9,8 @@ namespace Wim.Models
     {
         private string title;
         private string description;
-        private List<string> comments;
-        private List<string> history;
+        private IList<string> comments;
+        private IList<string> history;
 
         public WorkItem(string title, string description)
         {
