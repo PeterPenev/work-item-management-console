@@ -150,6 +150,12 @@ namespace Wim.Core.Engine
                 //case "TotalPrice":
                 //    return this.shoppingCart.ProductList.Any() ? string.Format(TotalPriceInShoppingCart, this.shoppingCart.TotalPrice()) : $"No product in shopping cart!";
 
+                case "CreateBug":
+                    var teamToAddBugFor = command.Parameters[0];
+                    var boardToAddBugFor = command.Parameters[1];
+
+                    return this.CreateBug(createBug);
+
                 //InternalUseOnly
                 case "IsPersonAssigned":
                     var personName2 = command.Parameters[0];
@@ -319,7 +325,7 @@ namespace Wim.Core.Engine
         }
 
         private string CreateBoardToTeam(string boardToAddToTeam, string teamForAddingBoardTo)
-        {          
+        {
 
             if (string.IsNullOrEmpty(boardToAddToTeam))
             {
@@ -329,7 +335,7 @@ namespace Wim.Core.Engine
             if (string.IsNullOrEmpty(teamForAddingBoardTo))
             {
                 return string.Format(NullOrEmptyTeamName);
-            }           
+            }
 
             if (!allTeams.AllTeamsList.ContainsKey(teamForAddingBoardTo))
             {
@@ -373,30 +379,38 @@ namespace Wim.Core.Engine
 
         }
 
-        //    var product = this.products[productName];
-        //    this.shoppingCart.AddProduct(product);
+        //DOING
+        private string CreateBug(string teamToAddBugFor, string boardToAddBugFor)
+        {
+            if (string.IsNullOrEmpty(teamToAddBugFor))
+            {
+                return string.Format(NullOrEmptyTeamName);
+            }
 
-        //    return string.Format(ProductAddedToShoppingCart, productName);
-        //}
+            if (!this.allTeams.AllTeamsList.ContainsKey(teamToAddBugFor))
+            {
+                return string.Format(TeamDoesNotExist, teamToAddBugFor);
+            }
 
-        //private string RemoveFromShoppingCart(string productName)
-        //{
-        //    if (!this.products.ContainsKey(productName))
-        //    {
-        //        return string.Format(ProductDoesNotExist, productName);
-        //    }
 
-        //    var product = this.products[productName];
+            if (string.IsNullOrEmpty(boardToAddBugFor))
+            {
+                return string.Format(NullOrEmptyBoardName);
+            }
 
-        //    if (!this.shoppingCart.ContainsProduct(product))
-        //    {
-        //        return string.Format(ProductDoesNotExistInShoppingCart, productName);
-        //    }
+            var boardMatches = allTeams.AllTeamsList[boardToAddBugFor].Boards
+              .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddBugFor);
 
-        //    this.shoppingCart.RemoveProduct(product);
+            if (boardMatches.Count() > 0)
+            {
+                return string.Format(BoardAlreadyExists, boardToAddBugFor);
+            }
 
-        //    return string.Format(ProductRemovedFromShoppingCart, productName);
-        //}
+
+            this.shoppingCart.RemoveProduct(product);
+
+            return string.Format(ProductRemovedFromShoppingCart, productName);
+        }
 
         //private GenderType GetGender(string genderAsString)
         //{
