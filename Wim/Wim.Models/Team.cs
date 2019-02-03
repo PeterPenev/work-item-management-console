@@ -41,6 +41,11 @@ namespace Wim.Models
             members.Add(addToTeam);
         }
 
+        public void Add(IBoard addToBoard)
+        {
+            boards.Add(addToBoard);
+        }
+
         public string ShowAllTeamMembers()
         {
             int teamMembers = 1;
