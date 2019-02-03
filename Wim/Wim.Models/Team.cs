@@ -36,6 +36,26 @@ namespace Wim.Models
             }
         }
 
+        public void Add(IMember addToTeam)
+        {
+            members.Add(addToTeam);
+        }
+
+        public string ShowAllTeamMembers()
+        {
+            int teamMembers = 1;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"Team name: {this.Name}");
+
+            foreach(var selectedMember in this.members)
+            {
+                sb.AppendLine($"{teamMembers}. {selectedMember.Name}");
+                teamMembers++;
+            }
+           
+            return sb.ToString().Trim();
+        }
+
         public string ShowTeamActivityToString(List<IMember> allTeamMembersList)
         {
             StringBuilder sb = new StringBuilder();

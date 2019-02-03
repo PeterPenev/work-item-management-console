@@ -19,8 +19,8 @@ namespace Wim.Core.Engine
         private const string NullOrEmptyMemberName = "Member Name cannot be null or empty!";
         private const string TeamNameExists = "Team Name {0} already exists!";
         private const string TeamCreated = "Team with name {0} was created!";
-        private const string TeamNameDoesntExists = "Team Name {0} does not exists!";
-        //private const string ShampooCreated = "Shampoo with name {0} was created!";
+        private const string TeamDoesNotExist = "Team Name {0} does not exists!";
+        private const string PersonAddedToTeam = "Person {0} was added to team {1}!";
         //private const string ToothpasteAlreadyExist = "Toothpaste with name {0} already exists!";
         //private const string ToothpasteCreated = "Toothpaste with name {0} was created!";
         //private const string CreamAlreadyExist = "Cream with name {0} already exists!";
@@ -120,17 +120,19 @@ namespace Wim.Core.Engine
                     var teamName = command.Parameters[0];
                     return this.CreateTeam(teamName);
 
-                case "ShowTeamActivity":
-                    var team = command.Parameters[0];
-                    return this.ShowTeamActivityToString(team);
+                case "ShowTeamsActivity":
+                    var teamToShowActivityFor = command.Parameters[0];
+                    return this.ShowTeamActivityToString(teamToShowActivityFor);
 
-                //case "CreateCream":
-                //    var creamName = command.Parameters[0];
-                //    var creamBrand = command.Parameters[1];
-                //    var creamPrice = decimal.Parse(command.Parameters[2]);
-                //    var creamGender = this.GetGender(command.Parameters[3]);
-                //    var creamScent = this.GetScent(command.Parameters[4]);
-                //    return this.CreateCream(creamName, creamBrand, creamPrice, creamGender, creamScent);
+                case "AddPersonToTeam":
+                    var personToAddToTeam = command.Parameters[0];
+                    var teamForAddingPersonTo = command.Parameters[1];
+                    return this.AddPersonToTeam(personToAddToTeam, teamForAddingPersonTo);
+
+                case "ShowAllTeamMembers":
+                    var teamToShowMembersFor = command.Parameters[0];
+                   
+                    return this.ShowAllTeamMembers(teamToShowMembersFor);
 
                 //case "AddToShoppingCart":
                 //    var productToAddToCart = command.Parameters[0];
@@ -143,11 +145,11 @@ namespace Wim.Core.Engine
                 //case "TotalPrice":
                 //    return this.shoppingCart.ProductList.Any() ? string.Format(TotalPriceInShoppingCart, this.shoppingCart.TotalPrice()) : $"No product in shopping cart!";
 
-                ////InternalUseOnly
-                //case "IsPersonAssigned":
-                //    var personName2 = command.Parameters[0];
+                //InternalUseOnly
+                case "IsPersonAssigned":
+                    var personName2 = command.Parameters[0];
 
-                //    return this.IsPersonAssigned(personName2);
+                    return this.IsPersonAssigned(personName2);
 
                 default:
                     return string.Format(InvalidCommand, command.Name);
@@ -259,7 +261,7 @@ namespace Wim.Core.Engine
 
             if (!allTeams.AllTeamsList.ContainsKey(team))
             {
-                return string.Format(TeamNameDoesntExists);
+                return string.Format(TeamDoesNotExist);
             }
 
             var teamToCheckHistoryFor = allTeams.AllTeamsList[team];
@@ -269,18 +271,47 @@ namespace Wim.Core.Engine
         }
 
 
-        //private string CreateToothpaste(string toothpasteName, string toothpasteBrand, decimal toothpastePrice, GenderType toothpasteGender, IList<string> toothpasteIngredients)
-        //{
-        //    if (this.products.ContainsKey(toothpasteName))
-        //    {
-        //        return string.Format(ToothpasteAlreadyExist, toothpasteName);
-        //    }
+        private string AddPersonToTeam(string personToAddToTeam, string teamToAddPersonTo)
+        {
+            if (string.IsNullOrEmpty(personToAddToTeam))
+            {
+                return string.Format(NullOrEmptyMemberName);
+            }
 
-        //    var toothpaste = this.factory.CreateToothpaste(toothpasteName, toothpasteBrand, toothpastePrice, toothpasteGender, toothpasteIngredients);
-        //    this.products.Add(toothpasteName, (IProduct)toothpaste);
+            if (string.IsNullOrEmpty(teamToAddPersonTo))
+            {
+                return string.Format(NullOrEmptyTeamName);
+            }
 
-        //    return string.Format(ToothpasteCreated, toothpasteName);
-        //}
+            if (!allMembers.AllMembersList.ContainsKey(personToAddToTeam))
+            {
+                return string.Format(MemberDoesNotExist);
+            }
+
+            if (!allTeams.AllTeamsList.ContainsKey(teamToAddPersonTo))
+            {
+                return string.Format(TeamDoesNotExist);
+            }
+
+            allTeams.AllTeamsList[teamToAddPersonTo].Add(allMembers.AllMembersList[personToAddToTeam]);
+            return string.Format(PersonAddedToTeam, personToAddToTeam, teamToAddPersonTo);
+        }
+
+        private string ShowAllTeamMembers(string teamToShowMembersFor)
+        {           
+            if (string.IsNullOrEmpty(teamToShowMembersFor))
+            {
+                return string.Format(NullOrEmptyTeamName);
+            }
+
+            if (!allTeams.AllTeamsList.ContainsKey(teamToShowMembersFor))
+            {
+                return string.Format(TeamDoesNotExist);
+            }
+
+            var allTeamMembersStringResult = allTeams.AllTeamsList[teamToShowMembersFor].ShowAllTeamMembers();
+            return string.Format(allTeamMembersStringResult);
+        }
 
         //private string CreateCream(string creamName, string creamBrand, decimal creamPrice, GenderType creamGender, Scent scent)
         //{
@@ -370,14 +401,14 @@ namespace Wim.Core.Engine
         //    }
         //}
 
-        ////Internal Use Only !
-        // private string IsPersonAssigned(string personName)
-        // {
-        //     var personToCheckFor = allMembers.AllMembersList[personName];
+        //Internal Use Only !
+        private string IsPersonAssigned(string personName)
+        {
+            var personToCheckFor = allMembers.AllMembersList[personName];
 
-        //     var result = personToCheckFor.FindIfMemberIsAssigned(allTeams.AllTeamsList);
+            var result = personToCheckFor.FindIfMemberIsAssigned(allTeams.AllTeamsList);
 
-        //     return string.Format(result.ToString());
-        // }
+            return string.Format(result.ToString());
+        }
     }
 }
