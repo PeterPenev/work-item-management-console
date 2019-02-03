@@ -24,10 +24,12 @@ namespace Wim.Core.Engine
         private const string PersonAddedToTeam = "Person {0} was added to team {1}!";
         private const string NullOrEmptyBoardName = "Board Name cannot be null or empty!!";
         private const string BoardAddedToTeam = "Board {0} was added to team {1}!";
-        private const string BoardAlreadyExists = "Board with name {0} already exists!";
+        private const string BoardAlreadyExists = "Board with name {0} already exists!";      
         private const string NoBoardsInTeam = "There are no boards in this team!";
         private const string StoryCreated = "Story in Team {0} was created!";
-        //private const string CreamAlreadyExist = "Cream with name {0} already exists!";
+        private const string NullOrEmptyBugName = "Bug Name cannot be null or empty!";
+        private const string BugCreated = "Bug {0} was created!";
+        private const string BugAlreadyExists = "Bug with name {0} already exists!";
         //private const string CreamCreated = "Cream with name {0} was created!";
         //private const string ProductAddedToShoppingCart = "Product {0} was added to the shopping cart!";
         //private const string ProductDoesNotExistInShoppingCart = "Shopping cart does not contain product with name {0}!";
@@ -157,10 +159,11 @@ namespace Wim.Core.Engine
                 //    return this.shoppingCart.ProductList.Any() ? string.Format(TotalPriceInShoppingCart, this.shoppingCart.TotalPrice()) : $"No product in shopping cart!";
 
                 case "CreateBug":
-                    var teamToAddBugFor = command.Parameters[0];
+                    var bugToAdd = command.Parameters[0];
                     var boardToAddBugFor = command.Parameters[1];
+                    var teamToAddBugFor = command.Parameters[2];
 
-                    return this.CreateBug(createBug);
+                    return this.CreateBug(bugToAdd,teamToAddBugFor,boardToAddBugFor);
 
                 //InternalUseOnly
                 case "IsPersonAssigned":
@@ -392,8 +395,15 @@ namespace Wim.Core.Engine
 
         }
 
-        private string CreateBug(string teamToAddBugFor, string boardToAddBugFor)
+        private string CreateBug(string bugToAdd, string teamToAddBugFor, string boardToAddBugFor)
         {
+            if (string.IsNullOrEmpty(bugToAdd))
+            {
+                return string.Format(NullOrEmptyBugName);
+            }
+
+            
+
             if (string.IsNullOrEmpty(teamToAddBugFor))
             {
                 return string.Format(NullOrEmptyTeamName);
@@ -418,10 +428,22 @@ namespace Wim.Core.Engine
                 return string.Format(BoardAlreadyExists, boardToAddBugFor);
             }
 
+            var boardToCheckBugFor = allTeams.AllTeamsList[teamToAddBugFor].Boards
+                .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddBugFor).First();
 
-            this.shoppingCart.RemoveProduct(product);
+            var doesBugExistInBoard = boardToCheckBugFor.WorkItems
+                .Where(boardInSelectedTeam => boardInSelectedTeam.GetType().Name == "Bug")
+                    .Select(bug => bug.Title == bugToAdd).First();
 
-            return string.Format(ProductRemovedFromShoppingCart, productName);
+            if (doesBugExistInBoard)
+            {
+                return string.Format(BugAlreadyExists, boardToAddBugFor);
+            }
+
+            //var bug = this.factory.CreateBoard(boardToAddToTeam);
+            //allTeams.AllTeamsList[teamForAddingBoardTo].AddBoard(board);
+
+            return string.Format(BugCreated, boardToAddBugFor);
         }
 
         private string ShowBoardActivityToString(string team, string boardActivityToShow)
