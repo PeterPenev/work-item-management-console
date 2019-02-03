@@ -12,7 +12,7 @@ namespace Wim.Models.Interfaces
 
         List<IMember> Members { get; }
 
-        void AddTeam(IMember addToTeam);
+        void AddMember(IMember addToTeam);
 
         void AddBoard(IBoard addToBoard);
 
