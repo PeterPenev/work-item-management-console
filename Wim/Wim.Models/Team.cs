@@ -36,17 +36,17 @@ namespace Wim.Models
             }
         }
 
-        public void Add(IMember addToTeam)
+        public void AddMember(IMember addToTeam)
         {
             members.Add(addToTeam);
         }
 
-        public void Add(IBoard addToBoard)
+        public void AddBoard(IBoard addToBoard)
         {
             boards.Add(addToBoard);
         }
 
-        public string ShowAllBoards()
+        public string ShowAllTeamBoards()
         {
             int teamBoards = 1;
             StringBuilder sb = new StringBuilder();
