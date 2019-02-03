@@ -32,6 +32,7 @@ namespace Wim.Core.Engine
         //private const string InvalidGenderType = "Invalid gender type!";
         //private const string InvalidUsageType = "Invalid usage type!";
         //private const string InvalidScentType = "Invalid scent type!";
+           
 
         private static readonly WimEngine SingleInstance = new WimEngine();
 
@@ -138,9 +139,9 @@ namespace Wim.Core.Engine
                 //    var productToAddToCart = command.Parameters[0];
                 //    return this.AddToShoppingCart(productToAddToCart);
 
-                //case "RemoveFromShoppingCart":
-                //    var productToRemoveFromCart = command.Parameters[0];
-                //    return this.RemoveFromShoppingCart(productToRemoveFromCart);
+                case "ShowAllTeamBoards":
+                    var teamToShowBoards = command.Parameters[0];
+                    return this.ShowAllTeamBoards(teamToShowBoards);
 
                 //case "TotalPrice":
                 //    return this.shoppingCart.ProductList.Any() ? string.Format(TotalPriceInShoppingCart, this.shoppingCart.TotalPrice()) : $"No product in shopping cart!";
@@ -326,89 +327,100 @@ namespace Wim.Core.Engine
         //    return string.Format(CreamCreated, creamName);
         //}
 
-        //private string AddToShoppingCart(string productName)
-        //{
-        //    if (!this.products.ContainsKey(productName))
-        //    {
-        //        return string.Format(ProductDoesNotExist, productName);
-        //    }
-
-        //    var product = this.products[productName];
-        //    this.shoppingCart.AddProduct(product);
-
-        //    return string.Format(ProductAddedToShoppingCart, productName);
-        //}
-
-        //private string RemoveFromShoppingCart(string productName)
-        //{
-        //    if (!this.products.ContainsKey(productName))
-        //    {
-        //        return string.Format(ProductDoesNotExist, productName);
-        //    }
-
-        //    var product = this.products[productName];
-
-        //    if (!this.shoppingCart.ContainsProduct(product))
-        //    {
-        //        return string.Format(ProductDoesNotExistInShoppingCart, productName);
-        //    }
-
-        //    this.shoppingCart.RemoveProduct(product);
-
-        //    return string.Format(ProductRemovedFromShoppingCart, productName);
-        //}
-
-        //private GenderType GetGender(string genderAsString)
-        //{
-        //    switch (genderAsString.ToLower())
-        //    {
-        //        case "men":
-        //            return GenderType.Men;
-        //        case "women":
-        //            return GenderType.Women;
-        //        case "unisex":
-        //            return GenderType.Unisex;
-        //        default:
-        //            throw new InvalidOperationException(InvalidGenderType);
-        //    }
-        //}
-
-        //private Scent GetScent(string scentAsString)
-        //{
-        //    switch (scentAsString.ToLower())
-        //    {
-        //        case "lavander":
-        //            return Scent.Lavender;
-        //        case "vanilla":
-        //            return Scent.Vanilla;
-        //        case "rose":
-        //            return Scent.Rose;
-        //        default:
-        //            throw new InvalidOperationException(InvalidScentType);
-        //    }
-        //}
-
-        //private UsageType GetUsage(string usageAsString)
-        //{
-        //    switch (usageAsString.ToLower())
-        //    {
-        //        case "everyday":
-        //            return UsageType.EveryDay;
-        //        case "medical":
-        //            return UsageType.Medical;
-        //        default:
-        //            throw new InvalidOperationException(InvalidUsageType);
-        //    }
-        //}
-
-        //Internal Use Only !
-        private string IsPersonAssigned(string personName)
+        private string ShowAllTeamBoards(string teamToShowBoards)
         {
+            if (string.IsNullOrEmpty(teamToShowBoards))
+            {
+                return string.Format(NullOrEmptyTeamName);
+            }
+
+
+            if (!allTeams.AllTeamsList.ContainsKey(teamToShowBoards))
+            {
+                return string.Format(TeamDoesNotExist);
+            }
+
+            var allTeamBoardsResult = allTeams.AllTeamsList[teamToShowBoards].ShowAllTeamBoards();
+            return string.Format(allTeamBoardsResult);
+
+        }
+
+            //    var product = this.products[productName];
+            //    this.shoppingCart.AddProduct(product);
+
+            //    return string.Format(ProductAddedToShoppingCart, productName);
+            //}
+
+            //private string RemoveFromShoppingCart(string productName)
+            //{
+            //    if (!this.products.ContainsKey(productName))
+            //    {
+            //        return string.Format(ProductDoesNotExist, productName);
+            //    }
+
+            //    var product = this.products[productName];
+
+            //    if (!this.shoppingCart.ContainsProduct(product))
+            //    {
+            //        return string.Format(ProductDoesNotExistInShoppingCart, productName);
+            //    }
+
+            //    this.shoppingCart.RemoveProduct(product);
+
+            //    return string.Format(ProductRemovedFromShoppingCart, productName);
+            //}
+
+            //private GenderType GetGender(string genderAsString)
+            //{
+            //    switch (genderAsString.ToLower())
+            //    {
+            //        case "men":
+            //            return GenderType.Men;
+            //        case "women":
+            //            return GenderType.Women;
+            //        case "unisex":
+            //            return GenderType.Unisex;
+            //        default:
+            //            throw new InvalidOperationException(InvalidGenderType);
+            //    }
+            //}
+
+            //private Scent GetScent(string scentAsString)
+            //{
+            //    switch (scentAsString.ToLower())
+            //    {
+            //        case "lavander":
+            //            return Scent.Lavender;
+            //        case "vanilla":
+            //            return Scent.Vanilla;
+            //        case "rose":
+            //            return Scent.Rose;
+            //        default:
+            //            throw new InvalidOperationException(InvalidScentType);
+            //    }
+            //}
+
+            //private UsageType GetUsage(string usageAsString)
+            //{
+            //    switch (usageAsString.ToLower())
+            //    {
+            //        case "everyday":
+            //            return UsageType.EveryDay;
+            //        case "medical":
+            //            return UsageType.Medical;
+            //        default:
+            //            throw new InvalidOperationException(InvalidUsageType);
+            //    }
+            //}
+
+            //Internal Use Only !
+            private string IsPersonAssigned(string personName)
+            {
             var personToCheckFor = allMembers.AllMembersList[personName];
 
             var result = personToCheckFor.FindIfMemberIsAssigned(allTeams.AllTeamsList);
 
             return string.Format(result.ToString());
-        }
+            }
     }
 }

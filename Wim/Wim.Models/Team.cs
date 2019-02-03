@@ -46,7 +46,7 @@ namespace Wim.Models
             boards.Add(addToBoard);
         }
 
-        public string ShowAllBoards()
+        public string ShowAllTeamBoards()
         {
             int teamBoards = 1;
             StringBuilder sb = new StringBuilder();
