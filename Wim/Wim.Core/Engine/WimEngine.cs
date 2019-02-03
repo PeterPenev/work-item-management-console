@@ -152,8 +152,8 @@ namespace Wim.Core.Engine
 
                 case "ShowBoardActivityToString":
                     var team = command.Parameters[0];
-                    var boardToShowHistory = command.Parameters[1];
-                    return this.ShowBoardActivityToString(boardActivityToShow);
+                    var boardToShowActivityFor = command.Parameters[1];
+                    return this.ShowBoardActivityToString(team, boardToShowActivityFor);
 
                 //case "TotalPrice":
                 //    return this.shoppingCart.ProductList.Any() ? string.Format(TotalPriceInShoppingCart, this.shoppingCart.TotalPrice()) : $"No product in shopping cart!";
@@ -172,11 +172,11 @@ namespace Wim.Core.Engine
                     return this.IsPersonAssigned(personName2);
 
                   
-                case "CreateStory":
-                    var teamToAddStoryFor = command.Parameters[0];
-                    var boardToAddStoryFor = command.Parameters[1];
+                //case "CreateStory":
+                //    var teamToAddStoryFor = command.Parameters[0];
+                //    var boardToAddStoryFor = command.Parameters[1];
 
-                    return this.CreateStory(personName2);
+                //    return this.CreateStory(personName2);
 
                 default:
                     return string.Format(InvalidCommand, command.Name);
@@ -391,8 +391,7 @@ namespace Wim.Core.Engine
             }
 
             var allTeamBoardsResult = allTeams.AllTeamsList[teamToShowBoards].ShowAllTeamBoards();
-            return string.Format(allTeamBoardsResult);
-
+            return string.Format(allTeamBoardsResult);           
         }
 
         private string CreateBug(string bugToAdd, string teamToAddBugFor, string boardToAddBugFor)
@@ -446,14 +445,14 @@ namespace Wim.Core.Engine
             return string.Format(BugCreated, boardToAddBugFor);
         }
 
-        private string ShowBoardActivityToString(string team, string boardActivityToShow)
+        private string ShowBoardActivityToString(string teamToShowBoardActivityFor, string boardActivityToShow)
         {
-            if (string.IsNullOrEmpty(team))
+            if (string.IsNullOrEmpty(teamToShowBoardActivityFor))
             {
                 return string.Format(NullOrEmptyTeamName); 
             }
 
-            if (!allTeams.AllTeamsList.ContainsKey(team))
+            if (!allTeams.AllTeamsList.ContainsKey(teamToShowBoardActivityFor))
             {
                 return string.Format(TeamDoesNotExist);
             }
@@ -463,8 +462,19 @@ namespace Wim.Core.Engine
                 return string.Format(NullOrEmptyMemberName);
             }
 
-            if(!)
+            var boardMatches = allTeams.AllTeamsList[teamToShowBoardActivityFor].Boards
+              .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardActivityToShow);
 
+            if (boardMatches.Count() > 0)
+            {
+                return string.Format(BoardAlreadyExists, boardActivityToShow);
+            }
+
+            var boardToDisplayActivityFor = allTeams.AllTeamsList[teamToShowBoardActivityFor].Boards
+              .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardActivityToShow).FirstOrDefault();
+
+            var boardActivityToString = boardToDisplayActivityFor.ShowBoardActivityToString(boardToDisplayActivityFor.ActivityHistory);
+            return string.Format(boardActivityToString);
         }
 
         //    var product = this.products[productName];
