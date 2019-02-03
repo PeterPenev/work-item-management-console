@@ -148,6 +148,11 @@ namespace Wim.Core.Engine
                     var teamToShowBoards = command.Parameters[0];
                     return this.ShowAllTeamBoards(teamToShowBoards);
 
+                case "ShowBoardActivityToString":
+                    var team = command.Parameters[0];
+                    var boardToShowHistory = command.Parameters[1];
+                    return this.ShowBoardActivityToString(boardActivityToShow);
+
                 //case "TotalPrice":
                 //    return this.shoppingCart.ProductList.Any() ? string.Format(TotalPriceInShoppingCart, this.shoppingCart.TotalPrice()) : $"No product in shopping cart!";
 
@@ -327,7 +332,7 @@ namespace Wim.Core.Engine
         }
 
         private string CreateBoardToTeam(string boardToAddToTeam, string teamForAddingBoardTo)
-        {          
+        {
 
             if (string.IsNullOrEmpty(boardToAddToTeam))
             {
@@ -337,7 +342,7 @@ namespace Wim.Core.Engine
             if (string.IsNullOrEmpty(teamForAddingBoardTo))
             {
                 return string.Format(NullOrEmptyTeamName);
-            }           
+            }
 
             if (!allTeams.AllTeamsList.ContainsKey(teamForAddingBoardTo))
             {
@@ -378,6 +383,27 @@ namespace Wim.Core.Engine
 
             var allTeamBoardsResult = allTeams.AllTeamsList[teamToShowBoards].ShowAllTeamBoards();
             return string.Format(allTeamBoardsResult);
+
+        }
+
+        private string ShowBoardActivityToString(string team, string boardActivityToShow)
+        {
+            if (string.IsNullOrEmpty(team))
+            {
+                return string.Format(NullOrEmptyTeamName); 
+            }
+
+            if (!allTeams.AllTeamsList.ContainsKey(team))
+            {
+                return string.Format(TeamDoesNotExist);
+            }
+
+            if(string.IsNullOrEmpty(boardActivityToShow))
+            {
+                return string.Format(NullOrEmptyMemberName);
+            }
+
+            if(!)
 
         }
 
