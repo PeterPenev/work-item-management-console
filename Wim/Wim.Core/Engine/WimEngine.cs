@@ -31,6 +31,7 @@ namespace Wim.Core.Engine
         private const string NullOrEmptyBugName = "Bug Name cannot be null or empty!";
         private const string BugCreated = "Bug {0} was created!";
         private const string BugAlreadyExists = "Bug with name {0} already exists!";
+        private const string BoardDoesNotExist = "Board with name {0} doest not exist!";
         //private const string CreamCreated = "Cream with name {0} was created!";
         //private const string ProductAddedToShoppingCart = "Product {0} was added to the shopping cart!";
         //private const string ProductDoesNotExistInShoppingCart = "Shopping cart does not contain product with name {0}!";
@@ -166,8 +167,7 @@ namespace Wim.Core.Engine
                     var boardToAddBugFor = command.Parameters[2];
                     var bugPriority = command.Parameters[3];
                     var bugSeverity = command.Parameters[4];
-                    var bugStatus = command.Parameters[5];
-                    var bugAsignee = command.Parameters[6];
+                    var bugAsignee = command.Parameters[5];
 
                     var stepsAndDescription = string.Join(' ', command.Parameters);
                     var stepsAndDescriptionArr = stepsAndDescription.Split("!Steps").ToArray();
@@ -405,7 +405,7 @@ namespace Wim.Core.Engine
             return string.Format(allTeamBoardsResult);           
         }
 
-        private string CreateBug(string teamToAddBugFor, string boardToAddBugFor, string bugTitle, string bugPriority, string bugSeverity, string bugAsignee, IList<string> bugStepsToReproduce, string bugDescription)
+        private string CreateBug(string bugTitle, string teamToAddBugFor, string boardToAddBugFor, string bugPriority, string bugSeverity, string bugAsignee, IList<string> bugStepsToReproduce, string bugDescription)
         {
             if (string.IsNullOrEmpty(bugTitle))
             {
@@ -427,20 +427,19 @@ namespace Wim.Core.Engine
                 return string.Format(NullOrEmptyBoardName);
             }
 
-            var boardMatches = allTeams.AllTeamsList[boardToAddBugFor].Boards
-              .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddBugFor);
+            var boardMatches = allTeams.AllTeamsList[teamToAddBugFor].Boards
+              .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddBugFor);
 
-            if (boardMatches.Count() > 0)
+            if (boardMatches == false)
             {
-                return string.Format(BoardAlreadyExists, boardToAddBugFor);
+                return string.Format(BoardDoesNotExist, boardToAddBugFor);
             }
 
             var boardToCheckBugFor = allTeams.AllTeamsList[teamToAddBugFor].Boards
                 .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddBugFor).First();
 
             var doesBugExistInBoard = boardToCheckBugFor.WorkItems
-                .Where(boardInSelectedTeam => boardInSelectedTeam.GetType().Name == "Bug")
-                    .Select(bugThatExists => bugThatExists.Title == bugTitle).First();
+                .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Bug)).Any(bugThatExists => bugThatExists.Title == bugTitle);
 
             if (doesBugExistInBoard)
             {
@@ -450,14 +449,13 @@ namespace Wim.Core.Engine
             Priority bugPriorityEnum = this.GetPriority(bugPriority);
             Severity bugSeverityEnum = this.GetSeverity(bugSeverity);
             IMember bugAsigneeMember = allMembers.AllMembersList[bugAsignee];
+            IBug bugToAddToCollection = this.factory.CreateBug(bugTitle, bugPriorityEnum, bugSeverityEnum, bugAsigneeMember, bugStepsToReproduce, bugDescription);        
 
-            IBug bug = this.factory.CreateBug(bugTitle, bugPriorityEnum, bugSeverityEnum, bugAsigneeMember, bugStepsToReproduce, bugDescription);
+            var indexOfBoardInSelectedTeam = allTeams.AllTeamsList[teamToAddBugFor].Boards.FindIndex(boardIndex => boardIndex.Name == boardToAddBugFor);
 
-           //AddBugToList OR Make Dictionary
+            allTeams.AllTeamsList[teamToAddBugFor].Boards[indexOfBoardInSelectedTeam].AddWorkitemToBoard(bugToAddToCollection);
 
-
-
-            return string.Format(BugCreated, boardToAddBugFor);
+            return string.Format(BugCreated, bugTitle);
         }
 
         private string ShowBoardActivityToString(string teamToShowBoardActivityFor, string boardActivityToShow)

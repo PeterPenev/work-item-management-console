@@ -9,12 +9,14 @@ namespace Wim.Models
         //fiels
         private string name;
         private List<IWorkItem> workItems;
-        private List<ActivityHistory> activityHistory;
+        private List<IActivityHistory> activityHistory;
 
         //constructor
         public Board(string name)
         {
             this.Name = name;
+            this.workItems = new List<IWorkItem>();
+            this.activityHistory = new List<IActivityHistory>();            
         }
 
         //properties
