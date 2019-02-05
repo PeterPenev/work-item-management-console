@@ -153,7 +153,7 @@ namespace Wim.Core.Engine
                     var teamToShowBoards = command.Parameters[0];
                     return this.ShowAllTeamBoards(teamToShowBoards);
 
-                case "ShowBoardActivityToString":
+                case "ShowBoardActivity":
                     var team = command.Parameters[0];
                     var boardToShowActivityFor = command.Parameters[1];
                     return this.ShowBoardActivityToString(team, boardToShowActivityFor);
@@ -237,7 +237,7 @@ namespace Wim.Core.Engine
                 return string.Format(NoPeopleInApplication);
             }
 
-            var peopleToDisplay = allMembers.ShowAllMembersToString(allMembers.AllMembersList);
+            var peopleToDisplay = allMembers.ShowAllMembersToString();
 
             return string.Format(peopleToDisplay);
         }
@@ -249,7 +249,7 @@ namespace Wim.Core.Engine
                 return string.Format(NoTeamsInApplication);
             }
 
-            var teamsToDisplay = allTeams.ShowAllTeamsToString(allTeams.AllTeamsList);
+            var teamsToDisplay = allTeams.ShowAllTeamsToString();
 
             return string.Format(teamsToDisplay);
         }
@@ -267,7 +267,7 @@ namespace Wim.Core.Engine
             }
 
             var selectedMember = this.allMembers.AllMembersList[memberName];
-            var memberActivities = selectedMember.ShowMemberActivityToString(selectedMember.ActivityHistory);
+            var memberActivities = selectedMember.ShowMemberActivityToString();
 
             return string.Format(memberActivities);
         }
@@ -303,7 +303,7 @@ namespace Wim.Core.Engine
             }
 
             var teamToCheckHistoryFor = allTeams.AllTeamsList[team];
-            var teamActivityHistory = teamToCheckHistoryFor.ShowTeamActivityToString(teamToCheckHistoryFor.Members);
+            var teamActivityHistory = teamToCheckHistoryFor.ShowTeamActivityToString();
 
             return string.Format(teamActivityHistory);
         }
@@ -462,8 +462,8 @@ namespace Wim.Core.Engine
             var memberToPutHistoryFor = allTeams.AllTeamsList[teamToAddBugFor].Members.First(member => member.Name == bugAsignee);
             var teamToPutHistoryFor = allTeams.AllTeamsList[teamToAddBugFor];
 
-            allTeams.AllTeamsList[teamToAddBugFor].Boards[indexOfBoardInSelectedTeam].AddActivityHistoryToBoard(boardToPutHistoryFor, memberToPutHistoryFor, bugToAddToCollection);
-            allTeams.AllTeamsList[teamToAddBugFor].Members.First(member => member.Name == bugAsignee).AddActivityHistoryToMember(memberToPutHistoryFor, bugToAddToCollection, teamToPutHistoryFor, boardToPutHistoryFor);
+            allTeams.AllTeamsList[teamToAddBugFor].Boards[indexOfBoardInSelectedTeam].AddActivityHistoryToBoard(memberToPutHistoryFor, bugToAddToCollection);
+            allTeams.AllTeamsList[teamToAddBugFor].Members.First(member => member.Name == bugAsignee).AddActivityHistoryToMember(bugToAddToCollection, teamToPutHistoryFor, boardToPutHistoryFor);
 
             return string.Format(BugCreated, bugTitle);
         }
@@ -488,7 +488,7 @@ namespace Wim.Core.Engine
             var boardMatches = allTeams.AllTeamsList[teamToShowBoardActivityFor].Boards
               .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardActivityToShow);
 
-            if (boardMatches.Count() > 0)
+            if (boardMatches.Count() == 0)
             {
                 return string.Format(BoardAlreadyExists, boardActivityToShow);
             }
@@ -496,7 +496,7 @@ namespace Wim.Core.Engine
             var boardToDisplayActivityFor = allTeams.AllTeamsList[teamToShowBoardActivityFor].Boards
               .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardActivityToShow).FirstOrDefault();
 
-            var boardActivityToString = boardToDisplayActivityFor.ShowBoardActivityToString(boardToDisplayActivityFor.ActivityHistory);
+            var boardActivityToString = boardToDisplayActivityFor.ShowBoardActivityToString();
             return string.Format(boardActivityToString);
         }
 

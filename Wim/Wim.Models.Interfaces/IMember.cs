@@ -14,9 +14,9 @@ namespace Wim.Models.Interfaces
 
         void AddWorkItemIdToMember(Guid workItemIdInput);
 
-        void AddActivityHistoryToMember(IMember memberToAddHistoryFor, IWorkItem trackedWorkItem, ITeam trackedTeam, IBoard trackedBoard);
+        void AddActivityHistoryToMember(IWorkItem trackedWorkItem, ITeam trackedTeam, IBoard trackedBoard);
 
-        string ShowMemberActivityToString(IList<IActivityHistory> activityHistoryInput);
+        string ShowMemberActivityToString();
 
         bool FindIfMemberIsAssigned(IDictionary<string, ITeam> allTeamsInput);
     }

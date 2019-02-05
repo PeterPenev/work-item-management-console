@@ -10,7 +10,7 @@ namespace Wim.Models.Interfaces
 
         void AddTeam(ITeam team);
 
-        string ShowAllTeamsToString(IDictionary<string, ITeam> allTeamsInput);
+        string ShowAllTeamsToString();
 
     }
 }

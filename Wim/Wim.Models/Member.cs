@@ -77,30 +77,30 @@ namespace Wim.Models
             return isAssigned;
         }
 
-        public void AddActivityHistoryToMember(IMember memberToAddHistoryFor, IWorkItem trackedWorkItem, ITeam trackedTeam, IBoard trackedBoard)
+        public void AddActivityHistoryToMember(IWorkItem trackedWorkItem, ITeam trackedTeam, IBoard trackedBoard)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"Member: {memberToAddHistoryFor.Name} created: {trackedWorkItem.GetType().Name} with Title: {trackedWorkItem.Title} in Board: {trackedBoard.Name} part of {trackedTeam.Name} Team!");
+            sb.AppendLine($"Member: {this.Name} created: {trackedWorkItem.GetType().Name} with Title: {trackedWorkItem.Title} in Board: {trackedBoard.Name} part of {trackedTeam.Name} Team!");
             string resultToAddAssMessage = sb.ToString().Trim();
             var activityHistoryToAddToMember = new ActivityHistory(resultToAddAssMessage);
             activityHistory.Add(activityHistoryToAddToMember);
         }
 
-        public string ShowMemberActivityToString(IList<IActivityHistory> activityHistoryInput)
+        public string ShowMemberActivityToString()
         {
             StringBuilder sb = new StringBuilder();
 
             int numberOfHistories = 1;
-
-            foreach (var history in activityHistoryInput)
+            sb.AppendLine($"=======Member: {this.Name}'s Activity History========");            
+            foreach (var history in this.ActivityHistory)
             {
-                var result = String.Format("{0:r}", history.LoggingDate);
-
-                sb.AppendLine($"{numberOfHistories}. Activity with date: {result}");
+                var formattedDate = String.Format("{0:r}", history.LoggingDate);
+                sb.AppendLine($"{numberOfHistories}. Activity with date: {formattedDate}");
                 sb.AppendLine($"Activity Message:");
                 sb.AppendLine($"{history.Message}");
                 numberOfHistories++;
             }
+            sb.AppendLine("************************************************");
 
             return sb.ToString().Trim();
         }

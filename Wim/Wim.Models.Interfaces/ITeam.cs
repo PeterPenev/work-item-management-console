@@ -20,7 +20,7 @@ namespace Wim.Models.Interfaces
 
         string ShowAllTeamBoards();
 
-        string ShowTeamActivityToString(List<IMember> allTeamMembersList);
+        string ShowTeamActivityToString();
 
 
     }

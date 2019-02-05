@@ -59,8 +59,6 @@ namespace Wim.Models
             }
 
             return sb.ToString().Trim();
-
-
         }
 
         public string ShowAllTeamMembers()
@@ -78,19 +76,16 @@ namespace Wim.Models
             return sb.ToString().Trim();
         }
 
-        public string ShowTeamActivityToString(List<IMember> allTeamMembersList)
+        public string ShowTeamActivityToString()
         {
             StringBuilder sb = new StringBuilder();
-            int numberOfActivities = 1;
-
-           foreach(var member in allTeamMembersList)
-            {
-                sb.AppendLine($"======={member.Name}'s Activity History=======");
-                var memberActivityHistory = member.ShowMemberActivityToString(member.ActivityHistory);
-                sb.AppendLine(memberActivityHistory);
-                sb.AppendLine($"===========End Of {member.Name}'s Activity History================");
+            sb.AppendLine($"==============TEAM: {this.Name}'s Activity History==============");
+            foreach (var member in this.Members)
+            {                
+                var memberActivityHistory = member.ShowMemberActivityToString();
+                sb.AppendLine(memberActivityHistory);                
             }
-
+            sb.AppendLine($"****************End Of TEAM{this.Name}'s Activity History*****************");
             return sb.ToString().Trim();
         }
     }

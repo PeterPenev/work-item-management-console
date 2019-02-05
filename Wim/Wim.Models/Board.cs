@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Wim.Models.Interfaces;
 
@@ -49,34 +50,35 @@ namespace Wim.Models
         }
 
         //methods
-        public string ShowBoardActivityToString(IList<IActivityHistory> activityHistoryInput)
+        public string ShowBoardActivityToString()
         {
             int activityCounter = 1;
             StringBuilder sb = new StringBuilder();
-
-            foreach (var history in activityHistoryInput)
+            sb.AppendLine($"=======Board: {this.Name}'s Activity History========");
+            foreach (var history in this.activityHistory)
             {
-                sb.AppendLine($"{activityCounter}. Activity with date: {history.LoggingDate}");
+                var formattedDate = String.Format("{0:r}", history.LoggingDate);
+                sb.AppendLine($"{activityCounter}. Activity with date: {formattedDate}");
                 sb.AppendLine($"Activity Message:");
                 sb.AppendLine($"{history.Message}");
                 activityCounter++;
             }
-
+            sb.AppendLine("************************************************");
             return sb.ToString().Trim();
         }
 
         public void AddWorkitemToBoard(IWorkItem workItemToAdd)
         {
-            workItems.Add(workItemToAdd);
+            this.workItems.Add(workItemToAdd);
         }
 
-        public void AddActivityHistoryToBoard(IBoard boardToAddHistoryTo, IMember trackedMember, IWorkItem trackedWorkItem)
+        public void AddActivityHistoryToBoard(IMember trackedMember, IWorkItem trackedWorkItem)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"A {trackedWorkItem.GetType().Name} with Title: {trackedWorkItem.Title} was created by Member: {trackedMember}");
+            sb.AppendLine($"A {trackedWorkItem.GetType().Name} with Title: {trackedWorkItem.Title} was created by Member: {trackedMember.Name}");
             string resultToAddAssMessage = sb.ToString().Trim();
             var activityHistoryToAddToBoard = new ActivityHistory(resultToAddAssMessage);
-            activityHistory.Add(activityHistoryToAddToBoard);
+            this.activityHistory.Add(activityHistoryToAddToBoard);
         }
     }
 }

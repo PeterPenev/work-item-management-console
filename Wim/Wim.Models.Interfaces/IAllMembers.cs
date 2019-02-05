@@ -10,6 +10,6 @@ namespace Wim.Models.Interfaces
 
         void AddMember(IMember member);
 
-        string ShowAllMembersToString(IDictionary<string, IMember> allMembersList);
+        string ShowAllMembersToString();
     }
 }

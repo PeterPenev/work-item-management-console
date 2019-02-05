@@ -33,13 +33,13 @@ namespace Wim.Models
         }
 
         //Returning String Representation of the Members'names in the Dictionary of allMembersInput
-        public string ShowAllMembersToString(IDictionary<string, IMember> allMembersInput)
+        public string ShowAllMembersToString()
         {
             StringBuilder sb = new StringBuilder();
 
             int numberOfPerson = 1;
 
-            foreach (var item in allMembersInput)
+            foreach (var item in this.AllMembersList)
             {                
                 sb.AppendLine($"{numberOfPerson}. {item.Key}");
                 numberOfPerson++;

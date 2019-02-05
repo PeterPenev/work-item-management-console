@@ -34,13 +34,13 @@ namespace Wim.Models
 
 
         //Returning String Representation of the Teams'names in the Dictionary of allTeamsInput
-        public string ShowAllTeamsToString(IDictionary<string, ITeam> allTeamsInput)
+        public string ShowAllTeamsToString()
         {
             StringBuilder sb = new StringBuilder();
 
             int numberOfTeam = 1;
 
-            foreach (var team in allTeamsInput)
+            foreach (var team in this.AllTeamsList)
             {
                 sb.AppendLine($"{numberOfTeam}. {team.Key}");
                 numberOfTeam++;
