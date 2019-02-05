@@ -25,13 +25,16 @@ namespace Wim.Core.Engine
         private const string PersonAddedToTeam = "Person {0} was added to team {1}!";
         private const string NullOrEmptyBoardName = "Board Name cannot be null or empty!!";
         private const string BoardAddedToTeam = "Board {0} was added to team {1}!";
-        private const string BoardAlreadyExists = "Board with name {0} already exists!";      
+        private const string BoardAlreadyExists = "Board with name {0} already exists!";
         private const string NoBoardsInTeam = "There are no boards in this team!";
-        private const string StoryCreated = "Story in Team {0} was created!";
         private const string NullOrEmptyBugName = "Bug Name cannot be null or empty!";
         private const string BugCreated = "Bug {0} was created!";
         private const string BugAlreadyExists = "Bug with name {0} already exists!";
         private const string BoardDoesNotExist = "Board with name {0} doest not exist!";
+        private const string NullOrEmptyStoryName = "Story Name cannot be null or empty!";
+        private const string StoryAlreadyExists = "Story with name {0} already exists!";
+        private const string StoryCreated = "Story {0} was created!";
+
         //private const string CreamCreated = "Cream with name {0} was created!";
         //private const string ProductAddedToShoppingCart = "Product {0} was added to the shopping cart!";
         //private const string ProductDoesNotExistInShoppingCart = "Shopping cart does not contain product with name {0}!";
@@ -39,6 +42,9 @@ namespace Wim.Core.Engine
         //private const string TotalPriceInShoppingCart = "${0} total price currently in the shopping cart!";
         private const string InvalidPriorityType = "Invalid Priority type!";
         private const string InvalidStatusType = "Invalid Status type!";
+        private const string InvalidStoryStatusType = "Invalid Story Status type!";
+        private const string InvalidStorySizeType = "Invalid Story Size type!";
+
         //private const string InvalidUsageType = "Invalid usage type!";
         //private const string InvalidScentType = "Invalid scent type!";
 
@@ -158,9 +164,6 @@ namespace Wim.Core.Engine
                     var boardToShowActivityFor = command.Parameters[1];
                     return this.ShowBoardActivityToString(team, boardToShowActivityFor);
 
-                //case "TotalPrice":
-                //    return this.shoppingCart.ProductList.Any() ? string.Format(TotalPriceInShoppingCart, this.shoppingCart.TotalPrice()) : $"No product in shopping cart!";
-
                 case "CreateBug":
                     var bugToAdd = command.Parameters[0];
                     var teamToAddBugFor = command.Parameters[1];
@@ -176,18 +179,34 @@ namespace Wim.Core.Engine
 
                     return this.CreateBug(bugToAdd, teamToAddBugFor, boardToAddBugFor, bugPriority, bugSeverity, bugAsignee, bugSteps, bugDescription);
 
+                case "CreateStory":
+                    var storyToAdd = command.Parameters[0];
+                    var teamToAddStoryFor = command.Parameters[1];
+                    var boardToAddStoryFor = command.Parameters[2];
+                    var storyPriority = command.Parameters[3];
+                    var storySize = command.Parameters[4];
+                    var storyStatus = command.Parameters[5];
+                    var storyAssignee = command.Parameters[6];
+
+                    //build story description
+                    var buildStoryDescription = new StringBuilder();
+
+                    for (int i = 7; i < command.Parameters.Count; i++)
+                    {
+                        buildStoryDescription.Append(command.Parameters[i] + " ");
+                    }
+
+                    var storyDescription = buildStoryDescription.ToString().Trim();
+
+                    return this.CreateStory(storyToAdd, teamToAddStoryFor, boardToAddStoryFor, storyPriority, storySize, storyStatus, storyAssignee, storyDescription);
+
+
                 //InternalUseOnly
                 case "IsPersonAssigned":
                     var personName2 = command.Parameters[0];
 
                     return this.IsPersonAssigned(personName2);
 
-                  
-                //case "CreateStory":
-                //    var teamToAddStoryFor = command.Parameters[0];
-                //    var boardToAddStoryFor = command.Parameters[1];
-
-                //    return this.CreateStory(personName2);
 
                 default:
                     return string.Format(InvalidCommand, command.Name);
@@ -402,7 +421,7 @@ namespace Wim.Core.Engine
             }
 
             var allTeamBoardsResult = allTeams.AllTeamsList[teamToShowBoards].ShowAllTeamBoards();
-            return string.Format(allTeamBoardsResult);           
+            return string.Format(allTeamBoardsResult);
         }
 
         private string CreateBug(string bugTitle, string teamToAddBugFor, string boardToAddBugFor, string bugPriority, string bugSeverity, string bugAsignee, IList<string> bugStepsToReproduce, string bugDescription)
@@ -410,7 +429,7 @@ namespace Wim.Core.Engine
             if (string.IsNullOrEmpty(bugTitle))
             {
                 return string.Format(NullOrEmptyBugName);
-            }            
+            }
 
             if (string.IsNullOrEmpty(teamToAddBugFor))
             {
@@ -446,7 +465,7 @@ namespace Wim.Core.Engine
                 return string.Format(BugAlreadyExists, boardToAddBugFor);
             }
 
-            
+
 
             Priority bugPriorityEnum = this.GetPriority(bugPriority);
             Severity bugSeverityEnum = this.GetSeverity(bugSeverity);
@@ -468,11 +487,79 @@ namespace Wim.Core.Engine
             return string.Format(BugCreated, bugTitle);
         }
 
+        private string CreateStory(string storyTitle, string teamToAddStoryFor, string boardToAddStoryFor, string storyPriority, string storySize, string storyStatus, string storyAssignee, string storyDescription)
+
+        {
+            if (string.IsNullOrEmpty(storyTitle))
+            {
+                return string.Format(NullOrEmptyStoryName);
+            }
+
+            if (string.IsNullOrEmpty(teamToAddStoryFor))
+            {
+                return string.Format(NullOrEmptyTeamName);
+            }
+
+            if (string.IsNullOrEmpty(boardToAddStoryFor))
+            {
+                return string.Format(NullOrEmptyBoardName);
+            }
+
+            if (!this.allTeams.AllTeamsList.ContainsKey(teamToAddStoryFor))
+            {
+                return string.Format(TeamDoesNotExist, teamToAddStoryFor);
+            }
+
+
+            var boardMatches = allTeams.AllTeamsList[teamToAddStoryFor].Boards
+              .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddStoryFor);
+
+            if (boardMatches == false)
+            {
+                return string.Format(BoardDoesNotExist, boardToAddStoryFor);
+            }
+
+            var boardToCheckStoryFor = allTeams.AllTeamsList[teamToAddStoryFor].Boards
+                .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddStoryFor).First();
+
+            var doesStoryExistInBoard = boardToCheckStoryFor.WorkItems
+                .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Story)).Any(storyThatExists => storyThatExists.Title == storyTitle);
+
+            if (doesStoryExistInBoard)
+            {
+                return string.Format(StoryAlreadyExists, boardToAddStoryFor);
+            }
+
+
+            Priority storyPriorityEnum = this.GetPriority(storyPriority);
+            Size storySizeEnum = this.GetStorySize(storySize);
+            StoryStatus storyStatusEnum = this.GetStoryStatus(storyStatus);
+
+
+            IStory storyToAddToCollection = this.factory.CreateStory(storyTitle, storyDescription, storyPriorityEnum, storySizeEnum, storyStatusEnum, allMembers.AllMembersList[storyAssignee]);
+
+            var indexOfBoardInSelectedTeam = allTeams.AllTeamsList[teamToAddStoryFor].Boards.FindIndex(boardIndex => boardIndex.Name == boardToAddStoryFor);
+
+            allTeams.AllTeamsList[teamToAddStoryFor].Boards[indexOfBoardInSelectedTeam].AddWorkitemToBoard(storyToAddToCollection);
+
+            allTeams.AllTeamsList[teamToAddStoryFor].Members.First(member => member.Name == storyAssignee).AddWorkItemIdToMember(storyToAddToCollection.Id);
+
+            var boardToPutHistoryFor = allTeams.AllTeamsList[teamToAddStoryFor].Boards[indexOfBoardInSelectedTeam];
+            var memberToPutHistoryFor = allTeams.AllTeamsList[teamToAddStoryFor].Members.First(member => member.Name == storyAssignee);
+            var teamToPutHistoryFor = allTeams.AllTeamsList[teamToAddStoryFor];
+
+            allTeams.AllTeamsList[teamToAddStoryFor].Boards[indexOfBoardInSelectedTeam].AddActivityHistoryToBoard(memberToPutHistoryFor, storyToAddToCollection);
+            allTeams.AllTeamsList[teamToAddStoryFor].Members.First(member => member.Name == storyAssignee).AddActivityHistoryToMember(storyToAddToCollection, teamToPutHistoryFor, boardToPutHistoryFor);
+
+            return string.Format(StoryCreated, storyTitle);
+        }
+
+
         private string ShowBoardActivityToString(string teamToShowBoardActivityFor, string boardActivityToShow)
         {
             if (string.IsNullOrEmpty(teamToShowBoardActivityFor))
             {
-                return string.Format(NullOrEmptyTeamName); 
+                return string.Format(NullOrEmptyTeamName);
             }
 
             if (!allTeams.AllTeamsList.ContainsKey(teamToShowBoardActivityFor))
@@ -480,7 +567,7 @@ namespace Wim.Core.Engine
                 return string.Format(TeamDoesNotExist);
             }
 
-            if(string.IsNullOrEmpty(boardActivityToShow))
+            if (string.IsNullOrEmpty(boardActivityToShow))
             {
                 return string.Format(NullOrEmptyMemberName);
             }
@@ -577,31 +664,36 @@ namespace Wim.Core.Engine
             }
         }
 
-        private string CreateStory(string teamToAddStoryTo, string boardToAddStoryTo)
+        private StoryStatus GetStoryStatus(string storyStatusString)
         {
-            if (string.IsNullOrEmpty(teamToAddStoryTo))
+            switch (storyStatusString.ToLower())
             {
-                return string.Format(NullOrEmptyTeamName); 
+                case "notdone":
+                    return StoryStatus.NotDone;
+                case "inprogress":
+                    return StoryStatus.InProgress;
+                case "done":
+                    return StoryStatus.Done;
+                default:
+                    throw new InvalidOperationException(InvalidStoryStatusType);
             }
-
-            if (string.IsNullOrEmpty(boardToAddStoryTo))
-            {
-                return string.Format(NullOrEmptyBoardName);
-            }
-
-            if (!allTeams.AllTeamsList.ContainsKey(teamToAddStoryTo))
-            {
-                return string.Format(TeamDoesNotExist);
-            }
-
-            if (allTeams.AllTeamsList[teamToAddStoryTo].Boards.Count() == 0)
-            {
-                return string.Format(NoBoardsInTeam);
-            }
-
-            var allTeamBoardsResult = allTeams.AllTeamsList[teamToAddStoryTo].ShowAllTeamBoards();
-            return string.Format(StoryCreated, teamToAddStoryTo);
         }
+
+        private Size GetStorySize(string storySizeString)
+        {
+            switch (storySizeString.ToLower())
+            {
+                case "small":
+                    return Size.Small;
+                case "medium":
+                    return Size.Medium;
+                case "large":
+                    return Size.Large;
+                default:
+                    throw new InvalidOperationException(InvalidStorySizeType);
+            }
+        }
+
 
         //Internal Use Only !
         private string IsPersonAssigned(string personName)

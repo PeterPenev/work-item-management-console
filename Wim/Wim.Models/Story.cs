@@ -11,10 +11,10 @@ namespace Wim.Models
         private Priority priority;
         private Size size;
         private StoryStatus storyStatus;
-        private Member assignee;
+        private IMember assignee;
 
         //constructor
-        public Story(string title, string description, Priority priority, Size size, StoryStatus storyStatus, Member assignee)
+        public Story(string title, string description, Priority priority, Size size, StoryStatus storyStatus, IMember assignee)
             : base(title, description)
         {
             this.Priority = priority;
@@ -58,7 +58,7 @@ namespace Wim.Models
             }
         }
 
-        public Member Assignee
+        public IMember Assignee
         {
             get
             {
@@ -68,8 +68,8 @@ namespace Wim.Models
             {
                 this.assignee = value;
             }
-        }       
-                     
+        }
+
         //methods
 
 

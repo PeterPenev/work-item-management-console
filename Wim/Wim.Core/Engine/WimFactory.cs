@@ -30,9 +30,9 @@ namespace Wim.Core.Engine
             return new Bug(title, priority, severity, asignee, stepsToReproduce, description);
         }
 
-        //public IBoard CreateStory(string title, Priority priority, Size size, StoryStatus storyStatus, IMember asignee, string description)
-        //{
-        //    return new Story(title, priority, size, storyStatus, asignee, description);
-        //}
+        public IStory CreateStory(string title, string description, Priority priority, Size size, StoryStatus storyStatus, IMember assignee)
+        {
+            return new Story(title, description, priority, size, storyStatus, assignee);
+        }
     }
 }
