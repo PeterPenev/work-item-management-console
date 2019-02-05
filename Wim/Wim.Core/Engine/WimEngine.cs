@@ -446,6 +446,8 @@ namespace Wim.Core.Engine
                 return string.Format(BugAlreadyExists, boardToAddBugFor);
             }
 
+            
+
             Priority bugPriorityEnum = this.GetPriority(bugPriority);
             Severity bugSeverityEnum = this.GetSeverity(bugSeverity);
             IBug bugToAddToCollection = this.factory.CreateBug(bugTitle, bugPriorityEnum, bugSeverityEnum, allMembers.AllMembersList[bugAsignee], bugStepsToReproduce, bugDescription);
@@ -455,6 +457,13 @@ namespace Wim.Core.Engine
             allTeams.AllTeamsList[teamToAddBugFor].Boards[indexOfBoardInSelectedTeam].AddWorkitemToBoard(bugToAddToCollection);
 
             allTeams.AllTeamsList[teamToAddBugFor].Members.First(member => member.Name == bugAsignee).AddWorkItemIdToMember(bugToAddToCollection.Id);
+
+            var boardToPutHistoryFor = allTeams.AllTeamsList[teamToAddBugFor].Boards[indexOfBoardInSelectedTeam];
+            var memberToPutHistoryFor = allTeams.AllTeamsList[teamToAddBugFor].Members.First(member => member.Name == bugAsignee);
+            var teamToPutHistoryFor = allTeams.AllTeamsList[teamToAddBugFor];
+
+            allTeams.AllTeamsList[teamToAddBugFor].Boards[indexOfBoardInSelectedTeam].AddActivityHistoryToBoard(boardToPutHistoryFor, memberToPutHistoryFor, bugToAddToCollection);
+            allTeams.AllTeamsList[teamToAddBugFor].Members.First(member => member.Name == bugAsignee).AddActivityHistoryToMember(memberToPutHistoryFor, bugToAddToCollection, teamToPutHistoryFor, boardToPutHistoryFor);
 
             return string.Format(BugCreated, bugTitle);
         }

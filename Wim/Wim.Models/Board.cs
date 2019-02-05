@@ -70,5 +70,13 @@ namespace Wim.Models
             workItems.Add(workItemToAdd);
         }
 
+        public void AddActivityHistoryToBoard(IBoard boardToAddHistoryTo, IMember trackedMember, IWorkItem trackedWorkItem)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"A {trackedWorkItem.GetType().Name} with Title: {trackedWorkItem.Title} was created by Member: {trackedMember}");
+            string resultToAddAssMessage = sb.ToString().Trim();
+            var activityHistoryToAddToBoard = new ActivityHistory(resultToAddAssMessage);
+            activityHistory.Add(activityHistoryToAddToBoard);
+        }
     }
 }

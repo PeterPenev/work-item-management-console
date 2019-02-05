@@ -77,6 +77,15 @@ namespace Wim.Models
             return isAssigned;
         }
 
+        public void AddActivityHistoryToMember(IMember memberToAddHistoryFor, IWorkItem trackedWorkItem, ITeam trackedTeam, IBoard trackedBoard)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"Member: {memberToAddHistoryFor.Name} created: {trackedWorkItem.GetType().Name} with Title: {trackedWorkItem.Title} in Board: {trackedBoard.Name} part of {trackedTeam.Name} Team!");
+            string resultToAddAssMessage = sb.ToString().Trim();
+            var activityHistoryToAddToMember = new ActivityHistory(resultToAddAssMessage);
+            activityHistory.Add(activityHistoryToAddToMember);
+        }
+
         public string ShowMemberActivityToString(IList<IActivityHistory> activityHistoryInput)
         {
             StringBuilder sb = new StringBuilder();
@@ -85,7 +94,9 @@ namespace Wim.Models
 
             foreach (var history in activityHistoryInput)
             {
-                sb.AppendLine($"{numberOfHistories}. Activity with date: {history.LoggingDate}");
+                var result = String.Format("{0:r}", history.LoggingDate);
+
+                sb.AppendLine($"{numberOfHistories}. Activity with date: {result}");
                 sb.AppendLine($"Activity Message:");
                 sb.AppendLine($"{history.Message}");
                 numberOfHistories++;
@@ -93,6 +104,5 @@ namespace Wim.Models
 
             return sb.ToString().Trim();
         }
-
     }
 }
