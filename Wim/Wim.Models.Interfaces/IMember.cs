@@ -8,9 +8,11 @@ namespace Wim.Models.Interfaces
     {
         string Name { get; }
 
-        List<IWorkItem> WorkItems { get; }
+        List<Guid> WorkItemsId { get; }
 
         List<IActivityHistory> ActivityHistory { get; }
+
+        void AddWorkItemIdToMember(Guid workItemIdInput);
 
         string ShowMemberActivityToString(IList<IActivityHistory> activityHistoryInput);
 

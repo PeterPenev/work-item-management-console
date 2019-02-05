@@ -14,6 +14,6 @@ namespace Wim.Models.Interfaces
 
         BugStatus BugStatus { get; }
 
-        IMember Asignee { get; set; }
+        IMember Assignee { get; set; }
     }
 }

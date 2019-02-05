@@ -50,7 +50,9 @@ namespace Wim.Models
                 {
                     throw new ArgumentOutOfRangeException("Description should be between 10 and 500 symbols");
                 }
+                this.description = value;
             }
+           
         }
         public List<string> Comments
         {

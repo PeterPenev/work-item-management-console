@@ -10,15 +10,17 @@ namespace Wim.Models
     {
         private string name;
 
-        public bool isAssigned = false;
+        private bool isAssigned = false;
 
         private List<IActivityHistory> activityHistory;
 
-        private List<IWorkItem> workItems;
+        private List<Guid> workItemsId;
 
         public Member(string name)
         {
             this.Name = name;
+            this.activityHistory = new List<IActivityHistory>();
+            this.workItemsId = new List<Guid>();
         }
 
         public string Name
@@ -34,11 +36,11 @@ namespace Wim.Models
             }
         }        
 
-        public List<IWorkItem> WorkItems
+        public List<Guid> WorkItemsId
         {
             get
             {
-                return new List<IWorkItem>(this.workItems);
+                return new List<Guid>(this.workItemsId);
             }
         }
 
@@ -51,6 +53,11 @@ namespace Wim.Models
         }
 
         //methods
+
+        public void AddWorkItemIdToMember(Guid workItemIdInput)
+        {
+            this.workItemsId.Add(workItemIdInput);
+        }
 
         public bool FindIfMemberIsAssigned(IDictionary<string, ITeam> allTeamsInput)
         {

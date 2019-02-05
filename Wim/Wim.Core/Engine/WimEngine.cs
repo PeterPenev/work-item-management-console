@@ -448,12 +448,13 @@ namespace Wim.Core.Engine
 
             Priority bugPriorityEnum = this.GetPriority(bugPriority);
             Severity bugSeverityEnum = this.GetSeverity(bugSeverity);
-            IMember bugAsigneeMember = allMembers.AllMembersList[bugAsignee];
-            IBug bugToAddToCollection = this.factory.CreateBug(bugTitle, bugPriorityEnum, bugSeverityEnum, bugAsigneeMember, bugStepsToReproduce, bugDescription);        
+            IBug bugToAddToCollection = this.factory.CreateBug(bugTitle, bugPriorityEnum, bugSeverityEnum, allMembers.AllMembersList[bugAsignee], bugStepsToReproduce, bugDescription);
 
             var indexOfBoardInSelectedTeam = allTeams.AllTeamsList[teamToAddBugFor].Boards.FindIndex(boardIndex => boardIndex.Name == boardToAddBugFor);
 
             allTeams.AllTeamsList[teamToAddBugFor].Boards[indexOfBoardInSelectedTeam].AddWorkitemToBoard(bugToAddToCollection);
+
+            allTeams.AllTeamsList[teamToAddBugFor].Members.First(member => member.Name == bugAsignee).AddWorkItemIdToMember(bugToAddToCollection.Id);
 
             return string.Format(BugCreated, bugTitle);
         }

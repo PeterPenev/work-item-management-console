@@ -12,16 +12,16 @@ namespace Wim.Models
         private Priority priority;
         private Severity severity;
         private BugStatus bugStatus = BugStatus.Active;
-        private IMember asignee;
+        private IMember assignee;
 
         //Constructor
-        public Bug(string title, Priority priority, Severity severity, IMember asignee, IList<string> stepsToReproduce, string description)
+        public Bug(string title, Priority priority, Severity severity, IMember assignee, IList<string> stepsToReproduce, string description)
             : base(title, description)
         {
             this.stepsToReproduce = new List<string>(stepsToReproduce);
             this.Priority = priority;
             this.Severity = severity;
-            this.Asignee = asignee;
+            this.Assignee = assignee;
 
         }
         public IList<string> StepsToReproduce
@@ -81,17 +81,17 @@ namespace Wim.Models
             }
         }
 
-
-
-
-        public IMember Asignee
+        public IMember Assignee
         {
-            get; set;
-            //Check if the Asignee is a member of the team
-        }
-
-       
-
+            get
+            {
+               return this.assignee;
+            }
+            set
+            {
+                this.assignee = value;
+            }
+        }   
         
     }
 }
