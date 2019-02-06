@@ -250,6 +250,10 @@ namespace Wim.Core.Engine
                     var priorityToFilterStoryFor = command.Parameters[0];
                     return this.FilterStoriesByPriority(priorityToFilterStoryFor);
 
+                case "FilterStoriesByAssignee":
+                    var assigneeToFilterStoriesFor = command.Parameters[0];
+                    return this.FilterStoriesByAssignee(assigneeToFilterStoriesFor);
+
 
                 default:
                     return string.Format(InvalidCommand, command.Name);
@@ -859,6 +863,31 @@ namespace Wim.Core.Engine
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"----ALL STORIES WITH {priorityToFilterStoryFor} PRIORITY IN APPLICAITION----");
+            long workItemCounter = 1;
+            foreach (var item in filteredStoriesByStatus)
+            {
+                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
+                workItemCounter++;
+            }
+            sb.AppendLine("---------------------------------");
+
+            var resultedAllItems = sb.ToString().Trim();
+            return string.Format(resultedAllItems);
+        }
+
+        private string FilterStoriesByAssignee(string assigneeToFilterBugFor)
+        {
+            var filteredStoriesByStatus = allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(x => x.GetType() == typeof(Story))
+                            .Select(workItem => (Story)workItem)
+                                .Where(story => story.Assignee.Name == assigneeToFilterBugFor)
+                                    .ToList();
+
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"----ALL STORIES ASSIGNED TO MEMBER: {assigneeToFilterBugFor} IN APPLICAITION----");
             long workItemCounter = 1;
             foreach (var item in filteredStoriesByStatus)
             {
