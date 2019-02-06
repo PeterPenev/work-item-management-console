@@ -410,24 +410,16 @@ namespace Wim.Core.Engine
         }
 
 
-        private string ShowAllTeamBoards(string teamToShowBoards)
+        private string ShowAllTeamBoards(string teamToShowBoardsFor)
         {
-            if (string.IsNullOrEmpty(teamToShowBoards))
-            {
-                return string.Format(NullOrEmptyTeamName);
-            }
+            var teamTypeForChecking = "Team Name";
+            inputValidator.IsNullOrEmpty(teamToShowBoardsFor, teamTypeForChecking);
 
-            if (!allTeams.AllTeamsList.ContainsKey(teamToShowBoards))
-            {
-                return string.Format(TeamDoesNotExist);
-            }
+            inputValidator.ValidateTeamExistance(allTeams, teamToShowBoardsFor);
 
-            if (allTeams.AllTeamsList[teamToShowBoards].Boards.Count() == 0)
-            {
-                return string.Format(NoBoardsInTeam);
-            }
+            inputValidator.ValdateIfBoardsExistInTeam(allTeams, teamToShowBoardsFor);
 
-            var allTeamBoardsResult = allTeams.AllTeamsList[teamToShowBoards].ShowAllTeamBoards();
+            var allTeamBoardsResult = allTeams.AllTeamsList[teamToShowBoardsFor].ShowAllTeamBoards();
             return string.Format(allTeamBoardsResult);
         }
 

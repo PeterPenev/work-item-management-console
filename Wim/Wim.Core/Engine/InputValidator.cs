@@ -71,6 +71,14 @@ namespace Wim.Core.Engine
             }
         }
 
+        public void ValdateIfBoardsExistInTeam(IAllTeams allTeams, string teamToShowBoardsFor)
+        {
+            if (allTeams.AllTeamsList[teamToShowBoardsFor].Boards.Count() == 0)
+            {
+                throw new NoBoardsInTeamException(string.Format(NoBoardsInTeam));
+            }
+        }
+
         public void ValidateMemberExistance(IAllMembers allMembers, string memberName)
         {
             if (!allMembers.AllMembersList.ContainsKey(memberName))
