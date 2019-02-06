@@ -37,18 +37,8 @@ namespace Wim.Core.Engine
         private const string NullOrEmptyFeedbackName = "Feedback Name cannot be null or empty!";
         private const string FeedbackAlreadyExists = "Feedback with name {0} already exists!";
         private const string FeedbackCreated = "Feedback {0} was created!";
-
-        //private const string CreamCreated = "Cream with name {0} was created!";
-        //private const string ProductAddedToShoppingCart = "Product {0} was added to the shopping cart!";
-        //private const string ProductDoesNotExistInShoppingCart = "Shopping cart does not contain product with name {0}!";
-        //private const string ProductRemovedFromShoppingCart = "Product {0} was removed from the shopping cart!";
-        //private const string TotalPriceInShoppingCart = "${0} total price currently in the shopping cart!";
-        private const string InvalidPriorityType = "Invalid Priority type!";
-        private const string InvalidStatusType = "Invalid Status type!";
-        private const string InvalidStoryStatusType = "Invalid Story Status type!";
-        private const string InvalidStorySizeType = "Invalid Story Size type!";
-        private const string InvalidFeedbackStatusType = "Invalid Feedback Status type!";
         private const string InvalidFeedbackRaiting = "{0} is Invalid Feedback Raiting value!";
+
 
 
         private static readonly WimEngine SingleInstance = new WimEngine();
@@ -56,12 +46,14 @@ namespace Wim.Core.Engine
         private readonly WimFactory factory;
         private readonly IAllMembers allMembers;
         private readonly IAllTeams allTeams;
+        private readonly IEnumParser enumParser;
 
         private WimEngine()
         {
             this.factory = new WimFactory();
             this.allMembers = new AllMembers();
             this.allTeams = new AllTeams();
+            this.enumParser = new EnumParser();
         }
 
         public static WimEngine Instance
@@ -532,8 +524,8 @@ namespace Wim.Core.Engine
             }
 
 
-            Priority bugPriorityEnum = this.GetPriority(bugPriority);
-            Severity bugSeverityEnum = this.GetSeverity(bugSeverity);
+            Priority bugPriorityEnum = this.enumParser.GetPriority(bugPriority);
+            Severity bugSeverityEnum = this.enumParser.GetSeverity(bugSeverity);
             IBug bugToAddToCollection = this.factory.CreateBug(bugTitle, bugPriorityEnum, bugSeverityEnum, allMembers.AllMembersList[bugAsignee], bugStepsToReproduce, bugDescription);
 
             var indexOfBoardInSelectedTeam = allTeams.AllTeamsList[teamToAddBugFor].Boards.FindIndex(boardIndex => boardIndex.Name == boardToAddBugFor);
@@ -596,9 +588,9 @@ namespace Wim.Core.Engine
             }
 
 
-            Priority storyPriorityEnum = this.GetPriority(storyPriority);
-            Size storySizeEnum = this.GetStorySize(storySize);
-            StoryStatus storyStatusEnum = this.GetStoryStatus(storyStatus);
+            Priority storyPriorityEnum = this.enumParser.GetPriority(storyPriority);
+            Size storySizeEnum = this.enumParser.GetStorySize(storySize);
+            StoryStatus storyStatusEnum = this.enumParser.GetStoryStatus(storyStatus);
 
 
             IStory storyToAddToCollection = this.factory.CreateStory(storyTitle, storyDescription, storyPriorityEnum, storySizeEnum, storyStatusEnum, allMembers.AllMembersList[storyAssignee]);
@@ -671,7 +663,7 @@ namespace Wim.Core.Engine
             }
 
             //parse feedbackStatusEnum
-            FeedbackStatus feedbackStatusEnum = this.GetFeedbackStatus(feedbackStatus);
+            FeedbackStatus feedbackStatusEnum = this.enumParser.GetFeedbackStatus(feedbackStatus);
 
 
             IFeedback feedbackToAddToCollection = this.factory.CreateFeedback(feedbackTitle, feedbackDescription, intFeedbackRaiting, feedbackStatusEnum);
@@ -790,7 +782,7 @@ namespace Wim.Core.Engine
 
         private string FilterBugsByPriority(string priorityToFilterBugFor)
         {
-            var priorityToCheckFor = GetPriority(priorityToFilterBugFor);
+            var priorityToCheckFor = this.enumParser.GetPriority(priorityToFilterBugFor);
 
             var filteredBugsByStatus = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
@@ -842,7 +834,7 @@ namespace Wim.Core.Engine
 
         private string FilterBugsByStatus(string statusToFilterBugFor)
         {
-            var bugStatusToCheckFor = GetBugStatus(statusToFilterBugFor);
+            var bugStatusToCheckFor = this.enumParser.GetBugStatus(statusToFilterBugFor);
 
             var filteredBugsByStatus = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
@@ -869,7 +861,7 @@ namespace Wim.Core.Engine
 
         private string FilterStoriesByPriority(string priorityToFilterStoryFor)
         {
-            var priorityToCheckFor = GetPriority(priorityToFilterStoryFor);
+            var priorityToCheckFor = this.enumParser.GetPriority(priorityToFilterStoryFor);
 
             var filteredStoriesByStatus = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
@@ -921,7 +913,7 @@ namespace Wim.Core.Engine
 
         private string FilterStoriesByStatus(string statusToFilterStoryFor)
         {
-            var storyStatusToCheckFor = GetStoryStatus(statusToFilterStoryFor);
+            var storyStatusToCheckFor = this.enumParser.GetStoryStatus(statusToFilterStoryFor);
 
             var filteredStoriesbyStatus = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
@@ -948,7 +940,7 @@ namespace Wim.Core.Engine
 
         private string FilterFeedbacksByStatus(string statusToFilterFeedbacksFor)
         {
-            var feedbacksStatusToCheckFor = GetFeedbackStatus(statusToFilterFeedbacksFor);
+            var feedbacksStatusToCheckFor = this.enumParser.GetFeedbackStatus(statusToFilterFeedbacksFor);
 
             var filteredFeedbacksbyStatus = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
@@ -1122,96 +1114,6 @@ namespace Wim.Core.Engine
 
             var resultedAllItems = sb.ToString().Trim();
             return string.Format(resultedAllItems);
-        }
-
-        private Priority GetPriority(string priorityString)
-        {
-            switch (priorityString.ToLower())
-            {
-                case "high":
-                    return Priority.High;
-                case "medium":
-                    return Priority.Medium;
-                case "low":
-                    return Priority.Low;
-                default:
-                    throw new InvalidOperationException(InvalidPriorityType);
-            }
-        }
-
-        private Severity GetSeverity(string severityString)
-        {
-            switch (severityString.ToLower())
-            {
-                case "critical":
-                    return Severity.Critical;
-                case "major":
-                    return Severity.Major;
-                case "minor":
-                    return Severity.Minor;
-                default:
-                    throw new InvalidOperationException(InvalidPriorityType);
-            }
-        }
-
-        private BugStatus GetBugStatus(string bugStatusString)
-        {
-            switch (bugStatusString.ToLower())
-            {
-                case "active":
-                    return BugStatus.Active;
-                case "fixed":
-                    return BugStatus.Fixed;
-                default:
-                    throw new InvalidOperationException(InvalidStatusType);
-            }
-        }
-
-        private StoryStatus GetStoryStatus(string storyStatusString)
-        {
-            switch (storyStatusString.ToLower())
-            {
-                case "notdone":
-                    return StoryStatus.NotDone;
-                case "inprogress":
-                    return StoryStatus.InProgress;
-                case "done":
-                    return StoryStatus.Done;
-                default:
-                    throw new InvalidOperationException(InvalidStoryStatusType);
-            }
-        }
-
-        private Size GetStorySize(string storySizeString)
-        {
-            switch (storySizeString.ToLower())
-            {
-                case "small":
-                    return Size.Small;
-                case "medium":
-                    return Size.Medium;
-                case "large":
-                    return Size.Large;
-                default:
-                    throw new InvalidOperationException(InvalidStorySizeType);
-            }
-        }
-
-        private FeedbackStatus GetFeedbackStatus(string feedbackStatusString)
-        {
-            switch (feedbackStatusString.ToLower())
-            {
-                case "new":
-                    return FeedbackStatus.New;
-                case "unscheduled":
-                    return FeedbackStatus.Unscheduled;
-                case "scheduled":
-                    return FeedbackStatus.Scheduled;
-                case "done":
-                    return FeedbackStatus.Done;
-                default:
-                    throw new InvalidOperationException(InvalidFeedbackStatusType);
-            }
-        }        
+        }              
     }
 }
