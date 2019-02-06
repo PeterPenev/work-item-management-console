@@ -238,11 +238,9 @@ namespace Wim.Core.Engine
                     var priorityToFilterBugFor = command.Parameters[0];
                     return this.FilterBugsByPriority(priorityToFilterBugFor);
 
-                //InternalUseOnly
-                case "IsPersonAssigned":
-                    var personName2 = command.Parameters[0];
-
-                    return this.IsPersonAssigned(personName2);
+                case "FilterBugsByAssignee":
+                    var assigneeToFilterBugFor = command.Parameters[0];
+                    return this.FilterBugsByAssignee(assigneeToFilterBugFor);            
 
 
                 default:
@@ -774,6 +772,31 @@ namespace Wim.Core.Engine
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"----ALL BUGS WITH {priorityToFilterBugFor} PRIORITY IN APPLICAITION----");
+            long workItemCounter = 1;
+            foreach (var item in filteredBugsByStatus)
+            {
+                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
+                workItemCounter++;
+            }
+            sb.AppendLine("---------------------------------");
+
+            var resultedAllItems = sb.ToString().Trim();
+            return string.Format(resultedAllItems);
+        }
+
+        private string FilterBugsByAssignee(string assigneeToFilterBugFor)
+        {
+            var filteredBugsByStatus = allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(x => x.GetType() == typeof(Bug))
+                            .Select(workItem => (Bug)workItem)
+                                .Where(bug => bug.Assignee.Name == assigneeToFilterBugFor)
+                                    .ToList();
+
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"----ALL BUGS ASSIGNED TO MEMBER: {assigneeToFilterBugFor} IN APPLICAITION----");
             long workItemCounter = 1;
             foreach (var item in filteredBugsByStatus)
             {
