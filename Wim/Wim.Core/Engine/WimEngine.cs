@@ -258,6 +258,9 @@ namespace Wim.Core.Engine
                     var statusToFilterStoriesFor = command.Parameters[0];
                     return this.FilterStoriesByStatus(statusToFilterStoriesFor);
 
+                case "FilterFeedbackByStatus":
+                    var statusToFilterFeedbackFor = command.Parameters[0];
+                    return this.FilterBugsByStatus(statusToFilterFeedbackFor);
 
                 default:
                     return string.Format(InvalidCommand, command.Name);
@@ -921,6 +924,33 @@ namespace Wim.Core.Engine
             sb.AppendLine($"----ALL STORIES WITH {statusToFilterStoryFor} STATUS IN APPLICAITION----");
             long workItemCounter = 1;
             foreach (var item in filteredStoriesbyStatus)
+            {
+                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
+                workItemCounter++;
+            }
+            sb.AppendLine("---------------------------------");
+
+            var resultedAllItems = sb.ToString().Trim();
+            return string.Format(resultedAllItems);
+        }
+
+        private string FilterFeedbacksByStatus(string statusToFilterFeedbacksFor)
+        {
+            var feedbacksStatusToCheckFor = GetFeedbackStatus(statusToFilterFeedbacksFor);
+
+            var filteredFeedbacksbyStatus = allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(x => x.GetType() == typeof(Feedback))
+                            .Select(workItem => (Feedback)workItem)
+                                .Where(story => story.FeedbackStatus == feedbacksStatusToCheckFor)
+                                    .ToList();
+
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"----ALL FEEDBACKS WITH {statusToFilterFeedbacksFor} STATUS IN APPLICAITION----");
+            long workItemCounter = 1;
+            foreach (var item in filteredFeedbacksbyStatus)
             {
                 sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
                 workItemCounter++;
