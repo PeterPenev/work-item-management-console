@@ -228,6 +228,9 @@ namespace Wim.Core.Engine
                 case "FilterBugs":
                     return this.FilterBugs();
 
+                case "FilterStories":
+                    return this.FilterStories();
+
                 //InternalUseOnly
                 case "IsPersonAssigned":
                     var personName2 = command.Parameters[0];
@@ -701,6 +704,24 @@ namespace Wim.Core.Engine
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("----ALL BUGS IN APPLICAITION----");
+            long workItemCounter = 1;
+            foreach (var item in AllWorkItems)
+            {
+                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
+                workItemCounter++;
+            }
+            sb.AppendLine("---------------------------------");
+
+            var resultedAllItems = sb.ToString().Trim();
+            return string.Format(resultedAllItems);
+        }
+
+        private string FilterStories()
+        {
+            var AllWorkItems = allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).Where(x => x.GetType() == typeof(Story)).ToList();
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("----ALL STORIES IN APPLICAITION----");
             long workItemCounter = 1;
             foreach (var item in AllWorkItems)
             {
