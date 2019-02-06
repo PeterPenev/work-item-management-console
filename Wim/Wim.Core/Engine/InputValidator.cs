@@ -11,6 +11,7 @@ namespace Wim.Core.Engine
         private const string InvalidCommand = "Invalid command name: {0}!";
         private const string PersonExists = "Person with name {0} already exists!";
         private const string PersonCreated = "Person with name {0} was created!";
+        private const string NullOrEmptyInput = "{0} cannot be null or empty!";
         private const string NoPeopleInApplication = "There are no people!";
         private const string NoTeamsInApplication = "There are no teams in application!";
         private const string MemberDoesNotExist = "The member does not exist!";
@@ -24,7 +25,7 @@ namespace Wim.Core.Engine
         private const string BoardAddedToTeam = "Board {0} was added to team {1}!";
         private const string BoardAlreadyExists = "Board with name {0} already exists!";
         private const string NoBoardsInTeam = "There are no boards in this team!";
-        private const string NullOrEmptyBugName = "Bug Name cannot be null or empty!";
+        
         private const string BugCreated = "Bug {0} was created!";
         private const string BugAlreadyExists = "Bug with name {0} already exists!";
         private const string BoardDoesNotExist = "Board with name {0} doest not exist!";
@@ -38,7 +39,6 @@ namespace Wim.Core.Engine
 
         public InputValidator()
         {
-
         }
 
         public void ValidateTeamsExistance(IAllTeams allTeams)
@@ -56,5 +56,16 @@ namespace Wim.Core.Engine
                 throw new MemberNotInAppException(string.Format(NoTeamsInApplication));
             }
         }
+
+        public void IsNullOrEmpty (string inputToCheck, string inputType)
+        {
+            if (string.IsNullOrEmpty(inputToCheck))
+            {
+                throw new ArgumentNullException(string.Format(NoTeamsInApplication));
+            }
+        }
+
+
+        
     }
 }

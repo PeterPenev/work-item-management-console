@@ -328,10 +328,8 @@ namespace Wim.Core.Engine
 
         private string ShowMemberActivityToString(string memberName)
         {
-            if (string.IsNullOrEmpty(memberName))
-            {
-                return string.Format(NullOrEmptyMemberName);
-            }
+            var inputTypeForChecking = "Member Name";
+            inputValidator.IsNullOrEmpty(memberName, inputTypeForChecking);
 
             if (!allMembers.AllMembersList.ContainsKey(memberName))
             {
