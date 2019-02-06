@@ -202,7 +202,6 @@ namespace Wim.Core.Engine
 
                     return this.CreateStory(storyToAdd, teamToAddStoryFor, boardToAddStoryFor, storyPriority, storySize, storyStatus, storyAssignee, storyDescription);
 
-                //TODO
                 case "CreateFeedback":
                     var feedbackToAdd = command.Parameters[0];
                     var teamToAddFeedbackFor = command.Parameters[1];
@@ -221,6 +220,10 @@ namespace Wim.Core.Engine
                     var feedbackDescription = buildFeedbackDescription.ToString().Trim();
 
                     return this.CreateFeedback(feedbackToAdd, teamToAddFeedbackFor, boardToAddFeedbackFor, feedbackRaiting, feedbackStatus, feedbackDescription);
+
+
+                case "ListAllWorkItems":
+                    return this.ListAllWorkItems();
 
                 //InternalUseOnly
                 case "IsPersonAssigned":
@@ -574,7 +577,6 @@ namespace Wim.Core.Engine
             return string.Format(StoryCreated, storyTitle);
         }
 
-        //TODO
         private string CreateFeedback(string feedbackTitle, string teamToAddFeedbackFor, string boardToAddFeedbackFor, string feedbackRaiting, string feedbackStatus, string feedbackDescription)
         {
             if (string.IsNullOrEmpty(feedbackTitle))
@@ -672,39 +674,23 @@ namespace Wim.Core.Engine
             return string.Format(boardActivityToString);
         }
 
-        //    var product = this.products[productName];
-        //    this.shoppingCart.AddProduct(product);
+        private string ListAllWorkItems()
+        {
+            var AllWorkItems = allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).ToList();
 
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("----ALL WORK ITEMS IN APPLICAITION----");
+            long workItemCounter = 1;
+            foreach (var item in AllWorkItems)
+            {
+                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
+                workItemCounter++;
+            }
+            sb.AppendLine("---------------------------------");
 
-        //private GenderType GetGender(string genderAsString)
-        //{
-        //    switch (genderAsString.ToLower())
-        //    {
-        //        case "men":
-        //            return GenderType.Men;
-        //        case "women":
-        //            return GenderType.Women;
-        //        case "unisex":
-        //            return GenderType.Unisex;
-        //        default:
-        //            throw new InvalidOperationException(InvalidGenderType);
-        //    }
-        //}
-
-        //private Scent GetScent(string scentAsString)
-        //{
-        //    switch (scentAsString.ToLower())
-        //    {
-        //        case "lavander":
-        //            return Scent.Lavender;
-        //        case "vanilla":
-        //            return Scent.Vanilla;
-        //        case "rose":
-        //            return Scent.Rose;
-        //        default:
-        //            throw new InvalidOperationException(InvalidScentType);
-        //    }
-        //}
+            var resultedAllItems = sb.ToString().Trim();
+            return string.Format(resultedAllItems);
+        }
 
         private Priority GetPriority(string priorityString)
         {
