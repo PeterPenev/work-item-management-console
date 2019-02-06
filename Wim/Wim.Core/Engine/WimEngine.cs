@@ -225,6 +225,9 @@ namespace Wim.Core.Engine
                 case "ListAllWorkItems":
                     return this.ListAllWorkItems();
 
+                case "FilterBugs":
+                    return this.FilterBugs();
+
                 //InternalUseOnly
                 case "IsPersonAssigned":
                     var personName2 = command.Parameters[0];
@@ -680,6 +683,24 @@ namespace Wim.Core.Engine
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("----ALL WORK ITEMS IN APPLICAITION----");
+            long workItemCounter = 1;
+            foreach (var item in AllWorkItems)
+            {
+                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
+                workItemCounter++;
+            }
+            sb.AppendLine("---------------------------------");
+
+            var resultedAllItems = sb.ToString().Trim();
+            return string.Format(resultedAllItems);
+        }
+
+        private string FilterBugs()
+        {
+            var AllWorkItems = allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).Where(x => x.GetType() == typeof(Bug)).ToList();
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("----ALL BUGS IN APPLICAITION----");
             long workItemCounter = 1;
             foreach (var item in AllWorkItems)
             {
