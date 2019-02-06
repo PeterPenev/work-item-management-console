@@ -12,8 +12,12 @@ namespace Wim.Core.Engine
         private const string PersonExists = "Person with name {0} already exists!";
         private const string PersonCreated = "Person with name {0} was created!";
         private const string NullOrEmptyInput = "{0} cannot be null or empty!";
+        private const string NoSuchMemberInApplication = "There is no member with {0} name in the Application!";
+        private const string NoMembersInApplication = "There are no Members in the Application yet!";
+        private const string NoTeamsInApplication = "There are no Teams in the Application yet!";
+
+
         private const string NoPeopleInApplication = "There are no people!";
-        private const string NoTeamsInApplication = "There are no teams in application!";
         private const string MemberDoesNotExist = "The member does not exist!";
         private const string NullOrEmptyTeamName = "Team Name cannot be null or empty!";
         private const string NullOrEmptyMemberName = "Member Name cannot be null or empty!";
@@ -41,19 +45,27 @@ namespace Wim.Core.Engine
         {
         }
 
-        public void ValidateTeamsExistance(IAllTeams allTeams)
+        public void ValdateIfAnyTeamsExist(IAllTeams allTeams)
         {
             if (allTeams.AllTeamsList.Count == 0)
             {
-                throw new TeamNotInAppException(string.Format(NoTeamsInApplication));
+                throw new NoTeamsInAppException(string.Format(NoTeamsInApplication));
             }
         }
 
-        public void ValidateMembersExistance(IAllMembers allMembers)
+        public void ValdateIfAnyMembersExist(IAllMembers allMembers)
         {
             if (allMembers.AllMembersList.Count == 0)
             {
-                throw new MemberNotInAppException(string.Format(NoTeamsInApplication));
+                throw new NoMembersInAppException(string.Format(NoMembersInApplication));
+            }
+        }
+
+        public void ValidateMemberExistance(IAllMembers allMembers, string memberName)
+        {
+            if (!allMembers.AllMembersList.ContainsKey(memberName))
+            {
+                throw new MemberNotInAppException(string.Format(NoSuchMemberInApplication));
             }
         }
 
