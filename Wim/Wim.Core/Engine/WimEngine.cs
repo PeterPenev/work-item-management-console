@@ -246,6 +246,10 @@ namespace Wim.Core.Engine
                     var statusToFilterBugFor = command.Parameters[0];
                     return this.FilterBugsByStatus(statusToFilterBugFor);
 
+                case "FilterStoriesByPriority":
+                    var priorityToFilterStoryFor = command.Parameters[0];
+                    return this.FilterStoriesByPriority(priorityToFilterStoryFor);
+
 
                 default:
                     return string.Format(InvalidCommand, command.Name);
@@ -839,6 +843,34 @@ namespace Wim.Core.Engine
             var resultedAllItems = sb.ToString().Trim();
             return string.Format(resultedAllItems);
         }
+
+        private string FilterStoriesByPriority(string priorityToFilterStoryFor)
+        {
+            var priorityToCheckFor = GetPriority(priorityToFilterStoryFor);
+
+            var filteredStoriesByStatus = allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(x => x.GetType() == typeof(Story))
+                            .Select(workItem => (Story)workItem)
+                                .Where(bug => bug.Priority == priorityToCheckFor)
+                                    .ToList();
+
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"----ALL STORIES WITH {priorityToFilterStoryFor} PRIORITY IN APPLICAITION----");
+            long workItemCounter = 1;
+            foreach (var item in filteredStoriesByStatus)
+            {
+                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
+                workItemCounter++;
+            }
+            sb.AppendLine("---------------------------------");
+
+            var resultedAllItems = sb.ToString().Trim();
+            return string.Format(resultedAllItems);
+        }
+
 
         private Priority GetPriority(string priorityString)
         {
