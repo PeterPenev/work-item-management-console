@@ -254,6 +254,10 @@ namespace Wim.Core.Engine
                     var assigneeToFilterStoriesFor = command.Parameters[0];
                     return this.FilterStoriesByAssignee(assigneeToFilterStoriesFor);
 
+                case "FilterStoriesByStatus":
+                    var statusToFilterStoriesFor = command.Parameters[0];
+                    return this.FilterStoriesByStatus(statusToFilterStoriesFor);
+
 
                 default:
                     return string.Format(InvalidCommand, command.Name);
@@ -890,6 +894,33 @@ namespace Wim.Core.Engine
             sb.AppendLine($"----ALL STORIES ASSIGNED TO MEMBER: {assigneeToFilterBugFor} IN APPLICAITION----");
             long workItemCounter = 1;
             foreach (var item in filteredStoriesByStatus)
+            {
+                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
+                workItemCounter++;
+            }
+            sb.AppendLine("---------------------------------");
+
+            var resultedAllItems = sb.ToString().Trim();
+            return string.Format(resultedAllItems);
+        }
+
+        private string FilterStoriesByStatus(string statusToFilterStoryFor)
+        {
+            var storyStatusToCheckFor = GetStoryStatus(statusToFilterStoryFor);
+
+            var filteredStoriesbyStatus = allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(x => x.GetType() == typeof(Story))
+                            .Select(workItem => (Story)workItem)
+                                .Where(story => story.StoryStatus == storyStatusToCheckFor)
+                                    .ToList();
+
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"----ALL STORIES WITH {statusToFilterStoryFor} STATUS IN APPLICAITION----");
+            long workItemCounter = 1;
+            foreach (var item in filteredStoriesbyStatus)
             {
                 sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
                 workItemCounter++;
