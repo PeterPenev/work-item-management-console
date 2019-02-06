@@ -262,6 +262,10 @@ namespace Wim.Core.Engine
                     var statusToFilterFeedbackFor = command.Parameters[0];
                     return this.FilterBugsByStatus(statusToFilterFeedbackFor);
 
+                case "SortBugsBy":
+                    var factorToSortBugBy = command.Parameters[0];
+                    return this.SortBugsBy(factorToSortBugBy);
+
                 default:
                     return string.Format(InvalidCommand, command.Name);
             }
@@ -953,6 +957,63 @@ namespace Wim.Core.Engine
             foreach (var item in filteredFeedbacksbyStatus)
             {
                 sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
+                workItemCounter++;
+            }
+            sb.AppendLine("---------------------------------");
+
+            var resultedAllItems = sb.ToString().Trim();
+            return string.Format(resultedAllItems);
+        }
+
+        private string SortBugsBy(string factorToSortBy)
+        {
+            var filteredBugs = new List<Bug>();
+            if (factorToSortBy.ToLower() == "title")
+            {
+                filteredBugs = allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(x => x.GetType() == typeof(Bug))
+                            .Select(workItem => (Bug)workItem)
+                                  .OrderBy(bugToOrder => bugToOrder.Title)
+                                        .ToList();
+            }
+            else if (factorToSortBy.ToLower() == "priority")
+            {
+                filteredBugs = allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(x => x.GetType() == typeof(Bug))
+                            .Select(workItem => (Bug)workItem)
+                                  .OrderBy(bugToOrder => bugToOrder.Priority)
+                                        .ToList();
+            }
+            else if (factorToSortBy.ToLower() == "severity")
+            {
+                filteredBugs = allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(x => x.GetType() == typeof(Bug))
+                            .Select(workItem => (Bug)workItem)
+                                  .OrderBy(bugToOrder => bugToOrder.Severity)
+                                        .ToList();
+            }
+            else if (factorToSortBy.ToLower() == "status")
+            {
+                filteredBugs = allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(x => x.GetType() == typeof(Bug))
+                            .Select(workItem => (Bug)workItem)
+                                  .OrderBy(bugToOrder => bugToOrder.BugStatus)
+                                        .ToList();
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"----ALL BUGS IN APPLICAITION SORTED BY {factorToSortBy}----");
+            long workItemCounter = 1;
+            foreach (var item in filteredBugs)
+            {
+                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title}");
                 workItemCounter++;
             }
             sb.AppendLine("---------------------------------");
