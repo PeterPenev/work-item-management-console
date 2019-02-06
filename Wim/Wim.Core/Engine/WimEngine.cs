@@ -234,6 +234,10 @@ namespace Wim.Core.Engine
                 case "FilterFeedbacks":
                     return this.FilterFeedbacks();
 
+                case "FilterBugsByPriority":
+                    var priorityToFilterBugFor = command.Parameters[0];
+                    return this.FilterBugsByPriority(priorityToFilterBugFor);
+
                 //InternalUseOnly
                 case "IsPersonAssigned":
                     var personName2 = command.Parameters[0];
@@ -745,6 +749,33 @@ namespace Wim.Core.Engine
             sb.AppendLine("----ALL FEEDBACKS IN APPLICAITION----");
             long workItemCounter = 1;
             foreach (var item in AllWorkItems)
+            {
+                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
+                workItemCounter++;
+            }
+            sb.AppendLine("---------------------------------");
+
+            var resultedAllItems = sb.ToString().Trim();
+            return string.Format(resultedAllItems);
+        }
+
+        private string FilterBugsByPriority(string priorityToFilterBugFor)
+        {
+            var priorityToCheckFor = GetPriority(priorityToFilterBugFor);
+
+            var filteredBugsByStatus = allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(x => x.GetType() == typeof(Bug))
+                            .Select(workItem => (Bug)workItem)
+                                .Where(bug => bug.Priority == priorityToCheckFor)
+                                    .ToList();
+
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"----ALL BUGS WITH {priorityToFilterBugFor} PRIORITY IN APPLICAITION----");
+            long workItemCounter = 1;
+            foreach (var item in filteredBugsByStatus)
             {
                 sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
                 workItemCounter++;
