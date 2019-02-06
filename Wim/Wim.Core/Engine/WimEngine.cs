@@ -340,15 +340,9 @@ namespace Wim.Core.Engine
 
         private string CreateTeam(string teamName)
         {
-            if (string.IsNullOrEmpty(teamName))
-            {
-                return string.Format(NullOrEmptyTeamName);
-            }
-
-            if (this.allTeams.AllTeamsList.ContainsKey(teamName))
-            {
-                return string.Format(TeamNameExists);
-            }
+            var inputTypeForChecking = "Team Name";
+            inputValidator.IsNullOrEmpty(teamName, inputTypeForChecking);
+            inputValidator.ValidateTeamExistance(allTeams, teamName);            
 
             var team = this.factory.CreateTeam(teamName);
             allTeams.AddTeam(team);

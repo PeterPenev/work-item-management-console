@@ -13,6 +13,7 @@ namespace Wim.Core.Engine
         private const string PersonCreated = "Person with name {0} was created!";
         private const string NullOrEmptyInput = "{0} cannot be null or empty!";
         private const string NoSuchMemberInApplication = "There is no member with {0} name in the Application!";
+        private const string NoSuchTeamInApplication = "There is no team with {0} name in the Application!";
         private const string NoMembersInApplication = "There are no Members in the Application yet!";
         private const string NoTeamsInApplication = "There are no Teams in the Application yet!";
 
@@ -45,6 +46,14 @@ namespace Wim.Core.Engine
         {
         }
 
+        public void IsNullOrEmpty(string inputToCheck, string inputType)
+        {
+            if (string.IsNullOrEmpty(inputToCheck))
+            {
+                throw new ArgumentNullException(string.Format(NoTeamsInApplication));
+            }
+        }
+
         public void ValdateIfAnyTeamsExist(IAllTeams allTeams)
         {
             if (allTeams.AllTeamsList.Count == 0)
@@ -69,15 +78,13 @@ namespace Wim.Core.Engine
             }
         }
 
-        public void IsNullOrEmpty (string inputToCheck, string inputType)
+        public void ValidateTeamExistance(IAllTeams allTeams, string teamName)
         {
-            if (string.IsNullOrEmpty(inputToCheck))
+            if (!allTeams.AllTeamsList.ContainsKey(teamName))
             {
-                throw new ArgumentNullException(string.Format(NoTeamsInApplication));
+                throw new TeamNotInAppException(string.Format(NoSuchTeamInApplication));
             }
         }
 
-
-        
     }
 }
