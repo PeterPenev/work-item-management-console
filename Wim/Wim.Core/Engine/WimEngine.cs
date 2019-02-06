@@ -266,6 +266,10 @@ namespace Wim.Core.Engine
                     var factorToSortBugBy = command.Parameters[0];
                     return this.SortBugsBy(factorToSortBugBy);
 
+                case "SortStoriesBy":
+                    var factorToSortStoriesBy = command.Parameters[0];
+                    return this.SortStoriesBy(factorToSortStoriesBy);
+
                 default:
                     return string.Format(InvalidCommand, command.Name);
             }
@@ -1014,6 +1018,53 @@ namespace Wim.Core.Engine
             foreach (var item in filteredBugs)
             {
                 sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title}");
+                workItemCounter++;
+            }
+            sb.AppendLine("---------------------------------");
+
+            var resultedAllItems = sb.ToString().Trim();
+            return string.Format(resultedAllItems);
+        }
+
+        private string SortStoriesBy(string factorToSortBy)
+        {
+            var filteredStories = new List<Story>();
+            if (factorToSortBy.ToLower() == "title")
+            {
+                filteredStories = allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(x => x.GetType() == typeof(Story))
+                            .Select(workItem => (Story)workItem)
+                                  .OrderBy(storyToOrder => storyToOrder.Title)
+                                        .ToList();
+            }
+            else if (factorToSortBy.ToLower() == "priority")
+            {
+                filteredStories = allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(x => x.GetType() == typeof(Story))
+                            .Select(workItem => (Story)workItem)
+                                  .OrderBy(storyToOrder => storyToOrder.Priority)
+                                        .ToList();
+            }
+            else if (factorToSortBy.ToLower() == "status")
+            {
+                filteredStories = allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(x => x.GetType() == typeof(Story))
+                            .Select(workItem => (Story)workItem)
+                                  .OrderBy(storyToOrder => storyToOrder.StoryStatus)
+                                        .ToList();
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"----ALL STORIES IN APPLICAITION SORTED BY {factorToSortBy}----");
+            long workItemCounter = 1;
+            foreach (var item in filteredStories)
+            {
+                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
                 workItemCounter++;
             }
             sb.AppendLine("---------------------------------");
