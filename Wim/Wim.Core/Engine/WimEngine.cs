@@ -270,6 +270,10 @@ namespace Wim.Core.Engine
                     var factorToSortStoriesBy = command.Parameters[0];
                     return this.SortStoriesBy(factorToSortStoriesBy);
 
+                case "SortFeedbackBy":
+                    var factorToSortFeedbackBy = command.Parameters[0];
+                    return this.SortFeedbackBy(factorToSortFeedbackBy);
+
                 default:
                     return string.Format(InvalidCommand, command.Name);
             }
@@ -1072,6 +1076,54 @@ namespace Wim.Core.Engine
             var resultedAllItems = sb.ToString().Trim();
             return string.Format(resultedAllItems);
         }
+
+        private string SortFeedbackBy(string factorToSortBy)
+        {
+            var filteredFeedbacks = new List<Feedback>();
+            if (factorToSortBy.ToLower() == "title")
+            {
+                filteredFeedbacks = allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(x => x.GetType() == typeof(Feedback))
+                            .Select(workItem => (Feedback)workItem)
+                                  .OrderBy(storyToOrder => storyToOrder.Title)
+                                        .ToList();
+            }
+            else if (factorToSortBy.ToLower() == "rating")
+            {
+                filteredFeedbacks = allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(x => x.GetType() == typeof(Feedback))
+                            .Select(workItem => (Feedback)workItem)
+                                  .OrderBy(storyToOrder => storyToOrder.Rating)
+                                        .ToList();
+            }
+            else if (factorToSortBy.ToLower() == "status")
+            {
+                filteredFeedbacks = allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(x => x.GetType() == typeof(Feedback))
+                            .Select(workItem => (Feedback)workItem)
+                                  .OrderBy(storyToOrder => storyToOrder.FeedbackStatus)
+                                        .ToList();
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"----ALL FEEDBACKS IN APPLICAITION SORTED BY {factorToSortBy}----");
+            long workItemCounter = 1;
+            foreach (var item in filteredFeedbacks)
+            {
+                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
+                workItemCounter++;
+            }
+            sb.AppendLine("---------------------------------");
+
+            var resultedAllItems = sb.ToString().Trim();
+            return string.Format(resultedAllItems);
+        }
+
 
 
         private Priority GetPriority(string priorityString)
