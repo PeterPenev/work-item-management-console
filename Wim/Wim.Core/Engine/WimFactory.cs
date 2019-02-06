@@ -9,7 +9,7 @@ using Wim.Models.Interfaces;
 namespace Wim.Core.Engine
 {
     public class WimFactory : IWimFactory
-    {      
+    {
         public ITeam CreateTeam(string name)
         {
             return new Team(name);
@@ -33,6 +33,11 @@ namespace Wim.Core.Engine
         public IStory CreateStory(string title, string description, Priority priority, Size size, StoryStatus storyStatus, IMember assignee)
         {
             return new Story(title, description, priority, size, storyStatus, assignee);
+        }
+
+        public IFeedback CreateFeedback(string title, string description, int raiting, FeedbackStatus feedbackStatus)
+        {
+            return new Feedback(title, description, raiting, feedbackStatus);
         }
     }
 }

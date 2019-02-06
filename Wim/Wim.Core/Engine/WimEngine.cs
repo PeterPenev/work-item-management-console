@@ -34,6 +34,9 @@ namespace Wim.Core.Engine
         private const string NullOrEmptyStoryName = "Story Name cannot be null or empty!";
         private const string StoryAlreadyExists = "Story with name {0} already exists!";
         private const string StoryCreated = "Story {0} was created!";
+        private const string NullOrEmptyFeedbackName = "Feedback Name cannot be null or empty!";
+        private const string FeedbackAlreadyExists = "Feedback with name {0} already exists!";
+        private const string FeedbackCreated = "Feedback {0} was created!";
 
         //private const string CreamCreated = "Cream with name {0} was created!";
         //private const string ProductAddedToShoppingCart = "Product {0} was added to the shopping cart!";
@@ -44,9 +47,8 @@ namespace Wim.Core.Engine
         private const string InvalidStatusType = "Invalid Status type!";
         private const string InvalidStoryStatusType = "Invalid Story Status type!";
         private const string InvalidStorySizeType = "Invalid Story Size type!";
-
-        //private const string InvalidUsageType = "Invalid usage type!";
-        //private const string InvalidScentType = "Invalid scent type!";
+        private const string InvalidFeedbackStatusType = "Invalid Feedback Status type!";
+        private const string InvalidFeedbackRaiting = "{0} is Invalid Feedback Raiting value!";
 
 
         private static readonly WimEngine SingleInstance = new WimEngine();
@@ -200,6 +202,25 @@ namespace Wim.Core.Engine
 
                     return this.CreateStory(storyToAdd, teamToAddStoryFor, boardToAddStoryFor, storyPriority, storySize, storyStatus, storyAssignee, storyDescription);
 
+                //TODO
+                case "CreateFeedback":
+                    var feedbackToAdd = command.Parameters[0];
+                    var teamToAddFeedbackFor = command.Parameters[1];
+                    var boardToAddFeedbackFor = command.Parameters[2];
+                    var feedbackRaiting = command.Parameters[3];
+                    var feedbackStatus = command.Parameters[4];
+
+                    //build feedback description
+                    var buildFeedbackDescription = new StringBuilder();
+
+                    for (int i = 5; i < command.Parameters.Count; i++)
+                    {
+                        buildFeedbackDescription.Append(command.Parameters[i] + " ");
+                    }
+
+                    var feedbackDescription = buildFeedbackDescription.ToString().Trim();
+
+                    return this.CreateFeedback(feedbackToAdd, teamToAddFeedbackFor, boardToAddFeedbackFor, feedbackRaiting, feedbackStatus, feedbackDescription);
 
                 //InternalUseOnly
                 case "IsPersonAssigned":
@@ -466,7 +487,6 @@ namespace Wim.Core.Engine
             }
 
 
-
             Priority bugPriorityEnum = this.GetPriority(bugPriority);
             Severity bugSeverityEnum = this.GetSeverity(bugSeverity);
             IBug bugToAddToCollection = this.factory.CreateBug(bugTitle, bugPriorityEnum, bugSeverityEnum, allMembers.AllMembersList[bugAsignee], bugStepsToReproduce, bugDescription);
@@ -554,6 +574,71 @@ namespace Wim.Core.Engine
             return string.Format(StoryCreated, storyTitle);
         }
 
+        //TODO
+        private string CreateFeedback(string feedbackTitle, string teamToAddFeedbackFor, string boardToAddFeedbackFor, string feedbackRaiting, string feedbackStatus, string feedbackDescription)
+        {
+            if (string.IsNullOrEmpty(feedbackTitle))
+            {
+                return string.Format(NullOrEmptyFeedbackName);
+            }
+
+            if (string.IsNullOrEmpty(teamToAddFeedbackFor))
+            {
+                return string.Format(NullOrEmptyTeamName);
+            }
+
+            if (string.IsNullOrEmpty(boardToAddFeedbackFor))
+            {
+                return string.Format(NullOrEmptyBoardName);
+            }
+
+            if (!this.allTeams.AllTeamsList.ContainsKey(teamToAddFeedbackFor))
+            {
+                return string.Format(TeamDoesNotExist, teamToAddFeedbackFor);
+            }
+
+
+            var boardMatches = allTeams.AllTeamsList[teamToAddFeedbackFor].Boards
+              .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddFeedbackFor);
+
+            if (boardMatches == false)
+            {
+                return string.Format(BoardDoesNotExist, boardToAddFeedbackFor);
+            }
+
+            var boardToCheckFeedbackFor = allTeams.AllTeamsList[teamToAddFeedbackFor].Boards
+                .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddFeedbackFor).First();
+
+            var doesFeedbackExistInBoard = boardToCheckFeedbackFor.WorkItems
+                .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Feedback)).Any(feedbackThatExists => feedbackThatExists.Title == feedbackTitle);
+
+            if (doesFeedbackExistInBoard)
+            {
+                return string.Format(FeedbackAlreadyExists, boardToAddFeedbackFor);
+            }
+
+            //check feedback raiting
+            int intFeedbackRaiting;
+            bool feedbackRaitingParseResult = int.TryParse(feedbackRaiting, out intFeedbackRaiting);
+            if (!feedbackRaitingParseResult)
+            {
+                return string.Format(InvalidFeedbackRaiting, feedbackRaiting);
+
+            }
+
+            //parse feedbackStatusEnum
+            FeedbackStatus feedbackStatusEnum = this.GetFeedbackStatus(feedbackStatus);
+
+
+            IFeedback feedbackToAddToCollection = this.factory.CreateFeedback(feedbackTitle, feedbackDescription, intFeedbackRaiting, feedbackStatusEnum);
+
+            var indexOfBoardInSelectedTeam = allTeams.AllTeamsList[teamToAddFeedbackFor].Boards.FindIndex(boardIndex => boardIndex.Name == boardToAddFeedbackFor);
+
+            allTeams.AllTeamsList[teamToAddFeedbackFor].Boards[indexOfBoardInSelectedTeam].AddWorkitemToBoard(feedbackToAddToCollection);
+            allTeams.AllTeamsList[teamToAddFeedbackFor].Boards[indexOfBoardInSelectedTeam].AddActivityHistoryToBoard(feedbackToAddToCollection);
+
+            return string.Format(FeedbackCreated, feedbackTitle);
+        }
 
         private string ShowBoardActivityToString(string teamToShowBoardActivityFor, string boardActivityToShow)
         {
@@ -694,6 +779,22 @@ namespace Wim.Core.Engine
             }
         }
 
+        private FeedbackStatus GetFeedbackStatus(string feedbackStatusString)
+        {
+            switch (feedbackStatusString.ToLower())
+            {
+                case "new":
+                    return FeedbackStatus.New;
+                case "unscheduled":
+                    return FeedbackStatus.Unscheduled;
+                case "scheduled":
+                    return FeedbackStatus.Scheduled;
+                case "done":
+                    return FeedbackStatus.Done;
+                default:
+                    throw new InvalidOperationException(InvalidFeedbackStatusType);
+            }
+        }
 
         //Internal Use Only !
         private string IsPersonAssigned(string personName)

@@ -17,7 +17,7 @@ namespace Wim.Models
         {
             this.Name = name;
             this.workItems = new List<IWorkItem>();
-            this.activityHistory = new List<IActivityHistory>();            
+            this.activityHistory = new List<IActivityHistory>();
         }
 
         //properties
@@ -76,6 +76,15 @@ namespace Wim.Models
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"A {trackedWorkItem.GetType().Name} with Title: {trackedWorkItem.Title} was created by Member: {trackedMember.Name}");
+            string resultToAddAssMessage = sb.ToString().Trim();
+            var activityHistoryToAddToBoard = new ActivityHistory(resultToAddAssMessage);
+            this.activityHistory.Add(activityHistoryToAddToBoard);
+        }
+
+        public void AddActivityHistoryToBoard(IWorkItem trackedWorkItem)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"A {trackedWorkItem.GetType().Name} with Title: {trackedWorkItem.Title}");
             string resultToAddAssMessage = sb.ToString().Trim();
             var activityHistoryToAddToBoard = new ActivityHistory(resultToAddAssMessage);
             this.activityHistory.Add(activityHistoryToAddToBoard);

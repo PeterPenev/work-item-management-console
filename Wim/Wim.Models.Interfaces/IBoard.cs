@@ -14,6 +14,8 @@ namespace Wim.Models.Interfaces
 
         void AddActivityHistoryToBoard(IMember trackedMember, IWorkItem trackedWorkItem);
 
+        void AddActivityHistoryToBoard(IWorkItem trackedWorkItem);
+
         string ShowBoardActivityToString();
 
         void AddWorkitemToBoard(IWorkItem workItemToAdd);
