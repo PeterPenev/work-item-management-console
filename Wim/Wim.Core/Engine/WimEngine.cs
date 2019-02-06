@@ -1124,8 +1124,6 @@ namespace Wim.Core.Engine
             return string.Format(resultedAllItems);
         }
 
-
-
         private Priority GetPriority(string priorityString)
         {
             switch (priorityString.ToLower())
@@ -1214,16 +1212,6 @@ namespace Wim.Core.Engine
                 default:
                     throw new InvalidOperationException(InvalidFeedbackStatusType);
             }
-        }
-
-        //Internal Use Only !
-        private string IsPersonAssigned(string personName)
-        {
-            var personToCheckFor = allMembers.AllMembersList[personName];
-
-            var result = personToCheckFor.FindIfMemberIsAssigned(allTeams.AllTeamsList);
-
-            return string.Format(result.ToString());
-        }
+        }        
     }
 }
