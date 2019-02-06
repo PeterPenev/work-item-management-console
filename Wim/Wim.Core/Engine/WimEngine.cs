@@ -240,7 +240,11 @@ namespace Wim.Core.Engine
 
                 case "FilterBugsByAssignee":
                     var assigneeToFilterBugFor = command.Parameters[0];
-                    return this.FilterBugsByAssignee(assigneeToFilterBugFor);            
+                    return this.FilterBugsByAssignee(assigneeToFilterBugFor);
+
+                case "FilterBugsByStatus":
+                    var statusToFilterBugFor = command.Parameters[0];
+                    return this.FilterBugsByStatus(statusToFilterBugFor);
 
 
                 default:
@@ -809,6 +813,33 @@ namespace Wim.Core.Engine
             return string.Format(resultedAllItems);
         }
 
+        private string FilterBugsByStatus(string statusToFilterBugFor)
+        {
+            var bugStatusToCheckFor = GetBugStatus(statusToFilterBugFor);
+
+            var filteredBugsByStatus = allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(x => x.GetType() == typeof(Bug))
+                            .Select(workItem => (Bug)workItem)
+                                .Where(bug => bug.BugStatus == bugStatusToCheckFor)
+                                    .ToList();
+
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"----ALL BUGS WITH {statusToFilterBugFor} STATUS IN APPLICAITION----");
+            long workItemCounter = 1;
+            foreach (var item in filteredBugsByStatus)
+            {
+                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
+                workItemCounter++;
+            }
+            sb.AppendLine("---------------------------------");
+
+            var resultedAllItems = sb.ToString().Trim();
+            return string.Format(resultedAllItems);
+        }
+
         private Priority GetPriority(string priorityString)
         {
             switch (priorityString.ToLower())
@@ -839,7 +870,7 @@ namespace Wim.Core.Engine
             }
         }
 
-        private BugStatus Status(string bugStatusString)
+        private BugStatus GetBugStatus(string bugStatusString)
         {
             switch (bugStatusString.ToLower())
             {
