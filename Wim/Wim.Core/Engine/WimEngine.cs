@@ -350,19 +350,14 @@ namespace Wim.Core.Engine
             return string.Format(TeamCreated, teamName);
         }
 
-        private string ShowTeamActivityToString(string team)
+        private string ShowTeamActivityToString(string teamName)
         {
-            if (string.IsNullOrEmpty(team))
-            {
-                return string.Format(NullOrEmptyTeamName);
-            }
+            var inputTypeForChecking = "Team Name";
+            inputValidator.IsNullOrEmpty(teamName, inputTypeForChecking);
 
-            if (!allTeams.AllTeamsList.ContainsKey(team))
-            {
-                return string.Format(TeamDoesNotExist);
-            }
-
-            var teamToCheckHistoryFor = allTeams.AllTeamsList[team];
+            inputValidator.ValidateTeamExistance(allTeams, teamName);
+            
+            var teamToCheckHistoryFor = allTeams.AllTeamsList[teamName];
             var teamActivityHistory = teamToCheckHistoryFor.ShowTeamActivityToString();
 
             return string.Format(teamActivityHistory);
@@ -371,25 +366,15 @@ namespace Wim.Core.Engine
 
         private string AddPersonToTeam(string personToAddToTeam, string teamToAddPersonTo)
         {
-            if (string.IsNullOrEmpty(personToAddToTeam))
-            {
-                return string.Format(NullOrEmptyMemberName);
-            }
+            var personTypeForChecking = "Person Name";
+            inputValidator.IsNullOrEmpty(personToAddToTeam, personTypeForChecking);
 
-            if (string.IsNullOrEmpty(teamToAddPersonTo))
-            {
-                return string.Format(NullOrEmptyTeamName);
-            }
+            var teamTypeForChecking = "Team Name";
+            inputValidator.IsNullOrEmpty(teamToAddPersonTo, teamTypeForChecking);
 
-            if (!allMembers.AllMembersList.ContainsKey(personToAddToTeam))
-            {
-                return string.Format(MemberDoesNotExist);
-            }
+            inputValidator.ValidateTeamExistance(allTeams, teamToAddPersonTo);
 
-            if (!allTeams.AllTeamsList.ContainsKey(teamToAddPersonTo))
-            {
-                return string.Format(TeamDoesNotExist);
-            }
+            inputValidator.ValidateMemberExistance(allMembers, personToAddToTeam);            
 
             allTeams.AllTeamsList[teamToAddPersonTo].AddMember(allMembers.AllMembersList[personToAddToTeam]);
             return string.Format(PersonAddedToTeam, personToAddToTeam, teamToAddPersonTo);
@@ -397,15 +382,10 @@ namespace Wim.Core.Engine
 
         private string ShowAllTeamMembers(string teamToShowMembersFor)
         {
-            if (string.IsNullOrEmpty(teamToShowMembersFor))
-            {
-                return string.Format(NullOrEmptyTeamName);
-            }
+            var teamTypeForChecking = "Team Name";
+            inputValidator.IsNullOrEmpty(teamToShowMembersFor, teamTypeForChecking);
 
-            if (!allTeams.AllTeamsList.ContainsKey(teamToShowMembersFor))
-            {
-                return string.Format(TeamDoesNotExist);
-            }
+            inputValidator.ValidateTeamExistance(allTeams, teamToShowMembersFor);
 
             var allTeamMembersStringResult = allTeams.AllTeamsList[teamToShowMembersFor].ShowAllTeamMembers();
             return string.Format(allTeamMembersStringResult);
@@ -413,29 +393,15 @@ namespace Wim.Core.Engine
 
         private string CreateBoardToTeam(string boardToAddToTeam, string teamForAddingBoardTo)
         {
+            var boardTypeForChecking = "Board Name";
+            inputValidator.IsNullOrEmpty(boardToAddToTeam, boardTypeForChecking);
 
-            if (string.IsNullOrEmpty(boardToAddToTeam))
-            {
-                return string.Format(NullOrEmptyBoardName);
-            }
+            var teamTypeForChecking = "Person Name";
+            inputValidator.IsNullOrEmpty(teamForAddingBoardTo, teamTypeForChecking);
 
-            if (string.IsNullOrEmpty(teamForAddingBoardTo))
-            {
-                return string.Format(NullOrEmptyTeamName);
-            }
+            inputValidator.ValidateTeamExistance(allTeams, teamForAddingBoardTo);
 
-            if (!allTeams.AllTeamsList.ContainsKey(teamForAddingBoardTo))
-            {
-                return string.Format(TeamDoesNotExist, teamForAddingBoardTo);
-            }
-
-            var boardMatches = allTeams.AllTeamsList[teamForAddingBoardTo].Boards
-              .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddToTeam);
-
-            if (boardMatches.Count() > 0)
-            {
-                return string.Format(BoardAlreadyExists, boardToAddToTeam);
-            }
+            inputValidator.ValidateBoardExistance(allTeams, boardToAddToTeam, teamForAddingBoardTo);
 
             var board = this.factory.CreateBoard(boardToAddToTeam);
             allTeams.AllTeamsList[teamForAddingBoardTo].AddBoard(board);

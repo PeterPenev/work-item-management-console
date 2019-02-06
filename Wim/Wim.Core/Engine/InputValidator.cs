@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Wim.Core.CustomExceptions;
 using Wim.Models.Interfaces;
@@ -83,6 +84,17 @@ namespace Wim.Core.Engine
             if (!allTeams.AllTeamsList.ContainsKey(teamName))
             {
                 throw new TeamNotInAppException(string.Format(NoSuchTeamInApplication));
+            }
+        }
+
+        public void ValidateBoardExistance(IAllTeams allTeams, string boardToAddToTeam, string teamForAddingBoardTo)
+        {
+            var boardMatches = allTeams.AllTeamsList[teamForAddingBoardTo].Boards
+             .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddToTeam);
+
+            if (boardMatches.Count() > 0)
+            {
+                throw new BoardNotInAppException(string.Format(BoardAlreadyExists, boardToAddToTeam));
             }
         }
 
