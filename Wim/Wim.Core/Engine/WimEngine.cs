@@ -501,45 +501,21 @@ namespace Wim.Core.Engine
 
         private string CreateFeedback(string feedbackTitle, string teamToAddFeedbackFor, string boardToAddFeedbackFor, string feedbackRaiting, string feedbackStatus, string feedbackDescription)
         {
-            if (string.IsNullOrEmpty(feedbackTitle))
-            {
-                return string.Format(NullOrEmptyFeedbackName);
-            }
+            var feedbackTypeForChecking = "Feedback Title";
+            inputValidator.IsNullOrEmpty(feedbackTitle, feedbackTypeForChecking);
 
-            if (string.IsNullOrEmpty(teamToAddFeedbackFor))
-            {
-                return string.Format(NullOrEmptyTeamName);
-            }
+            var teamTypeForChecking = "Team Name";
+            inputValidator.IsNullOrEmpty(teamToAddFeedbackFor, teamTypeForChecking);
 
-            if (string.IsNullOrEmpty(boardToAddFeedbackFor))
-            {
-                return string.Format(NullOrEmptyBoardName);
-            }
+            var boardTypeForChecking = "Board Name";
+            inputValidator.IsNullOrEmpty(boardToAddFeedbackFor, boardTypeForChecking);
 
-            if (!this.allTeams.AllTeamsList.ContainsKey(teamToAddFeedbackFor))
-            {
-                return string.Format(TeamDoesNotExist, teamToAddFeedbackFor);
-            }
+            inputValidator.ValidateTeamExistance(allTeams, teamToAddFeedbackFor);
 
+            inputValidator.ValidateBoardExistance(allTeams, boardToAddFeedbackFor, teamToAddFeedbackFor);
 
-            var boardMatches = allTeams.AllTeamsList[teamToAddFeedbackFor].Boards
-              .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddFeedbackFor);
+            inputValidator.ValidateFeedbackExistanceInBoard(allTeams, boardToAddFeedbackFor, teamToAddFeedbackFor, feedbackTitle);
 
-            if (boardMatches == false)
-            {
-                return string.Format(BoardDoesNotExist, boardToAddFeedbackFor);
-            }
-
-            var boardToCheckFeedbackFor = allTeams.AllTeamsList[teamToAddFeedbackFor].Boards
-                .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddFeedbackFor).First();
-
-            var doesFeedbackExistInBoard = boardToCheckFeedbackFor.WorkItems
-                .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Feedback)).Any(feedbackThatExists => feedbackThatExists.Title == feedbackTitle);
-
-            if (doesFeedbackExistInBoard)
-            {
-                return string.Format(FeedbackAlreadyExists, boardToAddFeedbackFor);
-            }
 
             //check feedback raiting
             int intFeedbackRaiting;
