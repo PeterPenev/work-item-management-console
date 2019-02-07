@@ -1247,19 +1247,23 @@ namespace Wim.Core.Engine
 
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"----ALL BUGS WITH {priorityToFilterBugFor} PRIORITY IN APPLICAITION----");
+           
             long workItemCounter = 1;
-            foreach (var item in filteredBugsByStatus)
-            {
-                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
-                workItemCounter++;
-            }
-            ///TO DO
+
             if (filteredBugsByStatus.Count == 0)
             {
-                sb.AppendLine($"There are no {filteredBugsByStatus.GetType().GetElementType().Name} with: {priorityToFilterBugFor} Priority!");
+                sb.AppendLine($"There are no Bugs with: {priorityToFilterBugFor} Priority in the app yet!");              
             }
-            sb.AppendLine("---------------------------------");
+            else
+            {
+                sb.AppendLine($"----ALL BUGS WITH {priorityToFilterBugFor} PRIORITY IN APPLICAITION----");
+                foreach (var item in filteredBugsByStatus)
+                {
+                    sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
+                    workItemCounter++;
+                }
+                sb.AppendLine("---------------------------------");
+            }            
 
             var resultedAllItems = sb.ToString().Trim();
             return string.Format(resultedAllItems);
