@@ -9,6 +9,8 @@ namespace Wim.Models.Interfaces
     {
         Priority Priority { get; }
 
+        IMember Assignee { get; }
+
         Size Size { get; }
 
         StoryStatus StoryStatus { get; }

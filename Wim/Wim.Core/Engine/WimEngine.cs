@@ -1356,51 +1356,81 @@ namespace Wim.Core.Engine
 
         private string FilterStoriesByPriority(string priorityToFilterStoryFor)
         {
+            var priorityTypeForChecking = "Priority";
+            inputValidator.IsNullOrEmpty(priorityToFilterStoryFor, priorityTypeForChecking);
+
+            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+
+            inputValidator.ValidateIfAnyStoriesExist(allTeams);
+
             var priorityToCheckFor = this.enumParser.GetPriority(priorityToFilterStoryFor);
 
-            var filteredStoriesByStatus = allTeams.AllTeamsList.Values
+            var filteredStoriesByPriority = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
                     .SelectMany(x => x.WorkItems)
-                        .Where(x => x.GetType() == typeof(Story))
-                            .Select(workItem => (Story)workItem)
+                        .Where(x => x.GetType() == typeof(IStory))
+                            .Select(workItem => (IStory)workItem)
                                 .Where(bug => bug.Priority == priorityToCheckFor)
                                     .ToList();
 
 
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"----ALL STORIES WITH {priorityToFilterStoryFor} PRIORITY IN APPLICAITION----");
+            StringBuilder sb = new StringBuilder();            
             long workItemCounter = 1;
-            foreach (var item in filteredStoriesByStatus)
+
+            if (filteredStoriesByPriority.Count == 0)
             {
-                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
-                workItemCounter++;
+                sb.AppendLine($"There are no Stories with: {priorityToFilterStoryFor} Status in the app yet!");
             }
-            sb.AppendLine("---------------------------------");
+            else
+            {
+                sb.AppendLine($"----ALL STORIES WITH {priorityToFilterStoryFor} PRIORITY IN APPLICAITION----");
+                foreach (var item in filteredStoriesByPriority)
+                {
+                    sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
+                    workItemCounter++;
+                }
+                sb.AppendLine("---------------------------------");
+            }           
 
             var resultedAllItems = sb.ToString().Trim();
             return string.Format(resultedAllItems);
         }
 
-        private string FilterStoriesByAssignee(string assigneeToFilterBugFor)
+        private string FilterStoriesByAssignee(string assigneeToFilterStoryFor)
         {
-            var filteredStoriesByStatus = allTeams.AllTeamsList.Values
+            var assigneeTypeForChecking = "Assignee";
+            inputValidator.IsNullOrEmpty(assigneeToFilterStoryFor, assigneeTypeForChecking);
+
+            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+
+            inputValidator.ValidateIfAnyStoriesExist(allTeams);
+
+            var filteredStoriesByAssignee = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
                     .SelectMany(x => x.WorkItems)
-                        .Where(x => x.GetType() == typeof(Story))
-                            .Select(workItem => (Story)workItem)
-                                .Where(story => story.Assignee.Name == assigneeToFilterBugFor)
+                        .Where(x => x.GetType() == typeof(IStory))
+                            .Select(workItem => (IStory)workItem)
+                                .Where(story => story.Assignee.Name == assigneeToFilterStoryFor)
                                     .ToList();
 
 
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"----ALL STORIES ASSIGNED TO MEMBER: {assigneeToFilterBugFor} IN APPLICAITION----");
+            StringBuilder sb = new StringBuilder();            
             long workItemCounter = 1;
-            foreach (var item in filteredStoriesByStatus)
+
+            if (filteredStoriesByAssignee.Count == 0)
             {
-                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
-                workItemCounter++;
+                sb.AppendLine($"There are no Stories with: {assigneeToFilterStoryFor} Assignee in the app yet!");
             }
-            sb.AppendLine("---------------------------------");
+            else
+            {
+                sb.AppendLine($"----ALL STORIES ASSIGNED TO MEMBER: {assigneeToFilterStoryFor} IN APPLICAITION----");
+                foreach (var item in filteredStoriesByAssignee)
+                {
+                    sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
+                    workItemCounter++;
+                }
+                sb.AppendLine("---------------------------------");
+            }            
 
             var resultedAllItems = sb.ToString().Trim();
             return string.Format(resultedAllItems);
@@ -1408,26 +1438,41 @@ namespace Wim.Core.Engine
 
         private string FilterStoriesByStatus(string statusToFilterStoryFor)
         {
+            var statusTypeForChecking = "Status";
+            inputValidator.IsNullOrEmpty(statusToFilterStoryFor, statusTypeForChecking);
+
+            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+
+            inputValidator.ValidateIfAnyStoriesExist(allTeams);
+
             var storyStatusToCheckFor = this.enumParser.GetStoryStatus(statusToFilterStoryFor);
 
             var filteredStoriesbyStatus = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
                     .SelectMany(x => x.WorkItems)
-                        .Where(x => x.GetType() == typeof(Story))
-                            .Select(workItem => (Story)workItem)
+                        .Where(x => x.GetType() == typeof(IStory))
+                            .Select(workItem => (IStory)workItem)
                                 .Where(story => story.StoryStatus == storyStatusToCheckFor)
                                     .ToList();
 
 
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"----ALL STORIES WITH {statusToFilterStoryFor} STATUS IN APPLICAITION----");
+            StringBuilder sb = new StringBuilder();           
             long workItemCounter = 1;
-            foreach (var item in filteredStoriesbyStatus)
+
+            if (filteredStoriesbyStatus.Count == 0)
             {
-                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
-                workItemCounter++;
+                sb.AppendLine($"There are no Stories with: {statusToFilterStoryFor} Status in the app yet!");
             }
-            sb.AppendLine("---------------------------------");
+            else
+            {
+                sb.AppendLine($"----ALL STORIES WITH {statusToFilterStoryFor} STATUS IN APPLICAITION----");
+                foreach (var item in filteredStoriesbyStatus)
+                {
+                    sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
+                    workItemCounter++;
+                }
+                sb.AppendLine("---------------------------------");
+            }            
 
             var resultedAllItems = sb.ToString().Trim();
             return string.Format(resultedAllItems);
