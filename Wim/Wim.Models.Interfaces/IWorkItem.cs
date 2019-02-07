@@ -14,6 +14,10 @@ namespace Wim.Models.Interfaces
 
         List<string> Comments { get; }
 
-        List<string> History { get; }
+        List<IActivityHistory> ActivityHistory { get; }
+
+        void AddActivityHistoryToWorkItem(IMember trackedMember, IWorkItem trackedWorkItem);
+
+        void AddActivityHistoryToWorkItem<T>(IMember trackedMember, IWorkItem trackedWorkItem, T changedEnum);
     }
 }

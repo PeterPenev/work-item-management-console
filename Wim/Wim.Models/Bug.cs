@@ -91,7 +91,11 @@ namespace Wim.Models
             {
                 this.assignee = value;
             }
-        }   
-        
+        }
+
+        public void ChangeBugPriority(Priority priority)
+        {
+            this.Priority = priority;
+        }
     }
 }

@@ -93,5 +93,14 @@ namespace Wim.Models
             var activityHistoryToAddToBoard = new ActivityHistory(resultToAddAssMessage);
             this.activityHistory.Add(activityHistoryToAddToBoard);
         }
+
+        public void AddActivityHistoryToBoard<T>(IMember trackedMember, IWorkItem trackedWorkItem, T changedEnum)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"A {trackedWorkItem.GetType().Name} with Title: {trackedWorkItem.Title}'s {changedEnum.GetType().Name} was changed by Member: {trackedMember.Name} to {changedEnum}");
+            string resultToAddAssMessage = sb.ToString().Trim();
+            var activityHistoryToAddToBoard = new ActivityHistory(resultToAddAssMessage);
+            this.activityHistory.Add(activityHistoryToAddToBoard);
+        }
     }
 }

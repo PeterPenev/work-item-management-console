@@ -15,5 +15,7 @@ namespace Wim.Models.Interfaces
         BugStatus BugStatus { get; }
 
         IMember Assignee { get; set; }
+
+        void ChangeBugPriority(Priority priority);
     }
 }
