@@ -531,29 +531,16 @@ namespace Wim.Core.Engine
         }
 
         private string ShowBoardActivityToString(string teamToShowBoardActivityFor, string boardActivityToShow)
-        {
-            if (string.IsNullOrEmpty(teamToShowBoardActivityFor))
-            {
-                return string.Format(NullOrEmptyTeamName);
-            }
+        {           
+            var teamTypeForChecking = "Team Name";
+            inputValidator.IsNullOrEmpty(teamToShowBoardActivityFor, teamTypeForChecking);
 
-            if (!allTeams.AllTeamsList.ContainsKey(teamToShowBoardActivityFor))
-            {
-                return string.Format(TeamDoesNotExist);
-            }
+            var boardTypeForChecking = "Board Name";
+            inputValidator.IsNullOrEmpty(boardActivityToShow, boardTypeForChecking);
 
-            if (string.IsNullOrEmpty(boardActivityToShow))
-            {
-                return string.Format(NullOrEmptyMemberName);
-            }
+            inputValidator.ValidateTeamExistance(allTeams, teamToShowBoardActivityFor);
 
-            var boardMatches = allTeams.AllTeamsList[teamToShowBoardActivityFor].Boards
-              .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardActivityToShow);
-
-            if (boardMatches.Count() == 0)
-            {
-                return string.Format(BoardAlreadyExists, boardActivityToShow);
-            }
+            inputValidator.ValidateBoardExistance(allTeams, boardActivityToShow, teamToShowBoardActivityFor);           
 
             var boardToDisplayActivityFor = allTeams.AllTeamsList[teamToShowBoardActivityFor].Boards
               .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardActivityToShow).FirstOrDefault();
