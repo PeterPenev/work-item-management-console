@@ -23,6 +23,7 @@ namespace Wim.Core.Engine
         private const string BugPriorityChanged = "Bug {0} priority is changed to {1}";
         private const string BugSeverityChanged = "Bug {0} severity is changed to {1}";
         private const string BugStatusChanged = "Bug {0} status is changed to {1}";
+        private const string StoryPriorityChanged = "Story {0} priority is changed to {1}";
 
         private static readonly WimEngine SingleInstance = new WimEngine();
 
@@ -223,6 +224,15 @@ namespace Wim.Core.Engine
                     var authorOfBugStatusChange = command.Parameters[4];
 
                     return this.ChangeBugStatus(teamToChangeBugStatusFor, boardToChangeBugStatusFor, bugToChangeStatusFor, newStatus, authorOfBugStatusChange);
+
+                case "ChangeStoryPriority":
+                    var teamToChangeStoryPriorityFor = command.Parameters[0];
+                    var boardToChangeStoryPriorityFor = command.Parameters[1];
+                    var storyToChangePriorityFor = command.Parameters[2];
+                    var newStoryPriority = command.Parameters[3];
+                    var authorOfStoryPriorityChange = command.Parameters[4];
+
+                    return this.ChangeStoryPriority(teamToChangeStoryPriorityFor, boardToChangeStoryPriorityFor, storyToChangePriorityFor, newStoryPriority, authorOfStoryPriorityChange);
 
                 case "ListAllWorkItems":
                     return this.ListAllWorkItems();
@@ -1179,6 +1189,82 @@ namespace Wim.Core.Engine
 
 
             return string.Format(BugStatusChanged, bugToChangeStatusFor, newStatus);
+        }
+
+        private string ChangeStoryPriority(string teamToChangeStoryPriorityFor, string boardToChangeStoryPriorityFor, string storyToChangePriorityFor, string newStoryPriority, string authorOfStoryPriorityChange)
+        {
+            //if (string.IsNullOrEmpty(teamToChangeStoryPriorityFor))
+            //{
+            //    return string.Format(NullOrEmptyTeamName);
+            //}
+
+            //if (string.IsNullOrEmpty(boardToChangeStoryPriorityFor))
+            //{
+            //    return string.Format(NullOrEmptyBoardName);
+            //}
+
+            //if (string.IsNullOrEmpty(storyToChangePriorityFor))
+            //{
+            //    return string.Format(NullOrEmptyBugName);
+            //}
+
+
+
+            //if (!allTeams.AllTeamsList.ContainsKey(teamToChangeStoryPriorityFor))
+            //{
+            //    return string.Format(TeamDoesNotExist);
+            //}
+
+            ////Check whether such a board exists in the team
+            //var boardMatches = allTeams.AllTeamsList[teamToChangeStoryPriorityFor].Boards
+            //  .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeStoryPriorityFor);
+
+            //if (boardMatches == false)
+            //{
+            //    return string.Format(BoardDoesNotExist, boardToChangeStoryPriorityFor);
+            //}
+
+            //var priorityToChangeInBug = GetPriority(priority);
+
+            var newPriorityEnum = enumParser.GetPriority(newStoryPriority);
+
+            allTeams.AllTeamsList[teamToChangeStoryPriorityFor].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeStoryPriorityFor).WorkItems
+                .Select(item => (IStory)item)
+                 .First(storyInSelectedBoard => storyInSelectedBoard.Title == storyToChangePriorityFor)
+                  .ChangeStoryPriority(newPriorityEnum);
+
+
+            //Add to member activity history
+            allTeams.AllTeamsList[teamToChangeStoryPriorityFor].Members
+                .Find(member => member.Name == authorOfStoryPriorityChange)
+                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
+                        .Boards.Find(board => board.Name == boardToChangeStoryPriorityFor)
+                            .WorkItems.Find(workItem => workItem.Title == storyToChangePriorityFor),
+                                allTeams.AllTeamsList[teamToChangeStoryPriorityFor],
+                                    allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
+                                        .Boards.Find(board => board.Name == boardToChangeStoryPriorityFor));
+
+            //Add to board activity history
+            allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
+               .Boards.Find(board => board.Name == boardToChangeStoryPriorityFor)
+                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
+                 .Members.Find(member => member.Name == authorOfStoryPriorityChange),
+                  allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
+                       .Boards.Find(board => board.Name == boardToChangeStoryPriorityFor)
+                           .WorkItems.Find(workItem => workItem.Title == storyToChangePriorityFor));
+
+            //Add to WorkItem Activity History
+            allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
+                .Boards.Find(board => board.Name == boardToChangeStoryPriorityFor)
+                .WorkItems.Find(item => item.Title == storyToChangePriorityFor)
+                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
+                  .Members.Find(member => member.Name == authorOfStoryPriorityChange),
+                   allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
+                        .Boards.Find(board => board.Name == boardToChangeStoryPriorityFor)
+                            .WorkItems.Find(workItem => workItem.Title == storyToChangePriorityFor), newPriorityEnum);
+
+            return string.Format(StoryPriorityChanged, storyToChangePriorityFor, newPriorityEnum);
         }
     }
 }

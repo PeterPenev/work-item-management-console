@@ -71,7 +71,9 @@ namespace Wim.Models
         }
 
         //methods
-
-
+        public void ChangeStoryPriority(Priority priority)
+        {
+            this.Priority = priority;
+        }
     }
 }
