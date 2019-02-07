@@ -10,6 +10,8 @@ namespace Wim.Core.Engine
 {
     public class InputValidator
     {
+        private const string NoTeamsInApplication = "There are no Teams in the Application yet!";
+
         private const string InvalidCommand = "Invalid command name: {0}!";
         private const string PersonExists = "Person with name {0} already exists!";
         private const string PersonCreated = "Person with name {0} was created!";
@@ -17,7 +19,7 @@ namespace Wim.Core.Engine
         private const string NoSuchMemberInApplication = "There is no member with {0} name in the Application!";
         private const string NoSuchTeamInApplication = "There is no team with {0} name in the Application!";
         private const string NoMembersInApplication = "There are no Members in the Application yet!";
-        private const string NoTeamsInApplication = "There are no Teams in the Application yet!";
+
         private const string BugAlreadyExists = "Bug with name {0} in Board: {1} part of Team {2} already exists!";
         private const string StoryAlreadyExists = "Story with name {0} in Board: {1} part of Team {2} already exists!";
         private const string FeedbackAlreadyExists = "Feedback with name {0} in Board: {1} part of Team {2} already exists!";
@@ -54,7 +56,7 @@ namespace Wim.Core.Engine
         {
             if (string.IsNullOrEmpty(inputToCheck))
             {
-                throw new ArgumentNullException(string.Format(NoTeamsInApplication));
+                throw new ArgumentNullException(NoTeamsInApplication);
             }
         }
 
@@ -62,7 +64,7 @@ namespace Wim.Core.Engine
         {
             if (allTeams.AllTeamsList.Count == 0)
             {
-                throw new NoTeamsInAppException(string.Format(NoTeamsInApplication));
+                throw new NoTeamsInAppException(NoTeamsInApplication);
             }
         }
 
@@ -70,7 +72,7 @@ namespace Wim.Core.Engine
         {
             if (allMembers.AllMembersList.Count == 0)
             {
-                throw new NoMembersInAppException(string.Format(NoMembersInApplication));
+                throw new NoMembersInAppException(NoMembersInApplication);
             }
         }
 
@@ -78,7 +80,7 @@ namespace Wim.Core.Engine
         {
             if (allTeams.AllTeamsList[teamToShowBoardsFor].Boards.Count() == 0)
             {
-                throw new NoBoardsInTeamException(string.Format(NoBoardsInTeam));
+                throw new NoBoardsInTeamException(NoBoardsInTeam);
             }
         }
 
@@ -86,15 +88,16 @@ namespace Wim.Core.Engine
         {
             if (!allMembers.AllMembersList.ContainsKey(memberName))
             {
-                throw new MemberNotInAppException(string.Format(NoSuchMemberInApplication));
+                throw new MemberNotInAppException(NoSuchMemberInApplication);
             }
         }
 
         public void ValidateTeamExistance(IAllTeams allTeams, string teamName)
-        {
+        {            
             if (!allTeams.AllTeamsList.ContainsKey(teamName))
             {
-                throw new TeamNotInAppException(string.Format(NoSuchTeamInApplication));
+                var NoSuchTeamInApplicationMessage = string.Format(NoSuchTeamInApplication, teamName);
+                throw new TeamNotInAppException(NoSuchTeamInApplicationMessage);
             }
         }
 
@@ -105,7 +108,8 @@ namespace Wim.Core.Engine
 
             if (boardMatches.Count() > 0)
             {
-                throw new BoardNotInAppException(string.Format(BoardAlreadyExists, boardToAddToTeam));
+                var BoardAlreadyExistsMessage = string.Format(BoardAlreadyExists, boardToAddToTeam);
+                throw new BoardNotInAppException(BoardAlreadyExistsMessage);
             }
         }
 
@@ -119,7 +123,8 @@ namespace Wim.Core.Engine
 
             if (doesBugExistInBoard)
             {
-                throw new BugAlreadyInBoardException(string.Format(BugAlreadyExists, bugTitle, boardToAddBugFor, teamToAddBugFor));
+                var BugAlreadyExistsMessage = string.Format(BugAlreadyExists, bugTitle, boardToAddBugFor, teamToAddBugFor);
+                throw new BugAlreadyInBoardException(BugAlreadyExistsMessage);
             }
         }
 
@@ -133,7 +138,8 @@ namespace Wim.Core.Engine
 
             if (doesStoryExistInBoard)
             {
-                throw new StoryAlreadyInBoardException(string.Format(StoryAlreadyExists, storyTitle, boardToAddStoryFor, teamToAddStoryFor));
+                var StoryAlreadyExistsMessage = string.Format(StoryAlreadyExists, storyTitle, boardToAddStoryFor, teamToAddStoryFor);
+                throw new StoryAlreadyInBoardException(StoryAlreadyExistsMessage);
             }
         }
 
@@ -143,11 +149,13 @@ namespace Wim.Core.Engine
                    .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddFeedbackFor).First();
 
             var doesFeedbackExistInBoard = boardToCheckFeedbackFor.WorkItems
-                   .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Feedback)).Any(feedbackThatExists => feedbackThatExists.Title == feedbackTitle);
+                   .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Feedback))
+                   .Any(feedbackThatExists => feedbackThatExists.Title == feedbackTitle);
 
             if (doesFeedbackExistInBoard)
             {
-                throw new FeedbackAlreadyInBoardException(string.Format(FeedbackAlreadyExists, feedbackTitle, boardToAddFeedbackFor, teamToAddFeedbackFor));
+                var FeedbackAlreadyExistsMessage = string.Format(FeedbackAlreadyExists, feedbackTitle, boardToAddFeedbackFor, teamToAddFeedbackFor);
+                throw new FeedbackAlreadyInBoardException(FeedbackAlreadyExistsMessage);
             }
         }
 
@@ -155,8 +163,9 @@ namespace Wim.Core.Engine
         {
             bool isRatingConvertable = int.TryParse(ratingForCheck, out var intFeedbackRaiting);
             if (!isRatingConvertable)
-            {               
-                throw new RatingCannotBeConvertedException(string.Format(RatingCannotBeConverted, ratingForCheck));
+            {
+                var RatingCannotBeConvertedMessage = string.Format(RatingCannotBeConverted, ratingForCheck);
+                throw new RatingCannotBeConvertedException(RatingCannotBeConvertedMessage);
             }
             return intFeedbackRaiting;
         }       

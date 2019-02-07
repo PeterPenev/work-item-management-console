@@ -12,7 +12,6 @@ namespace Wim.Core.Engine
     public sealed class WimEngine : IEngine
     {
         private const string InvalidCommand = "Invalid command name: {0}!";
-        //private const string PersonExists = "Person with name {0} already exists!";
         private const string PersonCreated = "Person with name {0} was created!";
         //private const string NoPeopleInApplication = "There are no people!";
         //private const string NoTeamsInApplication = "There are no teams in application!";
@@ -38,6 +37,8 @@ namespace Wim.Core.Engine
         //private const string FeedbackAlreadyExists = "Feedback with name {0} already exists!";
         private const string FeedbackCreated = "Feedback {0} was created!";
         //private const string InvalidFeedbackRaiting = "{0} is Invalid Feedback Raiting value!";
+
+        private const string PersonExists = "Person with name {0} already exists!";
 
 
 
@@ -342,7 +343,7 @@ namespace Wim.Core.Engine
         {
             var inputTypeForChecking = "Team Name";
             inputValidator.IsNullOrEmpty(teamName, inputTypeForChecking);
-            inputValidator.ValidateTeamExistance(allTeams, teamName);            
+                    
 
             var team = this.factory.CreateTeam(teamName);
             allTeams.AddTeam(team);
@@ -355,10 +356,14 @@ namespace Wim.Core.Engine
             var inputTypeForChecking = "Team Name";
             inputValidator.IsNullOrEmpty(teamName, inputTypeForChecking);
 
+            inputValidator.ValdateIfAnyTeamsExist(allTeams);
+
             inputValidator.ValidateTeamExistance(allTeams, teamName);
             
             var teamToCheckHistoryFor = allTeams.AllTeamsList[teamName];
             var teamActivityHistory = teamToCheckHistoryFor.ShowTeamActivityToString();
+
+            
 
             return string.Format(teamActivityHistory);
         }
