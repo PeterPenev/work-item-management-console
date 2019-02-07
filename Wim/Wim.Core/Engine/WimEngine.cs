@@ -516,21 +516,11 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateFeedbackExistanceInBoard(allTeams, boardToAddFeedbackFor, teamToAddFeedbackFor, feedbackTitle);
 
+            var intFeedbackRating = inputValidator.ValidateRatingConversion(feedbackRaiting);            
 
-            //check feedback raiting
-            int intFeedbackRaiting;
-            bool feedbackRaitingParseResult = int.TryParse(feedbackRaiting, out intFeedbackRaiting);
-            if (!feedbackRaitingParseResult)
-            {
-                return string.Format(InvalidFeedbackRaiting, feedbackRaiting);
-
-            }
-
-            //parse feedbackStatusEnum
             FeedbackStatus feedbackStatusEnum = this.enumParser.GetFeedbackStatus(feedbackStatus);
 
-
-            IFeedback feedbackToAddToCollection = this.factory.CreateFeedback(feedbackTitle, feedbackDescription, intFeedbackRaiting, feedbackStatusEnum);
+            IFeedback feedbackToAddToCollection = this.factory.CreateFeedback(feedbackTitle, feedbackDescription, intFeedbackRating, feedbackStatusEnum);
 
             var indexOfBoardInSelectedTeam = allTeams.AllTeamsList[teamToAddFeedbackFor].Boards.FindIndex(boardIndex => boardIndex.Name == boardToAddFeedbackFor);
 

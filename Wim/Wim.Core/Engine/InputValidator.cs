@@ -21,7 +21,7 @@ namespace Wim.Core.Engine
         private const string BugAlreadyExists = "Bug with name {0} in Board: {1} part of Team {2} already exists!";
         private const string StoryAlreadyExists = "Story with name {0} in Board: {1} part of Team {2} already exists!";
         private const string FeedbackAlreadyExists = "Feedback with name {0} in Board: {1} part of Team {2} already exists!";
-
+        private const string RatingCannotBeConverted = "The Rating: {0} from the input cannot be converted to Number!";
 
 
         private const string NoPeopleInApplication = "There are no people!";
@@ -98,8 +98,6 @@ namespace Wim.Core.Engine
             }
         }
 
-
-
         public void ValidateBoardExistance(IAllTeams allTeams, string boardToAddToTeam, string teamForAddingBoardTo)
         {
             var boardMatches = allTeams.AllTeamsList[teamForAddingBoardTo].Boards
@@ -152,8 +150,17 @@ namespace Wim.Core.Engine
                 throw new FeedbackAlreadyInBoardException(string.Format(FeedbackAlreadyExists, feedbackTitle, boardToAddFeedbackFor, teamToAddFeedbackFor));
             }
         }
-    }
 
+        public int ValidateRatingConversion(string ratingForCheck)
+        {
+            bool isRatingConvertable = int.TryParse(ratingForCheck, out var intFeedbackRaiting);
+            if (!isRatingConvertable)
+            {               
+                throw new RatingCannotBeConvertedException(string.Format(RatingCannotBeConverted, ratingForCheck));
+            }
+            return intFeedbackRaiting;
+        }       
+    }
  
 }
 
