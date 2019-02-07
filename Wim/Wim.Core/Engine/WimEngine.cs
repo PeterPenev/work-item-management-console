@@ -32,7 +32,7 @@ namespace Wim.Core.Engine
         private const string FeedbackRatingChanged = "Feedback {0} rating is changed to {1}";
         private const string FeedbackStatusChanged = "Feedback {0} status is changed to {1}";
 
-        private const string AddedCommentFor = "Comment {0} with author {1} is added to the workitem.";
+        private const string AddedCommentFor = "Comment {0} with author {1} is added to {2} with name: {3}.";
 
         private static readonly WimEngine SingleInstance = new WimEngine();
 
@@ -1624,7 +1624,11 @@ namespace Wim.Core.Engine
                  .First(workitemInSelectedBoard => workitemInSelectedBoard.Title == workitemToAddCommentFor)
                   .AddComment(commentToAdd, authorOfComment);
 
-            return string.Format(AddedCommentFor, commentToAdd, authorOfComment);
+            var workItemType = allTeams.AllTeamsList[teamToAddCommentToWorkItemFor].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddCommentToWorkItemFor).WorkItems
+                 .First(workitemInSelectedBoard => workitemInSelectedBoard.Title == workitemToAddCommentFor).GetType().Name;
+
+            return string.Format(AddedCommentFor, commentToAdd, authorOfComment, workItemType, workitemToAddCommentFor);
         }
     }
 }
