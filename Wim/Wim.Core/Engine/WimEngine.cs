@@ -263,8 +263,6 @@ namespace Wim.Core.Engine
             Console.Write(output.ToString());
         }
 
-
-        //FOR IMPROVING!!!
         private string CreatePerson(string personName)
         {
             var personTypeForChecking = "Person Name";
@@ -312,7 +310,9 @@ namespace Wim.Core.Engine
         private string CreateTeam(string teamName)
         {
             var inputTypeForChecking = "Team Name";
-            inputValidator.IsNullOrEmpty(teamName, inputTypeForChecking);                    
+            inputValidator.IsNullOrEmpty(teamName, inputTypeForChecking);
+
+            inputValidator.ValidateIfTeamExists(allTeams, teamName);
 
             var team = this.factory.CreateTeam(teamName);
             allTeams.AddTeam(team);
@@ -330,9 +330,7 @@ namespace Wim.Core.Engine
             inputValidator.ValidateTeamExistance(allTeams, teamName);
             
             var teamToCheckHistoryFor = allTeams.AllTeamsList[teamName];
-            var teamActivityHistory = teamToCheckHistoryFor.ShowTeamActivityToString();
-
-            
+            var teamActivityHistory = teamToCheckHistoryFor.ShowTeamActivityToString();            
 
             return string.Format(teamActivityHistory);
         }
