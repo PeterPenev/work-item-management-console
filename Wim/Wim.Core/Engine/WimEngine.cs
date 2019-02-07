@@ -22,6 +22,7 @@ namespace Wim.Core.Engine
         private const string PersonExists = "Person with name {0} already exists!";
         private const string BugPriorityChanged = "Bug {0} priority is changed to {1}";
         private const string BugSeverityChanged = "Bug {0} severity is changed to {1}";
+        private const string BugStatusChanged = "Bug {0} status is changed to {1}";
 
         private static readonly WimEngine SingleInstance = new WimEngine();
 
@@ -213,6 +214,15 @@ namespace Wim.Core.Engine
                     var authorOfBugSeverityChange = command.Parameters[4];
 
                     return this.ChangeBugSeverity(teamToChangeBugSeverityFor, boardToChangeBugSeverityFor, bugToChangeBugSeverityFor, newSeverity, authorOfBugSeverityChange);
+
+                case "ChangeBugStatus":
+                    var teamToChangeBugStatusFor = command.Parameters[0];
+                    var boardToChangeBugStatusFor = command.Parameters[1];
+                    var bugToChangeStatusFor = command.Parameters[2];
+                    var newStatus = command.Parameters[3];
+                    var authorOfBugStatusChange = command.Parameters[4];
+
+                    return this.ChangeBugStatus(teamToChangeBugStatusFor, boardToChangeBugStatusFor, bugToChangeStatusFor, newStatus, authorOfBugStatusChange);
 
                 case "ListAllWorkItems":
                     return this.ListAllWorkItems();
@@ -1097,6 +1107,78 @@ namespace Wim.Core.Engine
 
             // .Add.Format(BugSeverityChanged, bugToChangeSeverityFor, newSeverityEnum);
             return string.Format(BugSeverityChanged, bugToChangeSeverityFor, newSeverityEnum);
+        }
+
+        private string ChangeBugStatus(string teamToChangeBugStatusFor, string boardToChangeBugStatusFor, string bugToChangeStatusFor, string newStatus, string authorOfBugStatusChange)
+        {
+            //if (string.IsNullOrEmpty(teamToChangeBugStatusFor))
+            //{
+            //    return string.Format(NullOrEmptyTeamName);
+            //}
+
+            //if (string.IsNullOrEmpty(boardToChangeBugStatusFor))
+            //{
+            //    return string.Format(NullOrEmptyBoardName);
+            //}
+
+            //if (string.IsNullOrEmpty(bugToChangeStatusFor))
+            //{
+            //    return string.Format(NullOrEmptyBugName);
+            //}
+
+            //if (!allTeams.AllTeamsList.ContainsKey(teamToChangeBugStatusFor))
+            //{
+            //    return string.Format(TeamDoesNotExist);
+            //}
+
+            ////Check whether such a board exists in the team
+            //var boardMatches = allTeams.AllTeamsList[teamToChangeBugStatusFor].Boards
+            //  .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeBugStatusFor);
+
+            //if (boardMatches == false)
+            //{
+            //    return string.Format(BoardDoesNotExist, boardToChangeBugStatusFor);
+            //}
+
+            var newStatusEnum = enumParser.GetBugStatus(newStatus);
+
+            allTeams.AllTeamsList[teamToChangeBugStatusFor].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeBugStatusFor).WorkItems
+                .Select(item => (IBug)item)
+                 .First(bugInSelectedBoard => bugInSelectedBoard.Title == bugToChangeStatusFor)
+                  .ChangeBugStatus(newStatusEnum);
+
+            //Add To Member Activity History
+            allTeams.AllTeamsList[teamToChangeBugStatusFor].Members
+                .Find(member => member.Name == authorOfBugStatusChange)
+                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeBugStatusFor]
+                        .Boards.Find(board => board.Name == boardToChangeBugStatusFor)
+                            .WorkItems.Find(workItem => workItem.Title == bugToChangeStatusFor),
+                                allTeams.AllTeamsList[teamToChangeBugStatusFor],
+                                    allTeams.AllTeamsList[teamToChangeBugStatusFor]
+                                        .Boards.Find(board => board.Name == boardToChangeBugStatusFor));
+
+            //Add to board activity history
+            allTeams.AllTeamsList[teamToChangeBugStatusFor]
+               .Boards.Find(board => board.Name == boardToChangeBugStatusFor)
+                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeBugStatusFor]
+                 .Members.Find(member => member.Name == authorOfBugStatusChange),
+                  allTeams.AllTeamsList[teamToChangeBugStatusFor]
+                       .Boards.Find(board => board.Name == boardToChangeBugStatusFor)
+                           .WorkItems.Find(workItem => workItem.Title == bugToChangeStatusFor));
+
+            //Add to WorkItem Activity History
+            allTeams.AllTeamsList[teamToChangeBugStatusFor]
+                .Boards.Find(board => board.Name == boardToChangeBugStatusFor)
+                .WorkItems.Find(item => item.Title == bugToChangeStatusFor)
+                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeBugStatusFor]
+                  .Members.Find(member => member.Name == authorOfBugStatusChange),
+                   allTeams.AllTeamsList[teamToChangeBugStatusFor]
+                        .Boards.Find(board => board.Name == boardToChangeBugStatusFor)
+                            .WorkItems.Find(workItem => workItem.Title == bugToChangeStatusFor), newStatusEnum);
+
+
+            return string.Format(BugStatusChanged, bugToChangeStatusFor, newStatus);
         }
     }
 }

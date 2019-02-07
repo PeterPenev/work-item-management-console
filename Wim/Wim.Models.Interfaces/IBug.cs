@@ -19,5 +19,7 @@ namespace Wim.Models.Interfaces
         void ChangeBugPriority(Priority priority);
 
         void ChangeBugSeverity(Severity severity);
+
+        void ChangeBugStatus(BugStatus status);
     }
 }

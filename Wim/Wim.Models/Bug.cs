@@ -102,5 +102,10 @@ namespace Wim.Models
         {
             this.Severity = severity;
         }
+
+        public void ChangeBugStatus(BugStatus status)
+        {
+            this.BugStatus = status;
+        }
     }
 }
