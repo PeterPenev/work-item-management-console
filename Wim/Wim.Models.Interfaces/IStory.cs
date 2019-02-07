@@ -14,5 +14,9 @@ namespace Wim.Models.Interfaces
         StoryStatus StoryStatus { get; }
 
         void ChangeStoryPriority(Priority priority);
+
+        void ChangeStorySize(Size size);
+
+        void ChangeStoryStatus(StoryStatus status);
     }
 }

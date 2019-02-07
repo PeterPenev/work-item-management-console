@@ -20,10 +20,14 @@ namespace Wim.Core.Engine
         private const string StoryCreated = "Story {0} was created!";
         private const string FeedbackCreated = "Feedback {0} was created!";
         private const string PersonExists = "Person with name {0} already exists!";
+
         private const string BugPriorityChanged = "Bug {0} priority is changed to {1}";
         private const string BugSeverityChanged = "Bug {0} severity is changed to {1}";
         private const string BugStatusChanged = "Bug {0} status is changed to {1}";
+
         private const string StoryPriorityChanged = "Story {0} priority is changed to {1}";
+        private const string StorySizeChanged = "Story {0} size is changed to {1}";
+        private const string StoryStatusChanged = "Story {0} status is changed to{1}";
 
         private static readonly WimEngine SingleInstance = new WimEngine();
 
@@ -233,6 +237,24 @@ namespace Wim.Core.Engine
                     var authorOfStoryPriorityChange = command.Parameters[4];
 
                     return this.ChangeStoryPriority(teamToChangeStoryPriorityFor, boardToChangeStoryPriorityFor, storyToChangePriorityFor, newStoryPriority, authorOfStoryPriorityChange);
+
+                case "ChangeStorySize":
+                    var teamToChangeStorySizeFor = command.Parameters[0];
+                    var boardToChangeStorySizeFor = command.Parameters[1];
+                    var storyToChangeSizeFor = command.Parameters[2];
+                    var newStorySize = command.Parameters[3];
+                    var authorOfStorySizeChange = command.Parameters[4];
+
+                    return this.ChangeStorySize(teamToChangeStorySizeFor, boardToChangeStorySizeFor, storyToChangeSizeFor, newStorySize, authorOfStorySizeChange);
+
+                case "ChangeStoryStatus":
+                    var teamToChangeStoryStatusFor = command.Parameters[0];
+                    var boardToChangeStoryStatusFor = command.Parameters[1];
+                    var storyToChangeStatusFor = command.Parameters[2];
+                    var newStoryStatus = command.Parameters[3];
+                    var authorOfStoryStatusChange = command.Parameters[4];
+
+                    return this.ChangeStoryStatus(teamToChangeStoryStatusFor, boardToChangeStoryStatusFor, storyToChangeStatusFor, newStoryStatus, authorOfStoryStatusChange);
 
                 case "ListAllWorkItems":
                     return this.ListAllWorkItems();
@@ -1265,6 +1287,152 @@ namespace Wim.Core.Engine
                             .WorkItems.Find(workItem => workItem.Title == storyToChangePriorityFor), newPriorityEnum);
 
             return string.Format(StoryPriorityChanged, storyToChangePriorityFor, newPriorityEnum);
+        }
+
+        private string ChangeStorySize(string teamToChangeStorySizeFor, string boardToChangeStorySizeFor, string storyToChangeSizeFor, string newStorySize, string authorOfStorySizeChange)
+        {
+            //if (string.IsNullOrEmpty(teamToChangeStorySizeFor))
+            //{
+            //    return string.Format(NullOrEmptyTeamName);
+            //}
+
+            //if (string.IsNullOrEmpty(boardToChangeStorySizeFor))
+            //{
+            //    return string.Format(NullOrEmptyBoardName);
+            //}
+
+            //if (string.IsNullOrEmpty(storyToChangeSizeFor))
+            //{
+            //    return string.Format(NullOrEmptyBugName);
+            //}
+
+            //if (!allTeams.AllTeamsList.ContainsKey(teamToChangeStorySizeFor))
+            //{
+            //    return string.Format(TeamDoesNotExist);
+            //}
+
+            ////Check whether such a board exists in the team
+            //var boardMatches = allTeams.AllTeamsList[teamToChangeStorySizeFor].Boards
+            //  .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeStorySizeFor);
+
+            //if (boardMatches == false)
+            //{
+            //    return string.Format(BoardDoesNotExist, boardToChangeStorySizeFor);
+            //}
+
+            ////var sizeToChangeInStory = GetSize(size);
+
+            var newSizeEnum = enumParser.GetStorySize(newStorySize);
+
+            allTeams.AllTeamsList[teamToChangeStorySizeFor].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeStorySizeFor).WorkItems
+                .Select(item => (IStory)item)
+                 .First(storyInSelectedBoard => storyInSelectedBoard.Title == storyToChangeSizeFor)
+                  .ChangeStorySize(newSizeEnum);
+
+            //Addto member activity history
+            allTeams.AllTeamsList[teamToChangeStorySizeFor].Members
+                .Find(member => member.Name == authorOfStorySizeChange)
+                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeStorySizeFor]
+                        .Boards.Find(board => board.Name == boardToChangeStorySizeFor)
+                            .WorkItems.Find(workItem => workItem.Title == storyToChangeSizeFor),
+                                allTeams.AllTeamsList[teamToChangeStorySizeFor],
+                                    allTeams.AllTeamsList[teamToChangeStorySizeFor]
+                                        .Boards.Find(board => board.Name == boardToChangeStorySizeFor));
+
+            //Add to board activity history
+            allTeams.AllTeamsList[teamToChangeStorySizeFor]
+               .Boards.Find(board => board.Name == boardToChangeStorySizeFor)
+                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeStorySizeFor]
+                 .Members.Find(member => member.Name == authorOfStorySizeChange),
+                  allTeams.AllTeamsList[teamToChangeStorySizeFor]
+                       .Boards.Find(board => board.Name == boardToChangeStorySizeFor)
+                           .WorkItems.Find(workItem => workItem.Title == storyToChangeSizeFor));
+
+            //Add to WorkItem Activity History
+            allTeams.AllTeamsList[teamToChangeStorySizeFor]
+                .Boards.Find(board => board.Name == boardToChangeStorySizeFor)
+                .WorkItems.Find(item => item.Title == storyToChangeSizeFor)
+                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeStorySizeFor]
+                  .Members.Find(member => member.Name == authorOfStorySizeChange),
+                   allTeams.AllTeamsList[teamToChangeStorySizeFor]
+                        .Boards.Find(board => board.Name == boardToChangeStorySizeFor)
+                            .WorkItems.Find(workItem => workItem.Title == storyToChangeSizeFor), newSizeEnum);
+
+            return string.Format(StorySizeChanged, storyToChangeSizeFor, newSizeEnum);
+        }
+
+        private string ChangeStoryStatus(string teamToChangeStoryStatusFor, string boardToChangeStoryStatusFor, string storyToChangeStatusFor, string newStoryStatus, string authorOfStoryStatusChange)
+        {
+            //if (string.IsNullOrEmpty(teamToChangeStoryStatusFor))
+            //{
+            //    return string.Format(NullOrEmptyTeamName);
+            //}
+
+            //if (string.IsNullOrEmpty(boardToChangeStoryStatusFor))
+            //{
+            //    return string.Format(NullOrEmptyBoardName);
+            //}
+
+            //if (string.IsNullOrEmpty(storyToChangeStatusFor))
+            //{
+            //    return string.Format(NullOrEmptyBugName);
+            //}
+
+            //if (!allTeams.AllTeamsList.ContainsKey(teamToChangeStoryStatusFor))
+            //{
+            //    return string.Format(TeamDoesNotExist);
+            //}
+
+            ////Check whether such a board exists in the team
+            //var boardMatches = allTeams.AllTeamsList[teamToChangeStoryStatusFor].Boards
+            //  .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeStoryStatusFor);
+
+            //if (boardMatches == false)
+            //{
+            //    return string.Format(BoardDoesNotExist, boardToChangeStoryStatusFor);
+            //}
+
+            var newStatusEnum = enumParser.GetStoryStatus(newStoryStatus);
+
+            allTeams.AllTeamsList[teamToChangeStoryStatusFor].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeStoryStatusFor).WorkItems
+                .Select(item => (IStory)item)
+                 .First(storyInSelectedBoard => storyInSelectedBoard.Title == storyToChangeStatusFor)
+                  .ChangeStoryStatus(newStatusEnum);
+
+
+            // Add to member activity history
+            allTeams.AllTeamsList[teamToChangeStoryStatusFor].Members
+                .Find(member => member.Name == authorOfStoryStatusChange)
+                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeStoryStatusFor]
+                        .Boards.Find(board => board.Name == boardToChangeStoryStatusFor)
+                            .WorkItems.Find(workItem => workItem.Title == storyToChangeStatusFor),
+                                allTeams.AllTeamsList[teamToChangeStoryStatusFor],
+                                    allTeams.AllTeamsList[teamToChangeStoryStatusFor]
+                                        .Boards.Find(board => board.Name == boardToChangeStoryStatusFor));
+
+            //Add to board activity history
+            allTeams.AllTeamsList[teamToChangeStoryStatusFor]
+               .Boards.Find(board => board.Name == boardToChangeStoryStatusFor)
+                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeStoryStatusFor]
+                 .Members.Find(member => member.Name == authorOfStoryStatusChange),
+                  allTeams.AllTeamsList[teamToChangeStoryStatusFor]
+                       .Boards.Find(board => board.Name == boardToChangeStoryStatusFor)
+                           .WorkItems.Find(workItem => workItem.Title == storyToChangeStatusFor));
+
+            //Add to WorkItem Activity History
+            allTeams.AllTeamsList[teamToChangeStoryStatusFor]
+                .Boards.Find(board => board.Name == boardToChangeStoryStatusFor)
+                .WorkItems.Find(item => item.Title == storyToChangeStatusFor)
+                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeStoryStatusFor]
+                  .Members.Find(member => member.Name == authorOfStoryStatusChange),
+                   allTeams.AllTeamsList[teamToChangeStoryStatusFor]
+                        .Boards.Find(board => board.Name == boardToChangeStoryStatusFor)
+                            .WorkItems.Find(workItem => workItem.Title == storyToChangeStatusFor), newStatusEnum);
+
+
+            return string.Format(StoryStatusChanged, storyToChangeStatusFor, newStoryStatus);
         }
     }
 }

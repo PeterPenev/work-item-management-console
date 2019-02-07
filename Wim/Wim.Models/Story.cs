@@ -75,5 +75,15 @@ namespace Wim.Models
         {
             this.Priority = priority;
         }
+
+        public void ChangeStorySize(Size size)
+        {
+            this.Size = size;
+        }
+
+        public void ChangeStoryStatus(StoryStatus status)
+        {
+            this.StoryStatus = status;
+        }
     }
 }
