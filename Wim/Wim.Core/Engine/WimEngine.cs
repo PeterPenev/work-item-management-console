@@ -18,7 +18,7 @@ namespace Wim.Core.Engine
         private const string BoardAddedToTeam = "Board {0} was added to team {1}!";
         private const string BugCreated = "Bug {0} was created!";
         private const string StoryCreated = "Story {0} was created!";
-        private const string FeedbackCreated = "Feedback {0} was created!";
+        private const string FeedbackCreated = "Feedback {0} was created!";     
         private const string PersonExists = "Person with name {0} already exists!";
 
         private const string BugPriorityChanged = "Bug {0} priority is changed to {1}";
@@ -31,6 +31,8 @@ namespace Wim.Core.Engine
 
         private const string FeedbackRatingChanged = "Feedback {0} rating is changed to {1}";
         private const string FeedbackStatusChanged = "Feedback {0} status is changed to {1}";
+
+        private const string AddedCommentFor = "Comment {0} with author {1} is added to the workitem.";
 
         private static readonly WimEngine SingleInstance = new WimEngine();
 
@@ -275,6 +277,24 @@ namespace Wim.Core.Engine
                     var newFeedbackStatus = command.Parameters[3];
                     var authorOfFeedbackStatusChange = command.Parameters[4];
                     return this.ChangeFeedbackStatus(teamToChangeFeedbackStatusFor, boardToChangeFeedbackStatusFor, feedbackToChangeStatusFor, newFeedbackStatus, authorOfFeedbackStatusChange);
+
+                case "AddComment":
+                    var teamToAddCommentToWorkItemFor = command.Parameters[0];
+                    var boardToAddCommentToWorkItemFor = command.Parameters[1];
+                    var workitemToAddCommentFor = command.Parameters[2];
+                    var authorOfComment = command.Parameters[3];
+
+                    //build comment
+                    var buildComment = new StringBuilder();
+
+                    for (int i = 4; i < command.Parameters.Count; i++)
+                    {
+                        buildComment.Append(command.Parameters[i] + " ");
+                    }
+
+                    var commentToAdd = buildComment.ToString().Trim();
+
+                    return this.AddComment(teamToAddCommentToWorkItemFor, boardToAddCommentToWorkItemFor, workitemToAddCommentFor, authorOfComment, commentToAdd);
 
                 case "ListAllWorkItems":
                     return this.ListAllWorkItems();
@@ -1595,6 +1615,16 @@ namespace Wim.Core.Engine
                             .WorkItems.Find(workItem => workItem.Title == feedbackToChangeStatusFor), newStatusEnum);
 
             return string.Format(FeedbackStatusChanged, feedbackToChangeStatusFor, newFeedbackStatus);
+        }
+
+        private string AddComment(string teamToAddCommentToWorkItemFor, string boardToAddCommentToWorkItemFor, string workitemToAddCommentFor, string authorOfComment, string commentToAdd)
+        {
+            allTeams.AllTeamsList[teamToAddCommentToWorkItemFor].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddCommentToWorkItemFor).WorkItems
+                 .First(workitemInSelectedBoard => workitemInSelectedBoard.Title == workitemToAddCommentFor)
+                  .AddComment(commentToAdd, authorOfComment);
+
+            return string.Format(AddedCommentFor, commentToAdd, authorOfComment);
         }
     }
 }

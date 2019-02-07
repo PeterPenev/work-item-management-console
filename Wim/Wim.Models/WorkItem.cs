@@ -86,5 +86,10 @@ namespace Wim.Models
             var activityHistoryToAddToBoard = new ActivityHistory(resultToAddAssMessage);
             this.activityHistory.Add(activityHistoryToAddToBoard);
         }
+
+        public void AddComment(string commentToAdd, string authorOfComment)
+        {
+            this.Comments.Add($"{commentToAdd} with author{authorOfComment}");
+        }
     }
 }

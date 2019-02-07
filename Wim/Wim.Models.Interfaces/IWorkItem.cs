@@ -19,5 +19,7 @@ namespace Wim.Models.Interfaces
         void AddActivityHistoryToWorkItem(IMember trackedMember, IWorkItem trackedWorkItem);
 
         void AddActivityHistoryToWorkItem<T>(IMember trackedMember, IWorkItem trackedWorkItem, T changedEnum);
+
+        void AddComment(string commentToAdd, string authorOfComment);
     }
 }
