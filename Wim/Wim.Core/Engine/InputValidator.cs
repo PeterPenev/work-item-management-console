@@ -21,6 +21,7 @@ namespace Wim.Core.Engine
         private const string NoMembersInApplication = "There are no Members in the Application yet!";
         private const string PersonAlreadyExists = "Person with name {0} already exists!";
         private const string TeamAlreadyExists = "Team with name {0} already exists!";
+        private const string NoSuchBoardInTeam = "There is no board with name {0} in team {1}!";
 
         private const string NoWorkItemsInApp = "There are no work items in the whole app yet!";
         private const string NoBugsInApp = "There are no Bugs in the whole app yet!";
@@ -215,6 +216,15 @@ namespace Wim.Core.Engine
             if (allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).Select(workItem => (IFeedback)workItem).ToList().Count() == 0)
             {
                 throw new NoFeedbacksInAppException(NoFeedbacksInApp);
+            }
+        }
+
+        public void ValidateBoardExistanceInTeam(IAllTeams allTeams, string boardNameToCheckFor, string teamToCheckForBoard)
+        {
+            if (allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).Where(board => board.Name == boardNameToCheckFor).ToList().Count == 0)
+            {
+                var NoSuchBoardInTeamMessage = string.Format(NoSuchBoardInTeam, boardNameToCheckFor, teamToCheckForBoard);
+                throw new NoSuchBoardInTeamException(NoSuchBoardInTeamMessage);
             }
         }
 

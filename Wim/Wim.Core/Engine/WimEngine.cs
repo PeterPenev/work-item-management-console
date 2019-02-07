@@ -332,6 +332,10 @@ namespace Wim.Core.Engine
                     var statusToFilterStoriesFor = command.Parameters[0];
                     return this.FilterStoriesByStatus(statusToFilterStoriesFor);
 
+                case "FilterFeedbackByPriority":
+                    var priorityToFilterFeedbackFor = command.Parameters[0];
+                    return this.FilterBugsByPriority(priorityToFilterFeedbackFor);
+
                 case "FilterFeedbackByStatus":
                     var statusToFilterFeedbackFor = command.Parameters[0];
                     return this.FilterBugsByStatus(statusToFilterFeedbackFor);
@@ -586,8 +590,6 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateTeamExistance(allTeams, teamToAddFeedbackFor);
 
-            inputValidator.ValidateBoardExistance(allTeams, boardToAddFeedbackFor, teamToAddFeedbackFor);
-
             inputValidator.ValidateFeedbackExistanceInBoard(allTeams, boardToAddFeedbackFor, teamToAddFeedbackFor, feedbackTitle);
 
             var intFeedbackRating = inputValidator.ValidateRatingConversion(feedbackRaiting);            
@@ -642,7 +644,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateTeamExistance(allTeams, teamToChangeBugPriorityFor);
 
-            inputValidator.ValidateBoardExistance(allTeams, boardToChangeBugPriorityFor, teamToChangeBugPriorityFor);
+            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeBugPriorityFor, teamToChangeBugPriorityFor);
 
             inputValidator.ValidateBugExistanceInBoard(allTeams, boardToChangeBugPriorityFor, teamToChangeBugPriorityFor, bugToChangePriorityFor);
 
@@ -706,7 +708,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateTeamExistance(allTeams, teamToChangeBugSeverityFor);
 
-            inputValidator.ValidateBoardExistance(allTeams, boardToChangeBugSeverityFor, teamToChangeBugSeverityFor);
+            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeBugSeverityFor, teamToChangeBugSeverityFor);
 
             inputValidator.ValidateBugExistanceInBoard(allTeams, boardToChangeBugSeverityFor, teamToChangeBugSeverityFor, bugToChangeSeverityFor);
 
@@ -772,7 +774,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateTeamExistance(allTeams, teamToChangeBugStatusFor);
 
-            inputValidator.ValidateBoardExistance(allTeams, boardToChangeBugStatusFor, teamToChangeBugStatusFor);
+            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeBugStatusFor, teamToChangeBugStatusFor);
 
             inputValidator.ValidateBugExistanceInBoard(allTeams, boardToChangeBugStatusFor, teamToChangeBugStatusFor, bugToChangeStatusFor);
 
@@ -836,7 +838,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateTeamExistance(allTeams, teamToChangeStoryPriorityFor);
 
-            inputValidator.ValidateBoardExistance(allTeams, boardToChangeStoryPriorityFor, teamToChangeStoryPriorityFor);
+            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeStoryPriorityFor, teamToChangeStoryPriorityFor);
 
             inputValidator.ValidateStoryExistanceInBoard(allTeams, boardToChangeStoryPriorityFor, teamToChangeStoryPriorityFor, storyToChangePriorityFor);
 
@@ -900,7 +902,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateTeamExistance(allTeams, teamToChangeStorySizeFor);
 
-            inputValidator.ValidateBoardExistance(allTeams, boardToChangeStorySizeFor, teamToChangeStorySizeFor);
+            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeStorySizeFor, teamToChangeStorySizeFor);
 
             inputValidator.ValidateStoryExistanceInBoard(allTeams, boardToChangeStorySizeFor, teamToChangeStorySizeFor, storyToChangeSizeFor);
 
@@ -963,7 +965,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateTeamExistance(allTeams, teamToChangeStoryStatusFor);
 
-            inputValidator.ValidateBoardExistance(allTeams, boardToChangeStoryStatusFor, teamToChangeStoryStatusFor);
+            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeStoryStatusFor, teamToChangeStoryStatusFor);
 
             inputValidator.ValidateStoryExistanceInBoard(allTeams, boardToChangeStoryStatusFor, teamToChangeStoryStatusFor, storyToChangeStatusFor);
 
@@ -1028,7 +1030,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateTeamExistance(allTeams, teamToChangeFeedbackRatingFor);
 
-            inputValidator.ValidateBoardExistance(allTeams, boardToChangeFeedbackRatingFor, teamToChangeFeedbackRatingFor);
+            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeFeedbackRatingFor, teamToChangeFeedbackRatingFor);
 
             var newRatingInteger = inputValidator.ValidateRatingConversion(newFeedbackRating);
 
@@ -1089,7 +1091,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateTeamExistance(allTeams, teamToChangeFeedbackStatusFor);
 
-            inputValidator.ValidateBoardExistance(allTeams, boardToChangeFeedbackStatusFor, teamToChangeFeedbackStatusFor);
+            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeFeedbackStatusFor, teamToChangeFeedbackStatusFor);
 
             inputValidator.ValidateFeedbackExistanceInBoard(allTeams, boardToChangeFeedbackStatusFor, teamToChangeFeedbackStatusFor, feedbackToChangeStatusFor);
 
@@ -1235,6 +1237,10 @@ namespace Wim.Core.Engine
 
         private string FilterBugsByPriority(string priorityToFilterBugFor)
         {
+            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+
+            inputValidator.ValidateIfAnyFeedbacksExist(allTeams);
+
             var priorityToCheckFor = this.enumParser.GetPriority(priorityToFilterBugFor);
 
             var filteredBugsByStatus = allTeams.AllTeamsList.Values
