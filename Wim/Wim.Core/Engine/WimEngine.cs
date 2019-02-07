@@ -1240,7 +1240,7 @@ namespace Wim.Core.Engine
 
             var priorityToCheckFor = this.enumParser.GetPriority(priorityToFilterBugFor);
 
-            var filteredBugsByStatus = allTeams.AllTeamsList.Values
+            var filteredBugsByPriority = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
                     .SelectMany(x => x.WorkItems)
                         .Where(x => x.GetType() == typeof(Bug))
@@ -1253,14 +1253,14 @@ namespace Wim.Core.Engine
            
             long workItemCounter = 1;
 
-            if (filteredBugsByStatus.Count == 0)
+            if (filteredBugsByPriority.Count == 0)
             {
                 sb.AppendLine($"There are no Bugs with: {priorityToFilterBugFor} Priority in the app yet!");              
             }
             else
             {
                 sb.AppendLine($"----ALL BUGS WITH {priorityToFilterBugFor} PRIORITY IN APPLICAITION----");
-                foreach (var item in filteredBugsByStatus)
+                foreach (var item in filteredBugsByPriority)
                 {
                     sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
                     workItemCounter++;
@@ -1284,8 +1284,8 @@ namespace Wim.Core.Engine
             var filteredBugsByAssignee = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
                     .SelectMany(x => x.WorkItems)
-                        .Where(x => x.GetType() == typeof(IBug))
-                            .Select(workItem => (IBug)workItem)
+                        .Where(x => x.GetType() == typeof(Bug))
+                            .Select(workItem => (Bug)workItem)
                                 .Where(bug => bug.Assignee.Name == assigneeToFilterBugFor)
                                     .ToList();
 
@@ -1326,8 +1326,8 @@ namespace Wim.Core.Engine
             var filteredBugsByStatus = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
                     .SelectMany(x => x.WorkItems)
-                        .Where(x => x.GetType() == typeof(IBug))
-                            .Select(workItem => (IBug)workItem)
+                        .Where(x => x.GetType() == typeof(Bug))
+                            .Select(workItem => (Bug)workItem)
                                 .Where(bug => bug.BugStatus == bugStatusToCheckFor)
                                     .ToList();
 
@@ -1368,8 +1368,8 @@ namespace Wim.Core.Engine
             var filteredStoriesByPriority = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
                     .SelectMany(x => x.WorkItems)
-                        .Where(x => x.GetType() == typeof(IStory))
-                            .Select(workItem => (IStory)workItem)
+                        .Where(x => x.GetType() == typeof(Story))
+                            .Select(workItem => (Story)workItem)
                                 .Where(bug => bug.Priority == priorityToCheckFor)
                                     .ToList();
 
@@ -1408,8 +1408,8 @@ namespace Wim.Core.Engine
             var filteredStoriesByAssignee = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
                     .SelectMany(x => x.WorkItems)
-                        .Where(x => x.GetType() == typeof(IStory))
-                            .Select(workItem => (IStory)workItem)
+                        .Where(x => x.GetType() == typeof(Story))
+                            .Select(workItem => (Story)workItem)
                                 .Where(story => story.Assignee.Name == assigneeToFilterStoryFor)
                                     .ToList();
 
@@ -1450,8 +1450,8 @@ namespace Wim.Core.Engine
             var filteredStoriesbyStatus = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
                     .SelectMany(x => x.WorkItems)
-                        .Where(x => x.GetType() == typeof(IStory))
-                            .Select(workItem => (IStory)workItem)
+                        .Where(x => x.GetType() == typeof(Story))
+                            .Select(workItem => (Story)workItem)
                                 .Where(story => story.StoryStatus == storyStatusToCheckFor)
                                     .ToList();
 
@@ -1480,6 +1480,13 @@ namespace Wim.Core.Engine
 
         private string FilterFeedbacksByStatus(string statusToFilterFeedbacksFor)
         {
+            var statusTypeForChecking = "Status";
+            inputValidator.IsNullOrEmpty(statusToFilterFeedbacksFor, statusTypeForChecking);
+
+            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+
+            inputValidator.ValidateIfAnyFeedbacksExist(allTeams);
+
             var feedbacksStatusToCheckFor = this.enumParser.GetFeedbackStatus(statusToFilterFeedbacksFor);
 
             var filteredFeedbacksbyStatus = allTeams.AllTeamsList.Values
@@ -1491,9 +1498,9 @@ namespace Wim.Core.Engine
                                     .ToList();
 
 
-            StringBuilder sb = new StringBuilder();
-            
+            StringBuilder sb = new StringBuilder();            
             long workItemCounter = 1;
+
             if (filteredFeedbacksbyStatus.Count == 0)
             {
                 sb.AppendLine($"There are No Feedbacks with Staus {statusToFilterFeedbacksFor} in the app yet!");
@@ -1515,6 +1522,13 @@ namespace Wim.Core.Engine
 
         private string SortBugsBy(string factorToSortBy)
         {
+            var factorTypeForChecking = $"{factorToSortBy}";
+            inputValidator.IsNullOrEmpty(factorToSortBy, factorTypeForChecking);
+
+            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+
+            inputValidator.ValidateIfAnyBugsExist(allTeams);
+
             var filteredBugs = new List<Bug>();
             if (factorToSortBy.ToLower() == "title")
             {
@@ -1556,6 +1570,7 @@ namespace Wim.Core.Engine
                                   .OrderBy(bugToOrder => bugToOrder.BugStatus)
                                         .ToList();
             }
+
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"----ALL BUGS IN APPLICAITION SORTED BY {factorToSortBy}----");
             long workItemCounter = 1;
@@ -1572,6 +1587,13 @@ namespace Wim.Core.Engine
 
         private string SortStoriesBy(string factorToSortBy)
         {
+            var factorTypeForChecking = $"{factorToSortBy}";
+            inputValidator.IsNullOrEmpty(factorToSortBy, factorTypeForChecking);
+
+            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+
+            inputValidator.ValidateIfAnyStoriesExist(allTeams);
+
             var filteredStories = new List<Story>();
             if (factorToSortBy.ToLower() == "title")
             {
@@ -1619,6 +1641,13 @@ namespace Wim.Core.Engine
 
         private string SortFeedbackBy(string factorToSortBy)
         {
+            var factorTypeForChecking = $"{factorToSortBy}";
+            inputValidator.IsNullOrEmpty(factorToSortBy, factorTypeForChecking);
+
+            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+
+            inputValidator.ValidateIfAnyFeedbacksExist(allTeams);
+
             var filteredFeedbacks = new List<Feedback>();
             if (factorToSortBy.ToLower() == "title")
             {
@@ -1662,8 +1691,6 @@ namespace Wim.Core.Engine
 
             var resultedAllItems = sb.ToString().Trim();
             return string.Format(resultedAllItems);
-        }
-
- 
+        } 
     }
 }

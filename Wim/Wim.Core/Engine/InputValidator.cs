@@ -216,7 +216,7 @@ namespace Wim.Core.Engine
             if ((allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
                     .SelectMany(x => x.WorkItems)
-                        .Where(item => item.GetType() == typeof(IBug))
+                        .Where(item => item.GetType() == typeof(Bug))
                             .ToList()
                                 .Count() == 0))
             {
@@ -229,7 +229,7 @@ namespace Wim.Core.Engine
             if (allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
                     .SelectMany(x => x.WorkItems)
-                        .Where(item => item.GetType() == typeof(IStory))
+                        .Where(item => item.GetType() == typeof(Story))
                             .ToList()
                                 .Count() == 0)
             {
