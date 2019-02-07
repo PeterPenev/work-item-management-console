@@ -22,6 +22,7 @@ namespace Wim.Core.Engine
         private const string PersonAlreadyExists = "Person with name {0} already exists!";
         private const string TeamAlreadyExists = "Team with name {0} already exists!";
         private const string NoSuchBoardInTeam = "There is no board with name {0} in team {1}!";
+        private const string BugNotInBoard = "There is no bug with name {0} in board {1} part of team {2}!";
 
         private const string NoWorkItemsInApp = "There are no work items in the whole app yet!";
         private const string NoBugsInApp = "There are no Bugs in the whole app yet!";
@@ -133,6 +134,21 @@ namespace Wim.Core.Engine
             {
                 var BugAlreadyExistsMessage = string.Format(BugAlreadyExists, bugTitle, boardToAddBugFor, teamToAddBugFor);
                 throw new BugAlreadyInBoardException(BugAlreadyExistsMessage);
+            }
+        }
+
+        public void ValidateBugNotInBoard(IAllTeams allTeams, string boardToAddBugFor, string teamToAddBugFor, string bugTitle)
+        {
+            var boardToCheckBugFor = allTeams.AllTeamsList[teamToAddBugFor].Boards
+                   .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddBugFor).First();
+
+            var doesBugExistInBoard = boardToCheckBugFor.WorkItems
+                   .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Bug)).Any(bugThatExists => bugThatExists.Title == bugTitle);
+
+            if (!doesBugExistInBoard)
+            {
+                var BugNotInBoardMessage = string.Format(BugNotInBoard, bugTitle, boardToAddBugFor, teamToAddBugFor);
+                throw new BugNotInBoardException(BugNotInBoardMessage);
             }
         }
 

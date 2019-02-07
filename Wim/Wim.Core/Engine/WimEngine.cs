@@ -646,7 +646,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeBugPriorityFor, teamToChangeBugPriorityFor);
 
-            inputValidator.ValidateBugExistanceInBoard(allTeams, boardToChangeBugPriorityFor, teamToChangeBugPriorityFor, bugToChangePriorityFor);
+            inputValidator.ValidateBugNotInBoard(allTeams, boardToChangeBugPriorityFor, teamToChangeBugPriorityFor, bugToChangePriorityFor);
 
             var newPriorityEnum = enumParser.GetPriority(priority);
 
@@ -710,7 +710,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeBugSeverityFor, teamToChangeBugSeverityFor);
 
-            inputValidator.ValidateBugExistanceInBoard(allTeams, boardToChangeBugSeverityFor, teamToChangeBugSeverityFor, bugToChangeSeverityFor);
+            inputValidator.ValidateBugNotInBoard(allTeams, boardToChangeBugSeverityFor, teamToChangeBugSeverityFor, bugToChangeSeverityFor);
 
             var newSeverityEnum = enumParser.GetSeverity(newSeverity);
 
@@ -776,7 +776,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeBugStatusFor, teamToChangeBugStatusFor);
 
-            inputValidator.ValidateBugExistanceInBoard(allTeams, boardToChangeBugStatusFor, teamToChangeBugStatusFor, bugToChangeStatusFor);
+            inputValidator.ValidateBugNotInBoard(allTeams, boardToChangeBugStatusFor, teamToChangeBugStatusFor, bugToChangeStatusFor);
 
             var newStatusEnum = enumParser.GetBugStatus(newStatus);
 
@@ -1260,6 +1260,7 @@ namespace Wim.Core.Engine
                 sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
                 workItemCounter++;
             }
+            ///TO DO
             if (filteredBugsByStatus.Count == 0)
             {
                 sb.AppendLine($"There are no {filteredBugsByStatus.GetType().GetElementType().Name} with: {priorityToFilterBugFor} Priority!");
