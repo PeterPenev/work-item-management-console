@@ -27,7 +27,7 @@ namespace Wim.Core.Engine
         private const string NoWorkItemsInApp = "There are no work items in the whole app yet!";
         private const string NoBugsInApp = "There are no Bugs in the whole app yet!";
         private const string NoStoriesInApp = "There are no Stories in the whole app yet!";
-        private const string NoFeedbacksInApp = "There are no Stories in the whole app yet!";
+        private const string NoFeedbacksInApp = "There are no Feedbacks in the whole app yet!";
 
         private const string BugAlreadyExists = "Bug with name {0} in Board: {1} part of Team {2} already exists!";
         private const string StoryAlreadyExists = "Story with name {0} in Board: {1} part of Team {2} already exists!";
@@ -213,7 +213,12 @@ namespace Wim.Core.Engine
 
         public void ValidateIfAnyBugsExist(IAllTeams allTeams)
         {
-            if (allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).Select(workItem => (IBug)workItem).ToList().Count() == 0)
+            if ((allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(item => item.GetType() == typeof(IBug))
+                            .ToList()
+                                .Count() == 0))
             {
                 throw new NoBugsInAppException(NoBugsInApp);
             }
@@ -221,7 +226,12 @@ namespace Wim.Core.Engine
 
         public void ValidateIfAnyStoriesExist(IAllTeams allTeams)
         {
-            if (allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).Select(workItem => (IStory)workItem).ToList().Count() == 0)
+            if (allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(item => item.GetType() == typeof(IStory))
+                            .ToList()
+                                .Count() == 0)
             {
                 throw new NoStoriesInAppException(NoStoriesInApp);
             }
@@ -229,7 +239,12 @@ namespace Wim.Core.Engine
 
         public void ValidateIfAnyFeedbacksExist(IAllTeams allTeams)
         {
-            if (allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).Select(workItem => (IFeedback)workItem).ToList().Count() == 0)
+            if (allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(item => item.GetType() == typeof(Feedback))
+                            .ToList()
+                                .Count() == 0)
             {
                 throw new NoFeedbacksInAppException(NoFeedbacksInApp);
             }

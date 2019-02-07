@@ -330,15 +330,11 @@ namespace Wim.Core.Engine
 
                 case "FilterStoriesByStatus":
                     var statusToFilterStoriesFor = command.Parameters[0];
-                    return this.FilterStoriesByStatus(statusToFilterStoriesFor);
+                    return this.FilterStoriesByStatus(statusToFilterStoriesFor);              
 
-                case "FilterFeedbackByPriority":
-                    var priorityToFilterFeedbackFor = command.Parameters[0];
-                    return this.FilterBugsByPriority(priorityToFilterFeedbackFor);
-
-                case "FilterFeedbackByStatus":
+                case "FilterFeedbacksByStatus":
                     var statusToFilterFeedbackFor = command.Parameters[0];
-                    return this.FilterBugsByStatus(statusToFilterFeedbackFor);
+                    return this.FilterFeedbacksByStatus(statusToFilterFeedbackFor);
 
                 case "SortBugsBy":
                     var factorToSortBugBy = command.Parameters[0];
@@ -513,8 +509,6 @@ namespace Wim.Core.Engine
             inputValidator.IsNullOrEmpty(boardToAddBugFor, boardTypeForChecking);
 
             inputValidator.ValidateTeamExistance(allTeams, teamToAddBugFor);
-
-            //inputValidator.ValidateBoardExistance(allTeams, boardToAddBugFor, teamToAddBugFor);
 
             inputValidator.ValidateBugExistanceInBoard(allTeams, boardToAddBugFor, teamToAddBugFor, bugTitle);
 
@@ -1416,15 +1410,23 @@ namespace Wim.Core.Engine
 
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"----ALL FEEDBACKS WITH {statusToFilterFeedbacksFor} STATUS IN APPLICAITION----");
+            
             long workItemCounter = 1;
-            foreach (var item in filteredFeedbacksbyStatus)
+            if (filteredFeedbacksbyStatus.Count == 0)
             {
-                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
-                workItemCounter++;
+                sb.AppendLine($"There are No Feedbacks with Staus {statusToFilterFeedbacksFor} in the app yet!");
             }
-            sb.AppendLine("---------------------------------");
-
+            else
+            {
+                sb.AppendLine($"----ALL FEEDBACKS WITH {statusToFilterFeedbacksFor} STATUS IN APPLICAITION----");
+                foreach (var item in filteredFeedbacksbyStatus)
+                {
+                    sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
+                    workItemCounter++;
+                }
+                sb.AppendLine("---------------------------------");
+            }           
+            
             var resultedAllItems = sb.ToString().Trim();
             return string.Format(resultedAllItems);
         }
