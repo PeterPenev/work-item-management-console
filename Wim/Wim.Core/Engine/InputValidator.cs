@@ -19,6 +19,7 @@ namespace Wim.Core.Engine
         private const string NoSuchMemberInApplication = "There is no member with {0} name in the Application!";
         private const string NoSuchTeamInApplication = "There is no team with {0} name in the Application!";
         private const string NoMembersInApplication = "There are no Members in the Application yet!";
+        private const string PersonAlreadyExists = "Person with name {0} already exists!";
 
         private const string BugAlreadyExists = "Bug with name {0} in Board: {1} part of Team {2} already exists!";
         private const string StoryAlreadyExists = "Story with name {0} in Board: {1} part of Team {2} already exists!";
@@ -156,6 +157,16 @@ namespace Wim.Core.Engine
             {
                 var FeedbackAlreadyExistsMessage = string.Format(FeedbackAlreadyExists, feedbackTitle, boardToAddFeedbackFor, teamToAddFeedbackFor);
                 throw new FeedbackAlreadyInBoardException(FeedbackAlreadyExistsMessage);
+            }
+        }
+
+        public void ValidateIfPersonExists(IAllMembers allMembers, string personName)
+        {
+
+            if (allMembers.AllMembersList.ContainsKey(personName))
+            {
+                var PersonAlreadyExistsMessage = string.Format(PersonAlreadyExists, personName);
+                throw new PersonAlreadyInBoardException(PersonAlreadyExistsMessage);
             }
         }
 
