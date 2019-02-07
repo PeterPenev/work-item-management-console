@@ -22,6 +22,11 @@ namespace Wim.Core.Engine
         private const string PersonAlreadyExists = "Person with name {0} already exists!";
         private const string TeamAlreadyExists = "Team with name {0} already exists!";
 
+        private const string NoWorkItemsInApp = "There are no work items in the whole app yet!";
+        private const string NoBugsInApp = "There are no Bugs in the whole app yet!";
+        private const string NoStoriesInApp = "There are no Stories in the whole app yet!";
+        private const string NoFeedbacksInApp = "There are no Stories in the whole app yet!";
+
         private const string BugAlreadyExists = "Bug with name {0} in Board: {1} part of Team {2} already exists!";
         private const string StoryAlreadyExists = "Story with name {0} in Board: {1} part of Team {2} already exists!";
         private const string FeedbackAlreadyExists = "Feedback with name {0} in Board: {1} part of Team {2} already exists!";
@@ -178,6 +183,38 @@ namespace Wim.Core.Engine
             {
                 var TeamAlreadyExistsMessage = string.Format(TeamAlreadyExists, teamName);
                 throw new TeamAlreadyInBoardException(TeamAlreadyExistsMessage);
+            }
+        }
+
+        public void ValidateIfAnyWorkItemsExist(IAllTeams allTeams)
+        {
+            if (allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).ToList().Count() == 0)
+            {                
+                throw new NoWorkItemsInAppException(NoWorkItemsInApp);
+            }
+        }
+
+        public void ValidateIfAnyBugsExist(IAllTeams allTeams)
+        {
+            if (allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).Select(workItem => (IBug)workItem).ToList().Count() == 0)
+            {
+                throw new NoBugsInAppException(NoBugsInApp);
+            }
+        }
+
+        public void ValidateIfAnyStoriesExist(IAllTeams allTeams)
+        {
+            if (allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).Select(workItem => (IStory)workItem).ToList().Count() == 0)
+            {
+                throw new NoStoriesInAppException(NoStoriesInApp);
+            }
+        }
+
+        public void ValidateIfAnyFeedbacksExist(IAllTeams allTeams)
+        {
+            if (allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).Select(workItem => (IFeedback)workItem).ToList().Count() == 0)
+            {
+                throw new NoFeedbacksInAppException(NoFeedbacksInApp);
             }
         }
 

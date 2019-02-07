@@ -1149,6 +1149,8 @@ namespace Wim.Core.Engine
 
         private string ListAllWorkItems()
         {
+            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+
             var AllWorkItems = allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).ToList();
 
             StringBuilder sb = new StringBuilder();
@@ -1167,6 +1169,10 @@ namespace Wim.Core.Engine
 
         private string FilterBugs()
         {
+            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+
+            inputValidator.ValidateIfAnyBugsExist(allTeams);
+
             var AllWorkItems = allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).Where(x => x.GetType() == typeof(Bug)).ToList();
 
             StringBuilder sb = new StringBuilder();
@@ -1185,6 +1191,10 @@ namespace Wim.Core.Engine
 
         private string FilterStories()
         {
+            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+
+            inputValidator.ValidateIfAnyStoriesExist(allTeams);
+
             var AllWorkItems = allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).Where(x => x.GetType() == typeof(Story)).ToList();
 
             StringBuilder sb = new StringBuilder();
@@ -1203,6 +1213,10 @@ namespace Wim.Core.Engine
 
         private string FilterFeedbacks()
         {
+            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+
+            inputValidator.ValidateIfAnyFeedbacksExist(allTeams);
+
             var AllWorkItems = allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).Where(x => x.GetType() == typeof(Feedback)).ToList();
 
             StringBuilder sb = new StringBuilder();
@@ -1239,6 +1253,10 @@ namespace Wim.Core.Engine
             {
                 sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
                 workItemCounter++;
+            }
+            if (filteredBugsByStatus.Count == 0)
+            {
+                sb.AppendLine($"There are no {filteredBugsByStatus.GetType().GetElementType().Name} with: {priorityToFilterBugFor} Priority!");
             }
             sb.AppendLine("---------------------------------");
 
