@@ -21,6 +21,7 @@ namespace Wim.Core.Engine
         private const string FeedbackCreated = "Feedback {0} was created!";
         private const string PersonExists = "Person with name {0} already exists!";
         private const string BugPriorityChanged = "Bug {0} priority is changed to {1}";
+        private const string BugSeverityChanged = "Bug {0} severity is changed to {1}";
 
         private static readonly WimEngine SingleInstance = new WimEngine();
 
@@ -203,6 +204,15 @@ namespace Wim.Core.Engine
                     var authorOfBugPriorityChange = command.Parameters[4];
 
                     return this.ChangeBugPriority(teamToChangeBugPriorityFor, boardToChangeBugPriorityFor, bugToChangePriorityFor, newPriority, authorOfBugPriorityChange);
+
+                case "ChangeBugSeverity":
+                    var teamToChangeBugSeverityFor = command.Parameters[0];
+                    var boardToChangeBugSeverityFor = command.Parameters[1];
+                    var bugToChangeBugSeverityFor = command.Parameters[2];
+                    var newSeverity = command.Parameters[3];
+                    var authorOfBugSeverityChange = command.Parameters[4];
+
+                    return this.ChangeBugSeverity(teamToChangeBugSeverityFor, boardToChangeBugSeverityFor, bugToChangeBugSeverityFor, newSeverity, authorOfBugSeverityChange);
 
                 case "ListAllWorkItems":
                     return this.ListAllWorkItems();
@@ -1011,6 +1021,82 @@ namespace Wim.Core.Engine
 
 
             return string.Format(BugPriorityChanged, bugToChangePriorityFor, newPriorityEnum);
+        }
+
+        private string ChangeBugSeverity(string teamToChangeBugSeverityFor, string boardToChangeBugSeverityFor, string bugToChangeSeverityFor, string newSeverity, string authorOfBugSeverityChange)
+        {
+            //if (string.IsNullOrEmpty(teamToChangeBugSeverityFor))
+            //{
+            //    return string.Format(NullOrEmptyTeamName);
+            //}
+
+            //if (string.IsNullOrEmpty(boardToChangeBugSeverityFor))
+            //{
+            //    return string.Format(NullOrEmptyBoardName);
+            //}
+
+            //if (string.IsNullOrEmpty(bugToChangeSeverityFor))
+            //{
+            //    return string.Format(NullOrEmptyBugName);
+            //}
+
+            //if (!allTeams.AllTeamsList.ContainsKey(teamToChangeBugSeverityFor))
+            //{
+            //    return string.Format(TeamDoesNotExist);
+            //}
+
+            ////Check whether such a board exists in the team
+            //var boardMatches = allTeams.AllTeamsList[teamToChangeBugSeverityFor].Boards
+            //  .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeBugSeverityFor);
+
+            //if (boardMatches == false)
+            //{
+            //    return string.Format(BoardDoesNotExist, boardToChangeBugSeverityFor);
+            //}
+
+            ////var severityToChangeInBug = GetSeverity(severity);
+
+            var newSeverityEnum = enumParser.GetSeverity(newSeverity);
+
+            allTeams.AllTeamsList[teamToChangeBugSeverityFor].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeBugSeverityFor).WorkItems
+                .Select(item => (IBug)item)
+                 .First(bugInSelectedBoard => bugInSelectedBoard.Title == bugToChangeSeverityFor)
+                  .ChangeBugSeverity(newSeverityEnum);
+
+
+            //Add to member activity history
+            allTeams.AllTeamsList[teamToChangeBugSeverityFor].Members
+                .Find(member => member.Name == authorOfBugSeverityChange)
+                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeBugSeverityFor]
+                        .Boards.Find(board => board.Name == boardToChangeBugSeverityFor)
+                            .WorkItems.Find(workItem => workItem.Title == bugToChangeSeverityFor),
+                                allTeams.AllTeamsList[teamToChangeBugSeverityFor],
+                                    allTeams.AllTeamsList[teamToChangeBugSeverityFor]
+                                        .Boards.Find(board => board.Name == boardToChangeBugSeverityFor));
+
+            //Add to board activity history
+
+            allTeams.AllTeamsList[teamToChangeBugSeverityFor]
+               .Boards.Find(board => board.Name == boardToChangeBugSeverityFor)
+                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeBugSeverityFor]
+                 .Members.Find(member => member.Name == authorOfBugSeverityChange),
+                  allTeams.AllTeamsList[teamToChangeBugSeverityFor]
+                       .Boards.Find(board => board.Name == boardToChangeBugSeverityFor)
+                           .WorkItems.Find(workItem => workItem.Title == bugToChangeSeverityFor));
+
+            //Add to WorkItem Activity History
+            allTeams.AllTeamsList[teamToChangeBugSeverityFor]
+                .Boards.Find(board => board.Name == boardToChangeBugSeverityFor)
+                .WorkItems.Find(item => item.Title == bugToChangeSeverityFor)
+                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeBugSeverityFor]
+                  .Members.Find(member => member.Name == authorOfBugSeverityChange),
+                   allTeams.AllTeamsList[teamToChangeBugSeverityFor]
+                        .Boards.Find(board => board.Name == boardToChangeBugSeverityFor)
+                            .WorkItems.Find(workItem => workItem.Title == bugToChangeSeverityFor), newSeverityEnum);
+
+            // .Add.Format(BugSeverityChanged, bugToChangeSeverityFor, newSeverityEnum);
+            return string.Format(BugSeverityChanged, bugToChangeSeverityFor, newSeverityEnum);
         }
     }
 }

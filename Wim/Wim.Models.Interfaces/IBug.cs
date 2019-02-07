@@ -17,5 +17,7 @@ namespace Wim.Models.Interfaces
         IMember Assignee { get; set; }
 
         void ChangeBugPriority(Priority priority);
+
+        void ChangeBugSeverity(Severity severity);
     }
 }

@@ -97,5 +97,10 @@ namespace Wim.Models
         {
             this.Priority = priority;
         }
+
+        public void ChangeBugSeverity(Severity severity)
+        {
+            this.Severity = severity;
+        }
     }
 }
