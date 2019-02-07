@@ -623,6 +623,530 @@ namespace Wim.Core.Engine
             return string.Format(boardActivityToString);
         }
 
+        private string ChangeBugPriority(string teamToChangeBugPriorityFor, string boardToChangeBugPriorityFor, string bugToChangePriorityFor, string priority, string authorOfBugPriorityChange)
+        {
+            var bugTypeForChecking = "Bug Title";
+            inputValidator.IsNullOrEmpty(bugToChangePriorityFor, bugTypeForChecking);
+
+            var teamTypeForChecking = "Team Name";
+            inputValidator.IsNullOrEmpty(teamToChangeBugPriorityFor, teamTypeForChecking);
+
+            var boardTypeForChecking = "Board Name";
+            inputValidator.IsNullOrEmpty(boardToChangeBugPriorityFor, boardTypeForChecking);
+
+            var priorityTypeForChecking = "Priority";
+            inputValidator.IsNullOrEmpty(priority, priorityTypeForChecking);
+
+            var authorTypeForChecking = "Author";
+            inputValidator.IsNullOrEmpty(authorOfBugPriorityChange, authorTypeForChecking);
+
+            inputValidator.ValidateTeamExistance(allTeams, teamToChangeBugPriorityFor);
+
+            inputValidator.ValidateBoardExistance(allTeams, boardToChangeBugPriorityFor, teamToChangeBugPriorityFor);
+
+            inputValidator.ValidateBugExistanceInBoard(allTeams, boardToChangeBugPriorityFor, teamToChangeBugPriorityFor, bugToChangePriorityFor);
+
+            var newPriorityEnum = enumParser.GetPriority(priority);
+
+            allTeams.AllTeamsList[teamToChangeBugPriorityFor].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeBugPriorityFor).WorkItems
+                .Select(item => (IBug)item)
+                 .First(bugInSelectedBoard => bugInSelectedBoard.Title == bugToChangePriorityFor)
+                  .ChangeBugPriority(newPriorityEnum);
+
+            //Add to member activity history
+            allTeams.AllTeamsList[teamToChangeBugPriorityFor].Members
+                .Find(member => member.Name == authorOfBugPriorityChange)
+                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeBugPriorityFor]
+                        .Boards.Find(board => board.Name == boardToChangeBugPriorityFor)
+                            .WorkItems.Find(workItem => workItem.Title == bugToChangePriorityFor),
+                                allTeams.AllTeamsList[teamToChangeBugPriorityFor],
+                                    allTeams.AllTeamsList[teamToChangeBugPriorityFor]
+                                        .Boards.Find(board => board.Name == boardToChangeBugPriorityFor), newPriorityEnum);
+
+            //Add to board activity history
+            allTeams.AllTeamsList[teamToChangeBugPriorityFor]
+                .Boards.Find(board => board.Name == boardToChangeBugPriorityFor)
+                 .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeBugPriorityFor]
+                  .Members.Find(member => member.Name == authorOfBugPriorityChange),
+                   allTeams.AllTeamsList[teamToChangeBugPriorityFor]
+                        .Boards.Find(board => board.Name == boardToChangeBugPriorityFor)
+                            .WorkItems.Find(workItem => workItem.Title == bugToChangePriorityFor), newPriorityEnum);
+
+            //Add to WorkItem Activity History
+            allTeams.AllTeamsList[teamToChangeBugPriorityFor]
+                .Boards.Find(board => board.Name == boardToChangeBugPriorityFor)
+                .WorkItems.Find(item => item.Title == bugToChangePriorityFor)
+                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeBugPriorityFor]
+                  .Members.Find(member => member.Name == authorOfBugPriorityChange),
+                   allTeams.AllTeamsList[teamToChangeBugPriorityFor]
+                        .Boards.Find(board => board.Name == boardToChangeBugPriorityFor)
+                            .WorkItems.Find(workItem => workItem.Title == bugToChangePriorityFor), newPriorityEnum);
+
+
+            return string.Format(BugPriorityChanged, bugToChangePriorityFor, newPriorityEnum);
+        }
+
+        private string ChangeBugSeverity(string teamToChangeBugSeverityFor, string boardToChangeBugSeverityFor, string bugToChangeSeverityFor, string newSeverity, string authorOfBugSeverityChange)
+        {
+            var bugTypeForChecking = "Bug Title";
+            inputValidator.IsNullOrEmpty(bugToChangeSeverityFor, bugTypeForChecking);
+
+            var teamTypeForChecking = "Team Name";
+            inputValidator.IsNullOrEmpty(teamToChangeBugSeverityFor, teamTypeForChecking);
+
+            var boardTypeForChecking = "Board Name";
+            inputValidator.IsNullOrEmpty(boardToChangeBugSeverityFor, boardTypeForChecking);
+
+            var priorityTypeForChecking = "Severity";
+            inputValidator.IsNullOrEmpty(newSeverity, priorityTypeForChecking);
+
+            var authorTypeForChecking = "Author";
+            inputValidator.IsNullOrEmpty(authorOfBugSeverityChange, authorTypeForChecking);
+
+            inputValidator.ValidateTeamExistance(allTeams, teamToChangeBugSeverityFor);
+
+            inputValidator.ValidateBoardExistance(allTeams, boardToChangeBugSeverityFor, teamToChangeBugSeverityFor);
+
+            inputValidator.ValidateBugExistanceInBoard(allTeams, boardToChangeBugSeverityFor, teamToChangeBugSeverityFor, bugToChangeSeverityFor);
+
+            var newSeverityEnum = enumParser.GetSeverity(newSeverity);
+
+            allTeams.AllTeamsList[teamToChangeBugSeverityFor].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeBugSeverityFor).WorkItems
+                .Select(item => (IBug)item)
+                 .First(bugInSelectedBoard => bugInSelectedBoard.Title == bugToChangeSeverityFor)
+                  .ChangeBugSeverity(newSeverityEnum);
+
+
+            //Add to member activity history
+            allTeams.AllTeamsList[teamToChangeBugSeverityFor].Members
+                .Find(member => member.Name == authorOfBugSeverityChange)
+                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeBugSeverityFor]
+                        .Boards.Find(board => board.Name == boardToChangeBugSeverityFor)
+                            .WorkItems.Find(workItem => workItem.Title == bugToChangeSeverityFor),
+                                allTeams.AllTeamsList[teamToChangeBugSeverityFor],
+                                    allTeams.AllTeamsList[teamToChangeBugSeverityFor]
+                                        .Boards.Find(board => board.Name == boardToChangeBugSeverityFor));
+
+            //Add to board activity history
+
+            allTeams.AllTeamsList[teamToChangeBugSeverityFor]
+               .Boards.Find(board => board.Name == boardToChangeBugSeverityFor)
+                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeBugSeverityFor]
+                 .Members.Find(member => member.Name == authorOfBugSeverityChange),
+                  allTeams.AllTeamsList[teamToChangeBugSeverityFor]
+                       .Boards.Find(board => board.Name == boardToChangeBugSeverityFor)
+                           .WorkItems.Find(workItem => workItem.Title == bugToChangeSeverityFor));
+
+            //Add to WorkItem Activity History
+            allTeams.AllTeamsList[teamToChangeBugSeverityFor]
+                .Boards.Find(board => board.Name == boardToChangeBugSeverityFor)
+                .WorkItems.Find(item => item.Title == bugToChangeSeverityFor)
+                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeBugSeverityFor]
+                  .Members.Find(member => member.Name == authorOfBugSeverityChange),
+                   allTeams.AllTeamsList[teamToChangeBugSeverityFor]
+                        .Boards.Find(board => board.Name == boardToChangeBugSeverityFor)
+                            .WorkItems.Find(workItem => workItem.Title == bugToChangeSeverityFor), newSeverityEnum);
+
+            // .Add.Format(BugSeverityChanged, bugToChangeSeverityFor, newSeverityEnum);
+            return string.Format(BugSeverityChanged, bugToChangeSeverityFor, newSeverityEnum);
+        }
+
+        private string ChangeBugStatus(string teamToChangeBugStatusFor, string boardToChangeBugStatusFor, string bugToChangeStatusFor, string newStatus, string authorOfBugStatusChange)
+        {
+            var bugTypeForChecking = "Bug Title";
+            inputValidator.IsNullOrEmpty(bugToChangeStatusFor, bugTypeForChecking);
+
+            var teamTypeForChecking = "Team Name";
+            inputValidator.IsNullOrEmpty(teamToChangeBugStatusFor, teamTypeForChecking);
+
+            var boardTypeForChecking = "Board Name";
+            inputValidator.IsNullOrEmpty(boardToChangeBugStatusFor, boardTypeForChecking);
+
+            var statusTypeForChecking = "Status";
+            inputValidator.IsNullOrEmpty(newStatus, statusTypeForChecking);
+
+            var authorTypeForChecking = "Author";
+            inputValidator.IsNullOrEmpty(authorOfBugStatusChange, authorTypeForChecking);
+
+            inputValidator.ValidateTeamExistance(allTeams, teamToChangeBugStatusFor);
+
+            inputValidator.ValidateBoardExistance(allTeams, boardToChangeBugStatusFor, teamToChangeBugStatusFor);
+
+            inputValidator.ValidateBugExistanceInBoard(allTeams, boardToChangeBugStatusFor, teamToChangeBugStatusFor, bugToChangeStatusFor);
+
+            var newStatusEnum = enumParser.GetBugStatus(newStatus);
+
+            allTeams.AllTeamsList[teamToChangeBugStatusFor].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeBugStatusFor).WorkItems
+                .Select(item => (IBug)item)
+                 .First(bugInSelectedBoard => bugInSelectedBoard.Title == bugToChangeStatusFor)
+                  .ChangeBugStatus(newStatusEnum);
+
+            //Add To Member Activity History
+            allTeams.AllTeamsList[teamToChangeBugStatusFor].Members
+                .Find(member => member.Name == authorOfBugStatusChange)
+                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeBugStatusFor]
+                        .Boards.Find(board => board.Name == boardToChangeBugStatusFor)
+                            .WorkItems.Find(workItem => workItem.Title == bugToChangeStatusFor),
+                                allTeams.AllTeamsList[teamToChangeBugStatusFor],
+                                    allTeams.AllTeamsList[teamToChangeBugStatusFor]
+                                        .Boards.Find(board => board.Name == boardToChangeBugStatusFor));
+
+            //Add to board activity history
+            allTeams.AllTeamsList[teamToChangeBugStatusFor]
+               .Boards.Find(board => board.Name == boardToChangeBugStatusFor)
+                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeBugStatusFor]
+                 .Members.Find(member => member.Name == authorOfBugStatusChange),
+                  allTeams.AllTeamsList[teamToChangeBugStatusFor]
+                       .Boards.Find(board => board.Name == boardToChangeBugStatusFor)
+                           .WorkItems.Find(workItem => workItem.Title == bugToChangeStatusFor));
+
+            //Add to WorkItem Activity History
+            allTeams.AllTeamsList[teamToChangeBugStatusFor]
+                .Boards.Find(board => board.Name == boardToChangeBugStatusFor)
+                .WorkItems.Find(item => item.Title == bugToChangeStatusFor)
+                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeBugStatusFor]
+                  .Members.Find(member => member.Name == authorOfBugStatusChange),
+                   allTeams.AllTeamsList[teamToChangeBugStatusFor]
+                        .Boards.Find(board => board.Name == boardToChangeBugStatusFor)
+                            .WorkItems.Find(workItem => workItem.Title == bugToChangeStatusFor), newStatusEnum);
+
+
+            return string.Format(BugStatusChanged, bugToChangeStatusFor, newStatus);
+        }
+
+        private string ChangeStoryPriority(string teamToChangeStoryPriorityFor, string boardToChangeStoryPriorityFor, string storyToChangePriorityFor, string newStoryPriority, string authorOfStoryPriorityChange)
+        {
+            var storyTypeForChecking = "Story Title";
+            inputValidator.IsNullOrEmpty(storyToChangePriorityFor, storyTypeForChecking);
+
+            var teamTypeForChecking = "Team Name";
+            inputValidator.IsNullOrEmpty(teamToChangeStoryPriorityFor, teamTypeForChecking);
+
+            var boardTypeForChecking = "Board Name";
+            inputValidator.IsNullOrEmpty(boardToChangeStoryPriorityFor, boardTypeForChecking);
+
+            var priorityTypeForChecking = "Priority";
+            inputValidator.IsNullOrEmpty(newStoryPriority, priorityTypeForChecking);
+
+            var authorTypeForChecking = "Author";
+            inputValidator.IsNullOrEmpty(authorOfStoryPriorityChange, authorTypeForChecking);
+
+            inputValidator.ValidateTeamExistance(allTeams, teamToChangeStoryPriorityFor);
+
+            inputValidator.ValidateBoardExistance(allTeams, boardToChangeStoryPriorityFor, teamToChangeStoryPriorityFor);
+
+            inputValidator.ValidateStoryExistanceInBoard(allTeams, boardToChangeStoryPriorityFor, teamToChangeStoryPriorityFor, storyToChangePriorityFor);
+
+            var newPriorityEnum = enumParser.GetPriority(newStoryPriority);
+
+            allTeams.AllTeamsList[teamToChangeStoryPriorityFor].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeStoryPriorityFor).WorkItems
+                .Select(item => (IStory)item)
+                 .First(storyInSelectedBoard => storyInSelectedBoard.Title == storyToChangePriorityFor)
+                  .ChangeStoryPriority(newPriorityEnum);
+
+
+            //Add to member activity history
+            allTeams.AllTeamsList[teamToChangeStoryPriorityFor].Members
+                .Find(member => member.Name == authorOfStoryPriorityChange)
+                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
+                        .Boards.Find(board => board.Name == boardToChangeStoryPriorityFor)
+                            .WorkItems.Find(workItem => workItem.Title == storyToChangePriorityFor),
+                                allTeams.AllTeamsList[teamToChangeStoryPriorityFor],
+                                    allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
+                                        .Boards.Find(board => board.Name == boardToChangeStoryPriorityFor));
+
+            //Add to board activity history
+            allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
+               .Boards.Find(board => board.Name == boardToChangeStoryPriorityFor)
+                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
+                 .Members.Find(member => member.Name == authorOfStoryPriorityChange),
+                  allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
+                       .Boards.Find(board => board.Name == boardToChangeStoryPriorityFor)
+                           .WorkItems.Find(workItem => workItem.Title == storyToChangePriorityFor));
+
+            //Add to WorkItem Activity History
+            allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
+                .Boards.Find(board => board.Name == boardToChangeStoryPriorityFor)
+                .WorkItems.Find(item => item.Title == storyToChangePriorityFor)
+                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
+                  .Members.Find(member => member.Name == authorOfStoryPriorityChange),
+                   allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
+                        .Boards.Find(board => board.Name == boardToChangeStoryPriorityFor)
+                            .WorkItems.Find(workItem => workItem.Title == storyToChangePriorityFor), newPriorityEnum);
+
+            return string.Format(StoryPriorityChanged, storyToChangePriorityFor, newPriorityEnum);
+        }
+
+        private string ChangeStorySize(string teamToChangeStorySizeFor, string boardToChangeStorySizeFor, string storyToChangeSizeFor, string newStorySize, string authorOfStorySizeChange)
+        {
+            var storyTypeForChecking = "Story Title";
+            inputValidator.IsNullOrEmpty(storyToChangeSizeFor, storyTypeForChecking);
+
+            var teamTypeForChecking = "Team Name";
+            inputValidator.IsNullOrEmpty(teamToChangeStorySizeFor, teamTypeForChecking);
+
+            var boardTypeForChecking = "Board Name";
+            inputValidator.IsNullOrEmpty(boardToChangeStorySizeFor, boardTypeForChecking);
+
+            var sizeTypeForChecking = "Size";
+            inputValidator.IsNullOrEmpty(newStorySize, sizeTypeForChecking);
+
+            var authorTypeForChecking = "Author";
+            inputValidator.IsNullOrEmpty(authorOfStorySizeChange, authorTypeForChecking);
+
+            inputValidator.ValidateTeamExistance(allTeams, teamToChangeStorySizeFor);
+
+            inputValidator.ValidateBoardExistance(allTeams, boardToChangeStorySizeFor, teamToChangeStorySizeFor);
+
+            inputValidator.ValidateStoryExistanceInBoard(allTeams, boardToChangeStorySizeFor, teamToChangeStorySizeFor, storyToChangeSizeFor);
+
+            var newSizeEnum = enumParser.GetStorySize(newStorySize);
+
+            allTeams.AllTeamsList[teamToChangeStorySizeFor].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeStorySizeFor).WorkItems
+                .Select(item => (IStory)item)
+                 .First(storyInSelectedBoard => storyInSelectedBoard.Title == storyToChangeSizeFor)
+                  .ChangeStorySize(newSizeEnum);
+
+            //Addto member activity history
+            allTeams.AllTeamsList[teamToChangeStorySizeFor].Members
+                .Find(member => member.Name == authorOfStorySizeChange)
+                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeStorySizeFor]
+                        .Boards.Find(board => board.Name == boardToChangeStorySizeFor)
+                            .WorkItems.Find(workItem => workItem.Title == storyToChangeSizeFor),
+                                allTeams.AllTeamsList[teamToChangeStorySizeFor],
+                                    allTeams.AllTeamsList[teamToChangeStorySizeFor]
+                                        .Boards.Find(board => board.Name == boardToChangeStorySizeFor));
+
+            //Add to board activity history
+            allTeams.AllTeamsList[teamToChangeStorySizeFor]
+               .Boards.Find(board => board.Name == boardToChangeStorySizeFor)
+                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeStorySizeFor]
+                 .Members.Find(member => member.Name == authorOfStorySizeChange),
+                  allTeams.AllTeamsList[teamToChangeStorySizeFor]
+                       .Boards.Find(board => board.Name == boardToChangeStorySizeFor)
+                           .WorkItems.Find(workItem => workItem.Title == storyToChangeSizeFor));
+
+            //Add to WorkItem Activity History
+            allTeams.AllTeamsList[teamToChangeStorySizeFor]
+                .Boards.Find(board => board.Name == boardToChangeStorySizeFor)
+                .WorkItems.Find(item => item.Title == storyToChangeSizeFor)
+                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeStorySizeFor]
+                  .Members.Find(member => member.Name == authorOfStorySizeChange),
+                   allTeams.AllTeamsList[teamToChangeStorySizeFor]
+                        .Boards.Find(board => board.Name == boardToChangeStorySizeFor)
+                            .WorkItems.Find(workItem => workItem.Title == storyToChangeSizeFor), newSizeEnum);
+
+            return string.Format(StorySizeChanged, storyToChangeSizeFor, newSizeEnum);
+        }
+
+        private string ChangeStoryStatus(string teamToChangeStoryStatusFor, string boardToChangeStoryStatusFor, string storyToChangeStatusFor, string newStoryStatus, string authorOfStoryStatusChange)
+        {
+            var storyTypeForChecking = "Story Title";
+            inputValidator.IsNullOrEmpty(storyToChangeStatusFor, storyTypeForChecking);
+
+            var teamTypeForChecking = "Team Name";
+            inputValidator.IsNullOrEmpty(teamToChangeStoryStatusFor, teamTypeForChecking);
+
+            var boardTypeForChecking = "Board Name";
+            inputValidator.IsNullOrEmpty(boardToChangeStoryStatusFor, boardTypeForChecking);
+
+            var statusTypeForChecking = "Status";
+            inputValidator.IsNullOrEmpty(newStoryStatus, statusTypeForChecking);
+
+            var authorTypeForChecking = "Author";
+            inputValidator.IsNullOrEmpty(authorOfStoryStatusChange, authorTypeForChecking);
+
+            inputValidator.ValidateTeamExistance(allTeams, teamToChangeStoryStatusFor);
+
+            inputValidator.ValidateBoardExistance(allTeams, boardToChangeStoryStatusFor, teamToChangeStoryStatusFor);
+
+            inputValidator.ValidateStoryExistanceInBoard(allTeams, boardToChangeStoryStatusFor, teamToChangeStoryStatusFor, storyToChangeStatusFor);
+
+            var newStatusEnum = enumParser.GetStoryStatus(newStoryStatus);
+
+            allTeams.AllTeamsList[teamToChangeStoryStatusFor].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeStoryStatusFor).WorkItems
+                .Select(item => (IStory)item)
+                 .First(storyInSelectedBoard => storyInSelectedBoard.Title == storyToChangeStatusFor)
+                  .ChangeStoryStatus(newStatusEnum);
+
+
+            // Add to member activity history
+            allTeams.AllTeamsList[teamToChangeStoryStatusFor].Members
+                .Find(member => member.Name == authorOfStoryStatusChange)
+                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeStoryStatusFor]
+                        .Boards.Find(board => board.Name == boardToChangeStoryStatusFor)
+                            .WorkItems.Find(workItem => workItem.Title == storyToChangeStatusFor),
+                                allTeams.AllTeamsList[teamToChangeStoryStatusFor],
+                                    allTeams.AllTeamsList[teamToChangeStoryStatusFor]
+                                        .Boards.Find(board => board.Name == boardToChangeStoryStatusFor));
+
+            //Add to board activity history
+            allTeams.AllTeamsList[teamToChangeStoryStatusFor]
+               .Boards.Find(board => board.Name == boardToChangeStoryStatusFor)
+                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeStoryStatusFor]
+                 .Members.Find(member => member.Name == authorOfStoryStatusChange),
+                  allTeams.AllTeamsList[teamToChangeStoryStatusFor]
+                       .Boards.Find(board => board.Name == boardToChangeStoryStatusFor)
+                           .WorkItems.Find(workItem => workItem.Title == storyToChangeStatusFor));
+
+            //Add to WorkItem Activity History
+            allTeams.AllTeamsList[teamToChangeStoryStatusFor]
+                .Boards.Find(board => board.Name == boardToChangeStoryStatusFor)
+                .WorkItems.Find(item => item.Title == storyToChangeStatusFor)
+                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeStoryStatusFor]
+                  .Members.Find(member => member.Name == authorOfStoryStatusChange),
+                   allTeams.AllTeamsList[teamToChangeStoryStatusFor]
+                        .Boards.Find(board => board.Name == boardToChangeStoryStatusFor)
+                            .WorkItems.Find(workItem => workItem.Title == storyToChangeStatusFor), newStatusEnum);
+
+
+            return string.Format(StoryStatusChanged, storyToChangeStatusFor, newStoryStatus);
+        }
+
+        private string ChangeFeedbackRating(string teamToChangeFeedbackRatingFor, string boardToChangeFeedbackRatingFor, string feedbackToChangeRatingFor, string newFeedbackRating, string authorOfFeedbackRatingChange)
+        {
+            var feedbackTypeForChecking = "Feedback Title";
+            inputValidator.IsNullOrEmpty(feedbackToChangeRatingFor, feedbackTypeForChecking);
+
+            var teamTypeForChecking = "Team Name";
+            inputValidator.IsNullOrEmpty(teamToChangeFeedbackRatingFor, teamTypeForChecking);
+
+            var boardTypeForChecking = "Board Name";
+            inputValidator.IsNullOrEmpty(boardToChangeFeedbackRatingFor, boardTypeForChecking);
+
+            var ratingTypeForChecking = "Rating";
+            inputValidator.IsNullOrEmpty(newFeedbackRating, ratingTypeForChecking);
+
+            var authorTypeForChecking = "Author";
+            inputValidator.IsNullOrEmpty(authorOfFeedbackRatingChange, authorTypeForChecking);
+
+            inputValidator.ValidateTeamExistance(allTeams, teamToChangeFeedbackRatingFor);
+
+            inputValidator.ValidateBoardExistance(allTeams, boardToChangeFeedbackRatingFor, teamToChangeFeedbackRatingFor);
+
+            var newRatingInteger = inputValidator.ValidateRatingConversion(newFeedbackRating);
+
+            allTeams.AllTeamsList[teamToChangeFeedbackRatingFor].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeFeedbackRatingFor).WorkItems
+                .Select(item => (IFeedback)item)
+                 .First(storyInSelectedBoard => storyInSelectedBoard.Title == feedbackToChangeRatingFor)
+                  .ChangeFeedbackRating(newRatingInteger);
+
+            //Add to member activity history
+            allTeams.AllTeamsList[teamToChangeFeedbackRatingFor].Members
+                .Find(member => member.Name == authorOfFeedbackRatingChange)
+                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
+                        .Boards.Find(board => board.Name == boardToChangeFeedbackRatingFor)
+                            .WorkItems.Find(workItem => workItem.Title == feedbackToChangeRatingFor),
+                                allTeams.AllTeamsList[teamToChangeFeedbackRatingFor],
+                                    allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
+                                        .Boards.Find(board => board.Name == boardToChangeFeedbackRatingFor));
+
+            //Add to board activity history
+            allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
+               .Boards.Find(board => board.Name == boardToChangeFeedbackRatingFor)
+                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
+                 .Members.Find(member => member.Name == authorOfFeedbackRatingChange),
+                  allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
+                       .Boards.Find(board => board.Name == boardToChangeFeedbackRatingFor)
+                           .WorkItems.Find(workItem => workItem.Title == feedbackToChangeRatingFor));
+
+            //Add to WorkItem Activity History
+            allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
+                .Boards.Find(board => board.Name == boardToChangeFeedbackRatingFor)
+                .WorkItems.Find(item => item.Title == feedbackToChangeRatingFor)
+                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
+                  .Members.Find(member => member.Name == authorOfFeedbackRatingChange),
+                   allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
+                        .Boards.Find(board => board.Name == boardToChangeFeedbackRatingFor)
+                            .WorkItems.Find(workItem => workItem.Title == feedbackToChangeRatingFor), newRatingInteger);
+
+            return string.Format(FeedbackRatingChanged, feedbackToChangeRatingFor, newFeedbackRating);
+        }
+
+        private string ChangeFeedbackStatus(string teamToChangeFeedbackStatusFor, string boardToChangeFeedbackStatusFor, string feedbackToChangeStatusFor, string newFeedbackStatus, string authorOfFeedbackStatusChange)
+        {
+            var feedbackTypeForChecking = "Feedback Title";
+            inputValidator.IsNullOrEmpty(feedbackToChangeStatusFor, feedbackTypeForChecking);
+
+            var teamTypeForChecking = "Team Name";
+            inputValidator.IsNullOrEmpty(teamToChangeFeedbackStatusFor, teamTypeForChecking);
+
+            var boardTypeForChecking = "Board Name";
+            inputValidator.IsNullOrEmpty(boardToChangeFeedbackStatusFor, boardTypeForChecking);
+
+            var statusTypeForChecking = "Status";
+            inputValidator.IsNullOrEmpty(newFeedbackStatus, statusTypeForChecking);
+
+            var authorTypeForChecking = "Author";
+            inputValidator.IsNullOrEmpty(authorOfFeedbackStatusChange, authorTypeForChecking);
+
+            inputValidator.ValidateTeamExistance(allTeams, teamToChangeFeedbackStatusFor);
+
+            inputValidator.ValidateBoardExistance(allTeams, boardToChangeFeedbackStatusFor, teamToChangeFeedbackStatusFor);
+
+            inputValidator.ValidateFeedbackExistanceInBoard(allTeams, boardToChangeFeedbackStatusFor, teamToChangeFeedbackStatusFor, feedbackToChangeStatusFor);
+
+            var newStatusEnum = enumParser.GetFeedbackStatus(newFeedbackStatus);
+
+            allTeams.AllTeamsList[teamToChangeFeedbackStatusFor].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeFeedbackStatusFor).WorkItems
+                .Select(item => (IFeedback)item)
+                 .First(feedbackInSelectedBoard => feedbackInSelectedBoard.Title == feedbackToChangeStatusFor)
+                  .ChangeFeedbackStatus(newStatusEnum);
+
+            //Add to member activity history
+            allTeams.AllTeamsList[teamToChangeFeedbackStatusFor].Members
+                .Find(member => member.Name == authorOfFeedbackStatusChange)
+                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
+                        .Boards.Find(board => board.Name == boardToChangeFeedbackStatusFor)
+                            .WorkItems.Find(workItem => workItem.Title == feedbackToChangeStatusFor),
+                                allTeams.AllTeamsList[teamToChangeFeedbackStatusFor],
+                                    allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
+                                        .Boards.Find(board => board.Name == boardToChangeFeedbackStatusFor));
+
+            //Add to board activity history
+            allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
+               .Boards.Find(board => board.Name == boardToChangeFeedbackStatusFor)
+                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
+                 .Members.Find(member => member.Name == authorOfFeedbackStatusChange),
+                  allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
+                       .Boards.Find(board => board.Name == boardToChangeFeedbackStatusFor)
+                           .WorkItems.Find(workItem => workItem.Title == feedbackToChangeStatusFor));
+
+            //Add to WorkItem Activity History
+            allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
+                .Boards.Find(board => board.Name == boardToChangeFeedbackStatusFor)
+                .WorkItems.Find(item => item.Title == feedbackToChangeStatusFor)
+                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
+                  .Members.Find(member => member.Name == authorOfFeedbackStatusChange),
+                   allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
+                        .Boards.Find(board => board.Name == boardToChangeFeedbackStatusFor)
+                            .WorkItems.Find(workItem => workItem.Title == feedbackToChangeStatusFor), newStatusEnum);
+
+            return string.Format(FeedbackStatusChanged, feedbackToChangeStatusFor, newFeedbackStatus);
+        }
+
+        private string AddComment(string teamToAddCommentToWorkItemFor, string boardToAddCommentToWorkItemFor, string workitemToAddCommentFor, string authorOfComment, string commentToAdd)
+        {
+            allTeams.AllTeamsList[teamToAddCommentToWorkItemFor].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddCommentToWorkItemFor).WorkItems
+                 .First(workitemInSelectedBoard => workitemInSelectedBoard.Title == workitemToAddCommentFor)
+                  .AddComment(commentToAdd, authorOfComment);
+
+            var workItemType = allTeams.AllTeamsList[teamToAddCommentToWorkItemFor].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddCommentToWorkItemFor).WorkItems
+                 .First(workitemInSelectedBoard => workitemInSelectedBoard.Title == workitemToAddCommentFor).GetType().Name;
+
+            return string.Format(AddedCommentFor, commentToAdd, authorOfComment, workItemType, workitemToAddCommentFor);
+        }
+
         private string ListAllWorkItems()
         {
             var AllWorkItems = allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).ToList();
@@ -1031,604 +1555,6 @@ namespace Wim.Core.Engine
             return string.Format(resultedAllItems);
         }
 
-        private string ChangeBugPriority(string teamToChangeBugPriorityFor, string boardToChangeBugPriorityFor, string bugToChangePriorityFor, string priority, string authorOfBugPriorityChange)
-        {
-            //if (string.IsNullOrEmpty(teamToChangeBugPriorityFor))
-            //{
-            //    return string.Format(NullOrEmptyTeamName);
-            //}
-
-            //if (string.IsNullOrEmpty(boardToChangeBugPriorityFor))
-            //{
-            //    return string.Format(NullOrEmptyBoardName);
-            //}
-
-            //if (string.IsNullOrEmpty(bugToChangePriorityFor))
-            //{
-            //    return string.Format(NullOrEmptyBugName);
-            //}
-
-            //if (!allTeams.AllTeamsList.ContainsKey(teamToChangeBugPriorityFor))
-            //{
-            //    return string.Format(TeamDoesNotExist);
-            //}
-
-            ////Check whether such a board exists in the team
-            //var boardMatches = allTeams.AllTeamsList[teamToChangeBugPriorityFor].Boards
-            //  .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeBugPriorityFor);
-
-            //if (boardMatches == false)
-            //{
-            //    return string.Format(BoardDoesNotExist, boardToChangeBugPriorityFor);
-            //}
-
-            //var priorityToChangeInBug = GetPriority(priority);
-
-            var newPriorityEnum = enumParser.GetPriority(priority);
-
-            allTeams.AllTeamsList[teamToChangeBugPriorityFor].Boards
-              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeBugPriorityFor).WorkItems
-                .Select(item => (IBug)item)
-                 .First(bugInSelectedBoard => bugInSelectedBoard.Title == bugToChangePriorityFor)
-                  .ChangeBugPriority(newPriorityEnum);
-
-            //Add to member activity history
-            allTeams.AllTeamsList[teamToChangeBugPriorityFor].Members
-                .Find(member => member.Name == authorOfBugPriorityChange)
-                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeBugPriorityFor]
-                        .Boards.Find(board => board.Name == boardToChangeBugPriorityFor)
-                            .WorkItems.Find(workItem => workItem.Title == bugToChangePriorityFor),
-                                allTeams.AllTeamsList[teamToChangeBugPriorityFor],
-                                    allTeams.AllTeamsList[teamToChangeBugPriorityFor]
-                                        .Boards.Find(board => board.Name == boardToChangeBugPriorityFor), newPriorityEnum);
-
-            //Add to board activity history
-            allTeams.AllTeamsList[teamToChangeBugPriorityFor]
-                .Boards.Find(board => board.Name == boardToChangeBugPriorityFor)
-                 .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeBugPriorityFor]
-                  .Members.Find(member => member.Name == authorOfBugPriorityChange),
-                   allTeams.AllTeamsList[teamToChangeBugPriorityFor]
-                        .Boards.Find(board => board.Name == boardToChangeBugPriorityFor)
-                            .WorkItems.Find(workItem => workItem.Title == bugToChangePriorityFor), newPriorityEnum);
-
-            //Add to WorkItem Activity History
-            allTeams.AllTeamsList[teamToChangeBugPriorityFor]
-                .Boards.Find(board => board.Name == boardToChangeBugPriorityFor)
-                .WorkItems.Find(item => item.Title == bugToChangePriorityFor)
-                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeBugPriorityFor]
-                  .Members.Find(member => member.Name == authorOfBugPriorityChange),
-                   allTeams.AllTeamsList[teamToChangeBugPriorityFor]
-                        .Boards.Find(board => board.Name == boardToChangeBugPriorityFor)
-                            .WorkItems.Find(workItem => workItem.Title == bugToChangePriorityFor), newPriorityEnum);
-
-
-            return string.Format(BugPriorityChanged, bugToChangePriorityFor, newPriorityEnum);
-        }
-
-        private string ChangeBugSeverity(string teamToChangeBugSeverityFor, string boardToChangeBugSeverityFor, string bugToChangeSeverityFor, string newSeverity, string authorOfBugSeverityChange)
-        {
-            //if (string.IsNullOrEmpty(teamToChangeBugSeverityFor))
-            //{
-            //    return string.Format(NullOrEmptyTeamName);
-            //}
-
-            //if (string.IsNullOrEmpty(boardToChangeBugSeverityFor))
-            //{
-            //    return string.Format(NullOrEmptyBoardName);
-            //}
-
-            //if (string.IsNullOrEmpty(bugToChangeSeverityFor))
-            //{
-            //    return string.Format(NullOrEmptyBugName);
-            //}
-
-            //if (!allTeams.AllTeamsList.ContainsKey(teamToChangeBugSeverityFor))
-            //{
-            //    return string.Format(TeamDoesNotExist);
-            //}
-
-            ////Check whether such a board exists in the team
-            //var boardMatches = allTeams.AllTeamsList[teamToChangeBugSeverityFor].Boards
-            //  .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeBugSeverityFor);
-
-            //if (boardMatches == false)
-            //{
-            //    return string.Format(BoardDoesNotExist, boardToChangeBugSeverityFor);
-            //}
-
-            ////var severityToChangeInBug = GetSeverity(severity);
-
-            var newSeverityEnum = enumParser.GetSeverity(newSeverity);
-
-            allTeams.AllTeamsList[teamToChangeBugSeverityFor].Boards
-              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeBugSeverityFor).WorkItems
-                .Select(item => (IBug)item)
-                 .First(bugInSelectedBoard => bugInSelectedBoard.Title == bugToChangeSeverityFor)
-                  .ChangeBugSeverity(newSeverityEnum);
-
-
-            //Add to member activity history
-            allTeams.AllTeamsList[teamToChangeBugSeverityFor].Members
-                .Find(member => member.Name == authorOfBugSeverityChange)
-                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeBugSeverityFor]
-                        .Boards.Find(board => board.Name == boardToChangeBugSeverityFor)
-                            .WorkItems.Find(workItem => workItem.Title == bugToChangeSeverityFor),
-                                allTeams.AllTeamsList[teamToChangeBugSeverityFor],
-                                    allTeams.AllTeamsList[teamToChangeBugSeverityFor]
-                                        .Boards.Find(board => board.Name == boardToChangeBugSeverityFor));
-
-            //Add to board activity history
-
-            allTeams.AllTeamsList[teamToChangeBugSeverityFor]
-               .Boards.Find(board => board.Name == boardToChangeBugSeverityFor)
-                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeBugSeverityFor]
-                 .Members.Find(member => member.Name == authorOfBugSeverityChange),
-                  allTeams.AllTeamsList[teamToChangeBugSeverityFor]
-                       .Boards.Find(board => board.Name == boardToChangeBugSeverityFor)
-                           .WorkItems.Find(workItem => workItem.Title == bugToChangeSeverityFor));
-
-            //Add to WorkItem Activity History
-            allTeams.AllTeamsList[teamToChangeBugSeverityFor]
-                .Boards.Find(board => board.Name == boardToChangeBugSeverityFor)
-                .WorkItems.Find(item => item.Title == bugToChangeSeverityFor)
-                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeBugSeverityFor]
-                  .Members.Find(member => member.Name == authorOfBugSeverityChange),
-                   allTeams.AllTeamsList[teamToChangeBugSeverityFor]
-                        .Boards.Find(board => board.Name == boardToChangeBugSeverityFor)
-                            .WorkItems.Find(workItem => workItem.Title == bugToChangeSeverityFor), newSeverityEnum);
-
-            // .Add.Format(BugSeverityChanged, bugToChangeSeverityFor, newSeverityEnum);
-            return string.Format(BugSeverityChanged, bugToChangeSeverityFor, newSeverityEnum);
-        }
-
-        private string ChangeBugStatus(string teamToChangeBugStatusFor, string boardToChangeBugStatusFor, string bugToChangeStatusFor, string newStatus, string authorOfBugStatusChange)
-        {
-            //if (string.IsNullOrEmpty(teamToChangeBugStatusFor))
-            //{
-            //    return string.Format(NullOrEmptyTeamName);
-            //}
-
-            //if (string.IsNullOrEmpty(boardToChangeBugStatusFor))
-            //{
-            //    return string.Format(NullOrEmptyBoardName);
-            //}
-
-            //if (string.IsNullOrEmpty(bugToChangeStatusFor))
-            //{
-            //    return string.Format(NullOrEmptyBugName);
-            //}
-
-            //if (!allTeams.AllTeamsList.ContainsKey(teamToChangeBugStatusFor))
-            //{
-            //    return string.Format(TeamDoesNotExist);
-            //}
-
-            ////Check whether such a board exists in the team
-            //var boardMatches = allTeams.AllTeamsList[teamToChangeBugStatusFor].Boards
-            //  .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeBugStatusFor);
-
-            //if (boardMatches == false)
-            //{
-            //    return string.Format(BoardDoesNotExist, boardToChangeBugStatusFor);
-            //}
-
-            var newStatusEnum = enumParser.GetBugStatus(newStatus);
-
-            allTeams.AllTeamsList[teamToChangeBugStatusFor].Boards
-              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeBugStatusFor).WorkItems
-                .Select(item => (IBug)item)
-                 .First(bugInSelectedBoard => bugInSelectedBoard.Title == bugToChangeStatusFor)
-                  .ChangeBugStatus(newStatusEnum);
-
-            //Add To Member Activity History
-            allTeams.AllTeamsList[teamToChangeBugStatusFor].Members
-                .Find(member => member.Name == authorOfBugStatusChange)
-                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeBugStatusFor]
-                        .Boards.Find(board => board.Name == boardToChangeBugStatusFor)
-                            .WorkItems.Find(workItem => workItem.Title == bugToChangeStatusFor),
-                                allTeams.AllTeamsList[teamToChangeBugStatusFor],
-                                    allTeams.AllTeamsList[teamToChangeBugStatusFor]
-                                        .Boards.Find(board => board.Name == boardToChangeBugStatusFor));
-
-            //Add to board activity history
-            allTeams.AllTeamsList[teamToChangeBugStatusFor]
-               .Boards.Find(board => board.Name == boardToChangeBugStatusFor)
-                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeBugStatusFor]
-                 .Members.Find(member => member.Name == authorOfBugStatusChange),
-                  allTeams.AllTeamsList[teamToChangeBugStatusFor]
-                       .Boards.Find(board => board.Name == boardToChangeBugStatusFor)
-                           .WorkItems.Find(workItem => workItem.Title == bugToChangeStatusFor));
-
-            //Add to WorkItem Activity History
-            allTeams.AllTeamsList[teamToChangeBugStatusFor]
-                .Boards.Find(board => board.Name == boardToChangeBugStatusFor)
-                .WorkItems.Find(item => item.Title == bugToChangeStatusFor)
-                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeBugStatusFor]
-                  .Members.Find(member => member.Name == authorOfBugStatusChange),
-                   allTeams.AllTeamsList[teamToChangeBugStatusFor]
-                        .Boards.Find(board => board.Name == boardToChangeBugStatusFor)
-                            .WorkItems.Find(workItem => workItem.Title == bugToChangeStatusFor), newStatusEnum);
-
-
-            return string.Format(BugStatusChanged, bugToChangeStatusFor, newStatus);
-        }
-
-        private string ChangeStoryPriority(string teamToChangeStoryPriorityFor, string boardToChangeStoryPriorityFor, string storyToChangePriorityFor, string newStoryPriority, string authorOfStoryPriorityChange)
-        {
-            //if (string.IsNullOrEmpty(teamToChangeStoryPriorityFor))
-            //{
-            //    return string.Format(NullOrEmptyTeamName);
-            //}
-
-            //if (string.IsNullOrEmpty(boardToChangeStoryPriorityFor))
-            //{
-            //    return string.Format(NullOrEmptyBoardName);
-            //}
-
-            //if (string.IsNullOrEmpty(storyToChangePriorityFor))
-            //{
-            //    return string.Format(NullOrEmptyBugName);
-            //}
-
-
-
-            //if (!allTeams.AllTeamsList.ContainsKey(teamToChangeStoryPriorityFor))
-            //{
-            //    return string.Format(TeamDoesNotExist);
-            //}
-
-            ////Check whether such a board exists in the team
-            //var boardMatches = allTeams.AllTeamsList[teamToChangeStoryPriorityFor].Boards
-            //  .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeStoryPriorityFor);
-
-            //if (boardMatches == false)
-            //{
-            //    return string.Format(BoardDoesNotExist, boardToChangeStoryPriorityFor);
-            //}
-
-            //var priorityToChangeInBug = GetPriority(priority);
-
-            var newPriorityEnum = enumParser.GetPriority(newStoryPriority);
-
-            allTeams.AllTeamsList[teamToChangeStoryPriorityFor].Boards
-              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeStoryPriorityFor).WorkItems
-                .Select(item => (IStory)item)
-                 .First(storyInSelectedBoard => storyInSelectedBoard.Title == storyToChangePriorityFor)
-                  .ChangeStoryPriority(newPriorityEnum);
-
-
-            //Add to member activity history
-            allTeams.AllTeamsList[teamToChangeStoryPriorityFor].Members
-                .Find(member => member.Name == authorOfStoryPriorityChange)
-                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
-                        .Boards.Find(board => board.Name == boardToChangeStoryPriorityFor)
-                            .WorkItems.Find(workItem => workItem.Title == storyToChangePriorityFor),
-                                allTeams.AllTeamsList[teamToChangeStoryPriorityFor],
-                                    allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
-                                        .Boards.Find(board => board.Name == boardToChangeStoryPriorityFor));
-
-            //Add to board activity history
-            allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
-               .Boards.Find(board => board.Name == boardToChangeStoryPriorityFor)
-                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
-                 .Members.Find(member => member.Name == authorOfStoryPriorityChange),
-                  allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
-                       .Boards.Find(board => board.Name == boardToChangeStoryPriorityFor)
-                           .WorkItems.Find(workItem => workItem.Title == storyToChangePriorityFor));
-
-            //Add to WorkItem Activity History
-            allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
-                .Boards.Find(board => board.Name == boardToChangeStoryPriorityFor)
-                .WorkItems.Find(item => item.Title == storyToChangePriorityFor)
-                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
-                  .Members.Find(member => member.Name == authorOfStoryPriorityChange),
-                   allTeams.AllTeamsList[teamToChangeStoryPriorityFor]
-                        .Boards.Find(board => board.Name == boardToChangeStoryPriorityFor)
-                            .WorkItems.Find(workItem => workItem.Title == storyToChangePriorityFor), newPriorityEnum);
-
-            return string.Format(StoryPriorityChanged, storyToChangePriorityFor, newPriorityEnum);
-        }
-
-        private string ChangeStorySize(string teamToChangeStorySizeFor, string boardToChangeStorySizeFor, string storyToChangeSizeFor, string newStorySize, string authorOfStorySizeChange)
-        {
-            //if (string.IsNullOrEmpty(teamToChangeStorySizeFor))
-            //{
-            //    return string.Format(NullOrEmptyTeamName);
-            //}
-
-            //if (string.IsNullOrEmpty(boardToChangeStorySizeFor))
-            //{
-            //    return string.Format(NullOrEmptyBoardName);
-            //}
-
-            //if (string.IsNullOrEmpty(storyToChangeSizeFor))
-            //{
-            //    return string.Format(NullOrEmptyBugName);
-            //}
-
-            //if (!allTeams.AllTeamsList.ContainsKey(teamToChangeStorySizeFor))
-            //{
-            //    return string.Format(TeamDoesNotExist);
-            //}
-
-            ////Check whether such a board exists in the team
-            //var boardMatches = allTeams.AllTeamsList[teamToChangeStorySizeFor].Boards
-            //  .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeStorySizeFor);
-
-            //if (boardMatches == false)
-            //{
-            //    return string.Format(BoardDoesNotExist, boardToChangeStorySizeFor);
-            //}
-
-            ////var sizeToChangeInStory = GetSize(size);
-
-            var newSizeEnum = enumParser.GetStorySize(newStorySize);
-
-            allTeams.AllTeamsList[teamToChangeStorySizeFor].Boards
-              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeStorySizeFor).WorkItems
-                .Select(item => (IStory)item)
-                 .First(storyInSelectedBoard => storyInSelectedBoard.Title == storyToChangeSizeFor)
-                  .ChangeStorySize(newSizeEnum);
-
-            //Addto member activity history
-            allTeams.AllTeamsList[teamToChangeStorySizeFor].Members
-                .Find(member => member.Name == authorOfStorySizeChange)
-                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeStorySizeFor]
-                        .Boards.Find(board => board.Name == boardToChangeStorySizeFor)
-                            .WorkItems.Find(workItem => workItem.Title == storyToChangeSizeFor),
-                                allTeams.AllTeamsList[teamToChangeStorySizeFor],
-                                    allTeams.AllTeamsList[teamToChangeStorySizeFor]
-                                        .Boards.Find(board => board.Name == boardToChangeStorySizeFor));
-
-            //Add to board activity history
-            allTeams.AllTeamsList[teamToChangeStorySizeFor]
-               .Boards.Find(board => board.Name == boardToChangeStorySizeFor)
-                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeStorySizeFor]
-                 .Members.Find(member => member.Name == authorOfStorySizeChange),
-                  allTeams.AllTeamsList[teamToChangeStorySizeFor]
-                       .Boards.Find(board => board.Name == boardToChangeStorySizeFor)
-                           .WorkItems.Find(workItem => workItem.Title == storyToChangeSizeFor));
-
-            //Add to WorkItem Activity History
-            allTeams.AllTeamsList[teamToChangeStorySizeFor]
-                .Boards.Find(board => board.Name == boardToChangeStorySizeFor)
-                .WorkItems.Find(item => item.Title == storyToChangeSizeFor)
-                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeStorySizeFor]
-                  .Members.Find(member => member.Name == authorOfStorySizeChange),
-                   allTeams.AllTeamsList[teamToChangeStorySizeFor]
-                        .Boards.Find(board => board.Name == boardToChangeStorySizeFor)
-                            .WorkItems.Find(workItem => workItem.Title == storyToChangeSizeFor), newSizeEnum);
-
-            return string.Format(StorySizeChanged, storyToChangeSizeFor, newSizeEnum);
-        }
-
-        private string ChangeStoryStatus(string teamToChangeStoryStatusFor, string boardToChangeStoryStatusFor, string storyToChangeStatusFor, string newStoryStatus, string authorOfStoryStatusChange)
-        {
-            //if (string.IsNullOrEmpty(teamToChangeStoryStatusFor))
-            //{
-            //    return string.Format(NullOrEmptyTeamName);
-            //}
-
-            //if (string.IsNullOrEmpty(boardToChangeStoryStatusFor))
-            //{
-            //    return string.Format(NullOrEmptyBoardName);
-            //}
-
-            //if (string.IsNullOrEmpty(storyToChangeStatusFor))
-            //{
-            //    return string.Format(NullOrEmptyBugName);
-            //}
-
-            //if (!allTeams.AllTeamsList.ContainsKey(teamToChangeStoryStatusFor))
-            //{
-            //    return string.Format(TeamDoesNotExist);
-            //}
-
-            ////Check whether such a board exists in the team
-            //var boardMatches = allTeams.AllTeamsList[teamToChangeStoryStatusFor].Boards
-            //  .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeStoryStatusFor);
-
-            //if (boardMatches == false)
-            //{
-            //    return string.Format(BoardDoesNotExist, boardToChangeStoryStatusFor);
-            //}
-
-            var newStatusEnum = enumParser.GetStoryStatus(newStoryStatus);
-
-            allTeams.AllTeamsList[teamToChangeStoryStatusFor].Boards
-              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeStoryStatusFor).WorkItems
-                .Select(item => (IStory)item)
-                 .First(storyInSelectedBoard => storyInSelectedBoard.Title == storyToChangeStatusFor)
-                  .ChangeStoryStatus(newStatusEnum);
-
-
-            // Add to member activity history
-            allTeams.AllTeamsList[teamToChangeStoryStatusFor].Members
-                .Find(member => member.Name == authorOfStoryStatusChange)
-                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeStoryStatusFor]
-                        .Boards.Find(board => board.Name == boardToChangeStoryStatusFor)
-                            .WorkItems.Find(workItem => workItem.Title == storyToChangeStatusFor),
-                                allTeams.AllTeamsList[teamToChangeStoryStatusFor],
-                                    allTeams.AllTeamsList[teamToChangeStoryStatusFor]
-                                        .Boards.Find(board => board.Name == boardToChangeStoryStatusFor));
-
-            //Add to board activity history
-            allTeams.AllTeamsList[teamToChangeStoryStatusFor]
-               .Boards.Find(board => board.Name == boardToChangeStoryStatusFor)
-                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeStoryStatusFor]
-                 .Members.Find(member => member.Name == authorOfStoryStatusChange),
-                  allTeams.AllTeamsList[teamToChangeStoryStatusFor]
-                       .Boards.Find(board => board.Name == boardToChangeStoryStatusFor)
-                           .WorkItems.Find(workItem => workItem.Title == storyToChangeStatusFor));
-
-            //Add to WorkItem Activity History
-            allTeams.AllTeamsList[teamToChangeStoryStatusFor]
-                .Boards.Find(board => board.Name == boardToChangeStoryStatusFor)
-                .WorkItems.Find(item => item.Title == storyToChangeStatusFor)
-                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeStoryStatusFor]
-                  .Members.Find(member => member.Name == authorOfStoryStatusChange),
-                   allTeams.AllTeamsList[teamToChangeStoryStatusFor]
-                        .Boards.Find(board => board.Name == boardToChangeStoryStatusFor)
-                            .WorkItems.Find(workItem => workItem.Title == storyToChangeStatusFor), newStatusEnum);
-
-
-            return string.Format(StoryStatusChanged, storyToChangeStatusFor, newStoryStatus);
-        }
-
-        private string ChangeFeedbackRating(string teamToChangeFeedbackRatingFor, string boardToChangeFeedbackRatingFor, string feedbackToChangeRatingFor, string newFeedbackRating, string authorOfFeedbackRatingChange)
-        {
-            //if (string.IsNullOrEmpty(teamToChangeFeedbackRatingFor))
-            //{
-            //    return string.Format(NullOrEmptyTeamName);
-            //}
-
-            //if (string.IsNullOrEmpty(boardToChangeFeedbackRatingFor))
-            //{
-            //    return string.Format(NullOrEmptyBoardName);
-            //}
-
-            //if (string.IsNullOrEmpty(feedbackToChangeRatingFor))
-            //{
-            //    return string.Format(NullOrEmptyBugName);
-            //}
-
-            //if (!allTeams.AllTeamsList.ContainsKey(teamToChangeFeedbackRatingFor))
-            //{
-            //    return string.Format(TeamDoesNotExist);
-            //}
-
-            ////Check whether such a board exists in the team
-            //var boardMatches = allTeams.AllTeamsList[teamToChangeFeedbackRatingFor].Boards
-            //  .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeFeedbackRatingFor);
-
-            //if (boardMatches == false)
-            //{
-            //    return string.Format(BoardDoesNotExist, boardToChangeFeedbackRatingFor);
-            //}
-
-            var isRatingConvertable = Int32.TryParse(newFeedbackRating, out var newRatingInteger);
-
-            allTeams.AllTeamsList[teamToChangeFeedbackRatingFor].Boards
-              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeFeedbackRatingFor).WorkItems
-                .Select(item => (IFeedback)item)
-                 .First(storyInSelectedBoard => storyInSelectedBoard.Title == feedbackToChangeRatingFor)
-                  .ChangeFeedbackRating(newRatingInteger);
-
-            //Add to member activity history
-            allTeams.AllTeamsList[teamToChangeFeedbackRatingFor].Members
-                .Find(member => member.Name == authorOfFeedbackRatingChange)
-                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
-                        .Boards.Find(board => board.Name == boardToChangeFeedbackRatingFor)
-                            .WorkItems.Find(workItem => workItem.Title == feedbackToChangeRatingFor),
-                                allTeams.AllTeamsList[teamToChangeFeedbackRatingFor],
-                                    allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
-                                        .Boards.Find(board => board.Name == boardToChangeFeedbackRatingFor));
-
-            //Add to board activity history
-            allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
-               .Boards.Find(board => board.Name == boardToChangeFeedbackRatingFor)
-                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
-                 .Members.Find(member => member.Name == authorOfFeedbackRatingChange),
-                  allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
-                       .Boards.Find(board => board.Name == boardToChangeFeedbackRatingFor)
-                           .WorkItems.Find(workItem => workItem.Title == feedbackToChangeRatingFor));
-
-            //Add to WorkItem Activity History
-            allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
-                .Boards.Find(board => board.Name == boardToChangeFeedbackRatingFor)
-                .WorkItems.Find(item => item.Title == feedbackToChangeRatingFor)
-                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
-                  .Members.Find(member => member.Name == authorOfFeedbackRatingChange),
-                   allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
-                        .Boards.Find(board => board.Name == boardToChangeFeedbackRatingFor)
-                            .WorkItems.Find(workItem => workItem.Title == feedbackToChangeRatingFor), newRatingInteger);
-
-            return string.Format(FeedbackRatingChanged, feedbackToChangeRatingFor, newFeedbackRating);
-        }
-
-        private string ChangeFeedbackStatus(string teamToChangeFeedbackStatusFor, string boardToChangeFeedbackStatusFor, string feedbackToChangeStatusFor, string newFeedbackStatus, string authorOfFeedbackStatusChange)
-        {
-            //if (string.IsNullOrEmpty(teamToChangeFeedbackStatusFor))
-            //{
-            //    return string.Format(NullOrEmptyTeamName);
-            //}
-
-            //if (string.IsNullOrEmpty(boardToChangeFeedbackStatusFor))
-            //{
-            //    return string.Format(NullOrEmptyBoardName);
-            //}
-
-            //if (string.IsNullOrEmpty(feedbackToChangeStatusFor))
-            //{
-            //    return string.Format(NullOrEmptyBugName);
-            //}
-
-            //if (!allTeams.AllTeamsList.ContainsKey(teamToChangeFeedbackStatusFor))
-            //{
-            //    return string.Format(TeamDoesNotExist);
-            //}
-
-            ////Check whether such a board exists in the team
-            //var boardMatches = allTeams.AllTeamsList[teamToChangeFeedbackStatusFor].Boards
-            //  .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeFeedbackStatusFor);
-
-            //if (boardMatches == false)
-            //{
-            //    return string.Format(BoardDoesNotExist, boardToChangeFeedbackStatusFor);
-            //}
-
-            var newStatusEnum = enumParser.GetFeedbackStatus(newFeedbackStatus);
-
-            allTeams.AllTeamsList[teamToChangeFeedbackStatusFor].Boards
-              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeFeedbackStatusFor).WorkItems
-                .Select(item => (IFeedback)item)
-                 .First(feedbackInSelectedBoard => feedbackInSelectedBoard.Title == feedbackToChangeStatusFor)
-                  .ChangeFeedbackStatus(newStatusEnum);
-
-            //Add to member activity history
-            allTeams.AllTeamsList[teamToChangeFeedbackStatusFor].Members
-                .Find(member => member.Name == authorOfFeedbackStatusChange)
-                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
-                        .Boards.Find(board => board.Name == boardToChangeFeedbackStatusFor)
-                            .WorkItems.Find(workItem => workItem.Title == feedbackToChangeStatusFor),
-                                allTeams.AllTeamsList[teamToChangeFeedbackStatusFor],
-                                    allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
-                                        .Boards.Find(board => board.Name == boardToChangeFeedbackStatusFor));
-
-            //Add to board activity history
-            allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
-               .Boards.Find(board => board.Name == boardToChangeFeedbackStatusFor)
-                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
-                 .Members.Find(member => member.Name == authorOfFeedbackStatusChange),
-                  allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
-                       .Boards.Find(board => board.Name == boardToChangeFeedbackStatusFor)
-                           .WorkItems.Find(workItem => workItem.Title == feedbackToChangeStatusFor));
-
-            //Add to WorkItem Activity History
-            allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
-                .Boards.Find(board => board.Name == boardToChangeFeedbackStatusFor)
-                .WorkItems.Find(item => item.Title == feedbackToChangeStatusFor)
-                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
-                  .Members.Find(member => member.Name == authorOfFeedbackStatusChange),
-                   allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
-                        .Boards.Find(board => board.Name == boardToChangeFeedbackStatusFor)
-                            .WorkItems.Find(workItem => workItem.Title == feedbackToChangeStatusFor), newStatusEnum);
-
-            return string.Format(FeedbackStatusChanged, feedbackToChangeStatusFor, newFeedbackStatus);
-        }
-
-        private string AddComment(string teamToAddCommentToWorkItemFor, string boardToAddCommentToWorkItemFor, string workitemToAddCommentFor, string authorOfComment, string commentToAdd)
-        {
-            allTeams.AllTeamsList[teamToAddCommentToWorkItemFor].Boards
-              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddCommentToWorkItemFor).WorkItems
-                 .First(workitemInSelectedBoard => workitemInSelectedBoard.Title == workitemToAddCommentFor)
-                  .AddComment(commentToAdd, authorOfComment);
-
-            var workItemType = allTeams.AllTeamsList[teamToAddCommentToWorkItemFor].Boards
-              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddCommentToWorkItemFor).WorkItems
-                 .First(workitemInSelectedBoard => workitemInSelectedBoard.Title == workitemToAddCommentFor).GetType().Name;
-
-            return string.Format(AddedCommentFor, commentToAdd, authorOfComment, workItemType, workitemToAddCommentFor);
-        }
+ 
     }
 }
