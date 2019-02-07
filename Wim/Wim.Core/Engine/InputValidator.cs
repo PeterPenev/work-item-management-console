@@ -18,7 +18,7 @@ namespace Wim.Core.Engine
         private const string NoSuchTeamInApplication = "There is no team with {0} name in the Application!";
         private const string NoMembersInApplication = "There are no Members in the Application yet!";
         private const string NoTeamsInApplication = "There are no Teams in the Application yet!";
-        private const string BugAlreadyExists = "Bug in Board: {0} already exists!";
+        private const string BugAlreadyExists = "Bug with name {0} in Board: {1} already exists!";
 
 
 
@@ -39,7 +39,7 @@ namespace Wim.Core.Engine
 
         private const string BoardDoesNotExist = "Board with name {0} doest not exist!";
         private const string NullOrEmptyStoryName = "Story Name cannot be null or empty!";
-        private const string StoryAlreadyExists = "Story with name {0} already exists!";
+        private const string StoryAlreadyExists = "Story with name {0} in Board: {1} already exists!";
         private const string StoryCreated = "Story {0} was created!";
         private const string NullOrEmptyFeedbackName = "Feedback Name cannot be null or empty!";
         private const string FeedbackAlreadyExists = "Feedback with name {0} already exists!";
@@ -111,7 +111,7 @@ namespace Wim.Core.Engine
             }
         }
 
-        public void ValidateBugExistanceInBoard(IAllTeams allTeams, string boardToAddBugFor, string teamToAddBugFor)
+        public void ValidateBugExistanceInBoard(IAllTeams allTeams, string boardToAddBugFor, string teamToAddBugFor, string bugTitle)
         {
             var boardToCheckBugFor = allTeams.AllTeamsList[teamToAddBugFor].Boards
                    .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddBugFor).First();
@@ -121,7 +121,21 @@ namespace Wim.Core.Engine
 
             if (doesBugExistInBoard)
             {
-                throw new BugAlreadyInBoardException(string.Format(BugAlreadyExists, boardToAddBugFor));
+                throw new BugAlreadyInBoardException(string.Format(BugAlreadyExists, bugTitle, boardToAddBugFor));
+            }
+        }
+
+        public void ValidateStoryExistanceInBoard(IAllTeams allTeams, string boardToAddStoryFor, string teamToAddStoryFor, string storyTitle)
+        {
+            var boardToCheckStoryFor = allTeams.AllTeamsList[teamToAddStoryFor].Boards
+                   .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddStoryFor).First();
+
+            var doesStoryExistInBoard = boardToCheckStoryFor.WorkItems
+                   .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Story)).Any(storyThatExists => storyThatExists.Title == storyTitle);
+
+            if (doesStoryExistInBoard)
+            {
+                throw new StoryAlreadyInBoardException(string.Format(StoryAlreadyExists, storyTitle, boardToAddStoryFor));
             }
         }
     }

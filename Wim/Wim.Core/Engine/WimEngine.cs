@@ -436,7 +436,9 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateTeamExistance(allTeams, teamToAddBugFor);
 
-            inputValidator.ValidateBoardExistance(allTeams, boardToAddBugFor, teamToAddBugFor);                     
+            inputValidator.ValidateBoardExistance(allTeams, boardToAddBugFor, teamToAddBugFor);
+
+            inputValidator.ValidateBugExistanceInBoard(allTeams, boardToAddBugFor, teamToAddBugFor, bugTitle);
 
             Priority bugPriorityEnum = this.enumParser.GetPriority(bugPriority);
             Severity bugSeverityEnum = this.enumParser.GetSeverity(bugSeverity);
@@ -459,53 +461,25 @@ namespace Wim.Core.Engine
         }
 
         private string CreateStory(string storyTitle, string teamToAddStoryFor, string boardToAddStoryFor, string storyPriority, string storySize, string storyStatus, string storyAssignee, string storyDescription)
-
         {
-            if (string.IsNullOrEmpty(storyTitle))
-            {
-                return string.Format(NullOrEmptyStoryName);
-            }
+            var storyTypeForChecking = "Story Title";
+            inputValidator.IsNullOrEmpty(storyTitle, storyTypeForChecking);
 
-            if (string.IsNullOrEmpty(teamToAddStoryFor))
-            {
-                return string.Format(NullOrEmptyTeamName);
-            }
+            var teamTypeForChecking = "Team Name";
+            inputValidator.IsNullOrEmpty(teamToAddStoryFor, teamTypeForChecking);
 
-            if (string.IsNullOrEmpty(boardToAddStoryFor))
-            {
-                return string.Format(NullOrEmptyBoardName);
-            }
+            var boardTypeForChecking = "Board Name";
+            inputValidator.IsNullOrEmpty(boardToAddStoryFor, boardTypeForChecking);
 
-            if (!this.allTeams.AllTeamsList.ContainsKey(teamToAddStoryFor))
-            {
-                return string.Format(TeamDoesNotExist, teamToAddStoryFor);
-            }
+            inputValidator.ValidateTeamExistance(allTeams, teamToAddStoryFor);
 
+            inputValidator.ValidateBoardExistance(allTeams, boardToAddStoryFor, teamToAddStoryFor);
 
-            var boardMatches = allTeams.AllTeamsList[teamToAddStoryFor].Boards
-              .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddStoryFor);
-
-            if (boardMatches == false)
-            {
-                return string.Format(BoardDoesNotExist, boardToAddStoryFor);
-            }
-
-            var boardToCheckStoryFor = allTeams.AllTeamsList[teamToAddStoryFor].Boards
-                .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddStoryFor).First();
-
-            var doesStoryExistInBoard = boardToCheckStoryFor.WorkItems
-                .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Story)).Any(storyThatExists => storyThatExists.Title == storyTitle);
-
-            if (doesStoryExistInBoard)
-            {
-                return string.Format(StoryAlreadyExists, boardToAddStoryFor);
-            }
-
+            inputValidator.ValidateStoryExistanceInBoard(allTeams, boardToAddStoryFor, teamToAddStoryFor, storyTitle);
 
             Priority storyPriorityEnum = this.enumParser.GetPriority(storyPriority);
             Size storySizeEnum = this.enumParser.GetStorySize(storySize);
             StoryStatus storyStatusEnum = this.enumParser.GetStoryStatus(storyStatus);
-
 
             IStory storyToAddToCollection = this.factory.CreateStory(storyTitle, storyDescription, storyPriorityEnum, storySizeEnum, storyStatusEnum, allMembers.AllMembersList[storyAssignee]);
 
