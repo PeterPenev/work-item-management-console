@@ -425,45 +425,18 @@ namespace Wim.Core.Engine
 
         private string CreateBug(string bugTitle, string teamToAddBugFor, string boardToAddBugFor, string bugPriority, string bugSeverity, string bugAsignee, IList<string> bugStepsToReproduce, string bugDescription)
         {
-            if (string.IsNullOrEmpty(bugTitle))
-            {
-                return string.Format(NullOrEmptyBugName);
-            }
+            var bugTypeForChecking = "Bug Title";
+            inputValidator.IsNullOrEmpty(bugTitle, bugTypeForChecking);
 
-            if (string.IsNullOrEmpty(teamToAddBugFor))
-            {
-                return string.Format(NullOrEmptyTeamName);
-            }
+            var teamTypeForChecking = "Team Name";
+            inputValidator.IsNullOrEmpty(teamToAddBugFor, teamTypeForChecking);
 
-            if (!this.allTeams.AllTeamsList.ContainsKey(teamToAddBugFor))
-            {
-                return string.Format(TeamDoesNotExist, teamToAddBugFor);
-            }
+            var boardTypeForChecking = "Board Name";
+            inputValidator.IsNullOrEmpty(boardToAddBugFor, boardTypeForChecking);
 
-            if (string.IsNullOrEmpty(boardToAddBugFor))
-            {
-                return string.Format(NullOrEmptyBoardName);
-            }
+            inputValidator.ValidateTeamExistance(allTeams, teamToAddBugFor);
 
-            var boardMatches = allTeams.AllTeamsList[teamToAddBugFor].Boards
-              .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddBugFor);
-
-            if (boardMatches == false)
-            {
-                return string.Format(BoardDoesNotExist, boardToAddBugFor);
-            }
-
-            var boardToCheckBugFor = allTeams.AllTeamsList[teamToAddBugFor].Boards
-                .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddBugFor).First();
-
-            var doesBugExistInBoard = boardToCheckBugFor.WorkItems
-                .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Bug)).Any(bugThatExists => bugThatExists.Title == bugTitle);
-
-            if (doesBugExistInBoard)
-            {
-                return string.Format(BugAlreadyExists, boardToAddBugFor);
-            }
-
+            inputValidator.ValidateBoardExistance(allTeams, boardToAddBugFor, teamToAddBugFor);                     
 
             Priority bugPriorityEnum = this.enumParser.GetPriority(bugPriority);
             Severity bugSeverityEnum = this.enumParser.GetSeverity(bugSeverity);

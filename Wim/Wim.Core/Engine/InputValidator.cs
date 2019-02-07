@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Wim.Core.CustomExceptions;
+using Wim.Models;
 using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine
@@ -17,6 +18,8 @@ namespace Wim.Core.Engine
         private const string NoSuchTeamInApplication = "There is no team with {0} name in the Application!";
         private const string NoMembersInApplication = "There are no Members in the Application yet!";
         private const string NoTeamsInApplication = "There are no Teams in the Application yet!";
+        private const string BugAlreadyExists = "Bug in Board: {0} already exists!";
+
 
 
         private const string NoPeopleInApplication = "There are no people!";
@@ -31,9 +34,9 @@ namespace Wim.Core.Engine
         private const string BoardAddedToTeam = "Board {0} was added to team {1}!";
         private const string BoardAlreadyExists = "Board with name {0} already exists!";
         private const string NoBoardsInTeam = "There are no boards in this team!";
-        
+
         private const string BugCreated = "Bug {0} was created!";
-        private const string BugAlreadyExists = "Bug with name {0} already exists!";
+
         private const string BoardDoesNotExist = "Board with name {0} doest not exist!";
         private const string NullOrEmptyStoryName = "Story Name cannot be null or empty!";
         private const string StoryAlreadyExists = "Story with name {0} already exists!";
@@ -95,6 +98,8 @@ namespace Wim.Core.Engine
             }
         }
 
+
+
         public void ValidateBoardExistance(IAllTeams allTeams, string boardToAddToTeam, string teamForAddingBoardTo)
         {
             var boardMatches = allTeams.AllTeamsList[teamForAddingBoardTo].Boards
@@ -106,5 +111,21 @@ namespace Wim.Core.Engine
             }
         }
 
+        public void ValidateBugExistanceInBoard(IAllTeams allTeams, string boardToAddBugFor, string teamToAddBugFor)
+        {
+            var boardToCheckBugFor = allTeams.AllTeamsList[teamToAddBugFor].Boards
+                   .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddBugFor).First();
+
+            var doesBugExistInBoard = boardToCheckBugFor.WorkItems
+                   .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Bug)).Any(bugThatExists => bugThatExists.Title == bugTitle);
+
+            if (doesBugExistInBoard)
+            {
+                throw new BugAlreadyInBoardException(string.Format(BugAlreadyExists, boardToAddBugFor));
+            }
+        }
     }
+
+ 
 }
+
