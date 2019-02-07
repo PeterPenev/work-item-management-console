@@ -1231,9 +1231,12 @@ namespace Wim.Core.Engine
 
         private string FilterBugsByPriority(string priorityToFilterBugFor)
         {
+            var priorityTypeForChecking = "Priority";
+            inputValidator.IsNullOrEmpty(priorityToFilterBugFor, priorityTypeForChecking);
+
             inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
 
-            inputValidator.ValidateIfAnyFeedbacksExist(allTeams);
+            inputValidator.ValidateIfAnyBugsExist(allTeams);
 
             var priorityToCheckFor = this.enumParser.GetPriority(priorityToFilterBugFor);
 
@@ -1271,24 +1274,39 @@ namespace Wim.Core.Engine
 
         private string FilterBugsByAssignee(string assigneeToFilterBugFor)
         {
-            var filteredBugsByStatus = allTeams.AllTeamsList.Values
+            var assigneeTypeForChecking = "Assignee";
+            inputValidator.IsNullOrEmpty(assigneeToFilterBugFor, assigneeTypeForChecking);
+
+            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+
+            inputValidator.ValidateIfAnyBugsExist(allTeams);
+
+            var filteredBugsByAssignee = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
                     .SelectMany(x => x.WorkItems)
-                        .Where(x => x.GetType() == typeof(Bug))
-                            .Select(workItem => (Bug)workItem)
+                        .Where(x => x.GetType() == typeof(IBug))
+                            .Select(workItem => (IBug)workItem)
                                 .Where(bug => bug.Assignee.Name == assigneeToFilterBugFor)
                                     .ToList();
 
 
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"----ALL BUGS ASSIGNED TO MEMBER: {assigneeToFilterBugFor} IN APPLICAITION----");
+            StringBuilder sb = new StringBuilder();           
             long workItemCounter = 1;
-            foreach (var item in filteredBugsByStatus)
+
+            if (filteredBugsByAssignee.Count == 0)
             {
-                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
-                workItemCounter++;
+                sb.AppendLine($"There are no Bugs with: {assigneeToFilterBugFor} Assignee in the app yet!");
             }
-            sb.AppendLine("---------------------------------");
+            else
+            {
+                sb.AppendLine($"----ALL BUGS ASSIGNED TO MEMBER: {assigneeToFilterBugFor} IN APPLICAITION----");
+                foreach (var item in filteredBugsByAssignee)
+                {
+                    sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
+                    workItemCounter++;
+                }
+                sb.AppendLine("---------------------------------");
+            }            
 
             var resultedAllItems = sb.ToString().Trim();
             return string.Format(resultedAllItems);
@@ -1296,26 +1314,41 @@ namespace Wim.Core.Engine
 
         private string FilterBugsByStatus(string statusToFilterBugFor)
         {
+            var statusTypeForChecking = "Status";
+            inputValidator.IsNullOrEmpty(statusToFilterBugFor, statusTypeForChecking);
+
+            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+
+            inputValidator.ValidateIfAnyBugsExist(allTeams);
+
             var bugStatusToCheckFor = this.enumParser.GetBugStatus(statusToFilterBugFor);
 
             var filteredBugsByStatus = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
                     .SelectMany(x => x.WorkItems)
-                        .Where(x => x.GetType() == typeof(Bug))
-                            .Select(workItem => (Bug)workItem)
+                        .Where(x => x.GetType() == typeof(IBug))
+                            .Select(workItem => (IBug)workItem)
                                 .Where(bug => bug.BugStatus == bugStatusToCheckFor)
                                     .ToList();
 
 
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"----ALL BUGS WITH {statusToFilterBugFor} STATUS IN APPLICAITION----");
+            StringBuilder sb = new StringBuilder();            
             long workItemCounter = 1;
-            foreach (var item in filteredBugsByStatus)
+
+            if (filteredBugsByStatus.Count == 0)
             {
-                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
-                workItemCounter++;
+                sb.AppendLine($"There are no Bugs with: {statusToFilterBugFor} Status in the app yet!");
             }
-            sb.AppendLine("---------------------------------");
+            else
+            {
+                sb.AppendLine($"----ALL BUGS WITH {statusToFilterBugFor} STATUS IN APPLICAITION----");
+                foreach (var item in filteredBugsByStatus)
+                {
+                    sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
+                    workItemCounter++;
+                }
+                sb.AppendLine("---------------------------------");
+            }            
 
             var resultedAllItems = sb.ToString().Trim();
             return string.Format(resultedAllItems);
