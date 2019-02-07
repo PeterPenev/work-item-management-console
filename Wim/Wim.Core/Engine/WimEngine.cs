@@ -29,6 +29,9 @@ namespace Wim.Core.Engine
         private const string StorySizeChanged = "Story {0} size is changed to {1}";
         private const string StoryStatusChanged = "Story {0} status is changed to{1}";
 
+        private const string FeedbackRatingChanged = "Feedback {0} rating is changed to {1}";
+        private const string FeedbackStatusChanged = "Feedback {0} status is changed to {1}";
+
         private static readonly WimEngine SingleInstance = new WimEngine();
 
         private readonly WimFactory factory;
@@ -255,6 +258,23 @@ namespace Wim.Core.Engine
                     var authorOfStoryStatusChange = command.Parameters[4];
 
                     return this.ChangeStoryStatus(teamToChangeStoryStatusFor, boardToChangeStoryStatusFor, storyToChangeStatusFor, newStoryStatus, authorOfStoryStatusChange);
+
+                case "ChangeFeedbackRating":
+                    var teamToChangeFeedbackRatingFor = command.Parameters[0];
+                    var boardToChangeFeedbackRatingFor = command.Parameters[1];
+                    var feedbackToChangeRatingFor = command.Parameters[2];
+                    var newFeedbackRating = command.Parameters[3];
+                    var authorOfFeedbackRatingChange = command.Parameters[4];
+
+                    return this.ChangeFeedbackRating(teamToChangeFeedbackRatingFor, boardToChangeFeedbackRatingFor, feedbackToChangeRatingFor, newFeedbackRating, authorOfFeedbackRatingChange);
+
+                case "ChangeFeedbackStatus":
+                    var teamToChangeFeedbackStatusFor = command.Parameters[0];
+                    var boardToChangeFeedbackStatusFor = command.Parameters[1];
+                    var feedbackToChangeStatusFor = command.Parameters[2];
+                    var newFeedbackStatus = command.Parameters[3];
+                    var authorOfFeedbackStatusChange = command.Parameters[4];
+                    return this.ChangeFeedbackStatus(teamToChangeFeedbackStatusFor, boardToChangeFeedbackStatusFor, feedbackToChangeStatusFor, newFeedbackStatus, authorOfFeedbackStatusChange);
 
                 case "ListAllWorkItems":
                     return this.ListAllWorkItems();
@@ -1433,6 +1453,148 @@ namespace Wim.Core.Engine
 
 
             return string.Format(StoryStatusChanged, storyToChangeStatusFor, newStoryStatus);
+        }
+
+        private string ChangeFeedbackRating(string teamToChangeFeedbackRatingFor, string boardToChangeFeedbackRatingFor, string feedbackToChangeRatingFor, string newFeedbackRating, string authorOfFeedbackRatingChange)
+        {
+            //if (string.IsNullOrEmpty(teamToChangeFeedbackRatingFor))
+            //{
+            //    return string.Format(NullOrEmptyTeamName);
+            //}
+
+            //if (string.IsNullOrEmpty(boardToChangeFeedbackRatingFor))
+            //{
+            //    return string.Format(NullOrEmptyBoardName);
+            //}
+
+            //if (string.IsNullOrEmpty(feedbackToChangeRatingFor))
+            //{
+            //    return string.Format(NullOrEmptyBugName);
+            //}
+
+            //if (!allTeams.AllTeamsList.ContainsKey(teamToChangeFeedbackRatingFor))
+            //{
+            //    return string.Format(TeamDoesNotExist);
+            //}
+
+            ////Check whether such a board exists in the team
+            //var boardMatches = allTeams.AllTeamsList[teamToChangeFeedbackRatingFor].Boards
+            //  .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeFeedbackRatingFor);
+
+            //if (boardMatches == false)
+            //{
+            //    return string.Format(BoardDoesNotExist, boardToChangeFeedbackRatingFor);
+            //}
+
+            var isRatingConvertable = Int32.TryParse(newFeedbackRating, out var newRatingInteger);
+
+            allTeams.AllTeamsList[teamToChangeFeedbackRatingFor].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeFeedbackRatingFor).WorkItems
+                .Select(item => (IFeedback)item)
+                 .First(storyInSelectedBoard => storyInSelectedBoard.Title == feedbackToChangeRatingFor)
+                  .ChangeFeedbackRating(newRatingInteger);
+
+            //Add to member activity history
+            allTeams.AllTeamsList[teamToChangeFeedbackRatingFor].Members
+                .Find(member => member.Name == authorOfFeedbackRatingChange)
+                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
+                        .Boards.Find(board => board.Name == boardToChangeFeedbackRatingFor)
+                            .WorkItems.Find(workItem => workItem.Title == feedbackToChangeRatingFor),
+                                allTeams.AllTeamsList[teamToChangeFeedbackRatingFor],
+                                    allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
+                                        .Boards.Find(board => board.Name == boardToChangeFeedbackRatingFor));
+
+            //Add to board activity history
+            allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
+               .Boards.Find(board => board.Name == boardToChangeFeedbackRatingFor)
+                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
+                 .Members.Find(member => member.Name == authorOfFeedbackRatingChange),
+                  allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
+                       .Boards.Find(board => board.Name == boardToChangeFeedbackRatingFor)
+                           .WorkItems.Find(workItem => workItem.Title == feedbackToChangeRatingFor));
+
+            //Add to WorkItem Activity History
+            allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
+                .Boards.Find(board => board.Name == boardToChangeFeedbackRatingFor)
+                .WorkItems.Find(item => item.Title == feedbackToChangeRatingFor)
+                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
+                  .Members.Find(member => member.Name == authorOfFeedbackRatingChange),
+                   allTeams.AllTeamsList[teamToChangeFeedbackRatingFor]
+                        .Boards.Find(board => board.Name == boardToChangeFeedbackRatingFor)
+                            .WorkItems.Find(workItem => workItem.Title == feedbackToChangeRatingFor), newRatingInteger);
+
+            return string.Format(FeedbackRatingChanged, feedbackToChangeRatingFor, newFeedbackRating);
+        }
+
+        private string ChangeFeedbackStatus(string teamToChangeFeedbackStatusFor, string boardToChangeFeedbackStatusFor, string feedbackToChangeStatusFor, string newFeedbackStatus, string authorOfFeedbackStatusChange)
+        {
+            //if (string.IsNullOrEmpty(teamToChangeFeedbackStatusFor))
+            //{
+            //    return string.Format(NullOrEmptyTeamName);
+            //}
+
+            //if (string.IsNullOrEmpty(boardToChangeFeedbackStatusFor))
+            //{
+            //    return string.Format(NullOrEmptyBoardName);
+            //}
+
+            //if (string.IsNullOrEmpty(feedbackToChangeStatusFor))
+            //{
+            //    return string.Format(NullOrEmptyBugName);
+            //}
+
+            //if (!allTeams.AllTeamsList.ContainsKey(teamToChangeFeedbackStatusFor))
+            //{
+            //    return string.Format(TeamDoesNotExist);
+            //}
+
+            ////Check whether such a board exists in the team
+            //var boardMatches = allTeams.AllTeamsList[teamToChangeFeedbackStatusFor].Boards
+            //  .Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeFeedbackStatusFor);
+
+            //if (boardMatches == false)
+            //{
+            //    return string.Format(BoardDoesNotExist, boardToChangeFeedbackStatusFor);
+            //}
+
+            var newStatusEnum = enumParser.GetFeedbackStatus(newFeedbackStatus);
+
+            allTeams.AllTeamsList[teamToChangeFeedbackStatusFor].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeFeedbackStatusFor).WorkItems
+                .Select(item => (IFeedback)item)
+                 .First(feedbackInSelectedBoard => feedbackInSelectedBoard.Title == feedbackToChangeStatusFor)
+                  .ChangeFeedbackStatus(newStatusEnum);
+
+            //Add to member activity history
+            allTeams.AllTeamsList[teamToChangeFeedbackStatusFor].Members
+                .Find(member => member.Name == authorOfFeedbackStatusChange)
+                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
+                        .Boards.Find(board => board.Name == boardToChangeFeedbackStatusFor)
+                            .WorkItems.Find(workItem => workItem.Title == feedbackToChangeStatusFor),
+                                allTeams.AllTeamsList[teamToChangeFeedbackStatusFor],
+                                    allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
+                                        .Boards.Find(board => board.Name == boardToChangeFeedbackStatusFor));
+
+            //Add to board activity history
+            allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
+               .Boards.Find(board => board.Name == boardToChangeFeedbackStatusFor)
+                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
+                 .Members.Find(member => member.Name == authorOfFeedbackStatusChange),
+                  allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
+                       .Boards.Find(board => board.Name == boardToChangeFeedbackStatusFor)
+                           .WorkItems.Find(workItem => workItem.Title == feedbackToChangeStatusFor));
+
+            //Add to WorkItem Activity History
+            allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
+                .Boards.Find(board => board.Name == boardToChangeFeedbackStatusFor)
+                .WorkItems.Find(item => item.Title == feedbackToChangeStatusFor)
+                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
+                  .Members.Find(member => member.Name == authorOfFeedbackStatusChange),
+                   allTeams.AllTeamsList[teamToChangeFeedbackStatusFor]
+                        .Boards.Find(board => board.Name == boardToChangeFeedbackStatusFor)
+                            .WorkItems.Find(workItem => workItem.Title == feedbackToChangeStatusFor), newStatusEnum);
+
+            return string.Format(FeedbackStatusChanged, feedbackToChangeStatusFor, newFeedbackStatus);
         }
     }
 }

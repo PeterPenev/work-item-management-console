@@ -10,5 +10,9 @@ namespace Wim.Models.Interfaces
         int Rating { get; set; }
 
         FeedbackStatus FeedbackStatus { get; }
+
+        void ChangeFeedbackRating(int rating);
+
+        void ChangeFeedbackStatus(FeedbackStatus status);
     }
 }

@@ -29,6 +29,16 @@ namespace Wim.Models
             }
         }
 
-        public FeedbackStatus FeedbackStatus { get; }
+        public FeedbackStatus FeedbackStatus { get; private set; }
+
+        public void ChangeFeedbackRating(int rating)
+        {
+            this.Rating = rating;
+        }
+
+        public void ChangeFeedbackStatus(FeedbackStatus status)
+        {
+            this.FeedbackStatus = status;
+        }
     }
 }
