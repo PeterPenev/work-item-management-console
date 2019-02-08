@@ -31,7 +31,7 @@ namespace Wim.Models
             {
                 if(value.Length < 5 || value.Length > 10)
                 {
-                    throw new ArgumentOutOfRangeException("Name should be between 5 and 10 symbols");
+                    throw new ArgumentException("Name should be between 5 and 10 symbols");
                 }
                 this.name = value;
             }

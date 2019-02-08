@@ -12,6 +12,7 @@ namespace Wim.Core.Engine
     public sealed class WimEngine : IEngine
     {
         private const string InvalidCommand = "Invalid command name: {0}!";
+
         private const string PersonCreated = "Person with name {0} was created!";
         private const string TeamCreated = "Team with name {0} was created!";
         private const string PersonAddedToTeam = "Person {0} was added to team {1}!";
@@ -19,7 +20,6 @@ namespace Wim.Core.Engine
         private const string BugCreated = "Bug {0} was created!";
         private const string StoryCreated = "Story {0} was created!";
         private const string FeedbackCreated = "Feedback {0} was created!";     
-        private const string PersonExists = "Person with name {0} already exists!";
 
         private const string BugPriorityChanged = "Bug {0} priority is changed to {1}";
         private const string BugSeverityChanged = "Bug {0} severity is changed to {1}";
@@ -975,7 +975,7 @@ namespace Wim.Core.Engine
 
             feedbackToAddActivityFor.AddActivityHistoryToWorkItem(memberToAddActivityFor, feedbackToAddActivityFor, newFeedbackRating);
 
-            return string.Format(StoryPriorityChanged, feedbackToChangeRatingFor, integerRating);
+            return string.Format(FeedbackRatingChanged, feedbackToChangeRatingFor, integerRating);
         }
 
         private string ChangeFeedbackStatus(string teamToChangeFeedbackStatusFor, string boardToChangeFeedbackStatusFor, string feedbackToChangeStatusFor, string newFeedbackStatus, string authorOfFeedbackStatusChange)
@@ -999,7 +999,8 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeFeedbackStatusFor, teamToChangeFeedbackStatusFor);
 
-            inputValidator.ValidateFeedbackExistanceInBoard(allTeams, boardToChangeFeedbackStatusFor, teamToChangeFeedbackStatusFor, feedbackToChangeStatusFor);
+            inputValidator.ValidateNoSuchFeedbackInBoard(allTeams, boardToChangeFeedbackStatusFor, teamToChangeFeedbackStatusFor, feedbackToChangeStatusFor);
+
 
             //Operations
             var newStatusEnum = enumParser.GetFeedbackStatus(newFeedbackStatus);
@@ -1024,7 +1025,7 @@ namespace Wim.Core.Engine
 
             feedbackToAddActivityFor.AddActivityHistoryToWorkItem(memberToAddActivityFor, feedbackToAddActivityFor, newFeedbackStatus);
 
-            return string.Format(StoryPriorityChanged, feedbackToChangeStatusFor, newStatusEnum);
+            return string.Format(FeedbackStatusChanged, feedbackToChangeStatusFor, newStatusEnum);
         }
 
         private string AddComment(string teamToAddCommentToWorkItemFor, string boardToAddCommentToWorkItemFor, string workitemToAddCommentFor, string authorOfComment, string commentToAdd)

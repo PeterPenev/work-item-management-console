@@ -58,7 +58,7 @@ namespace Wim.Models
             {
                 if (value != Severity.Critical && value != Severity.Major && value != Severity.Minor)
                 {
-                    throw new ArgumentOutOfRangeException("Severity can be Minor, Major or Critical");
+                    throw new ArgumentException("Severity can be Minor, Major or Critical");
                 }
                 this.severity = value;
             }
@@ -75,7 +75,7 @@ namespace Wim.Models
             {
                 if (value != BugStatus.Active && value != BugStatus.Fixed)
                 {
-                    throw new ArgumentOutOfRangeException("Status can be Active or Fixed");
+                    throw new ArgumentException("Status can be Active or Fixed");
                 }
                 this.bugStatus = value;
             }

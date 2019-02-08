@@ -33,7 +33,7 @@ namespace Wim.Models
             {
                 if(value.Length < 10 || value.Length > 50)
                 {
-                    throw new ArgumentOutOfRangeException("Title should be between 10 and 50 symbols");
+                    throw new ArgumentException("Title should be between 10 and 50 symbols");
                 }
                 this.title = value;
             }
@@ -48,7 +48,7 @@ namespace Wim.Models
             {
                 if(value.Length < 10 || value.Length > 500)
                 {
-                    throw new ArgumentOutOfRangeException("Description should be between 10 and 500 symbols");
+                    throw new ArgumentException("Description should be between 10 and 500 symbols");
                 }
                 this.description = value;
             }

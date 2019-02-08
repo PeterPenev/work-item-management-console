@@ -49,6 +49,7 @@ namespace Wim.Core.Engine
         private const string BoardAddedToTeam = "Board {0} was added to team {1}!";
         private const string BoardAlreadyExists = "Board with name {0} already exists!";
         private const string NoBoardsInTeam = "There are no boards in this team!";
+        private const string NoSuchFeedbackInBoard = "There is no Feedback with name: {0} in board: {1} part of team: {2}!";
 
         private const string BugCreated = "Bug {0} was created!";
 
@@ -120,7 +121,8 @@ namespace Wim.Core.Engine
         {
             if (!allMembers.AllMembersList.ContainsKey(memberName))
             {
-                throw new MemberNotInAppException(NoSuchMemberInApplication);
+                var NoSuchMemberInApplicationMessage = string.Format(NoSuchMemberInApplication, memberName);
+                throw new MemberNotInAppException(NoSuchMemberInApplicationMessage);
             }
         }
 
@@ -191,6 +193,22 @@ namespace Wim.Core.Engine
             {
                 var FeedbackAlreadyExistsMessage = string.Format(FeedbackAlreadyExists, feedbackTitle, boardToAddFeedbackFor, teamToAddFeedbackFor);
                 throw new FeedbackAlreadyInBoardException(FeedbackAlreadyExistsMessage);
+            }
+        }
+
+        public void ValidateNoSuchFeedbackInBoard(IAllTeams allTeams, string boardToAddFeedbackFor, string teamToAddFeedbackFor, string feedbackTitle)
+        {
+            var boardToCheckFeedbackFor = allTeams.AllTeamsList[teamToAddFeedbackFor].Boards
+                   .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddFeedbackFor).First();
+
+            var doesFeedbackExistInBoard = boardToCheckFeedbackFor.WorkItems
+                   .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Feedback))
+                   .Any(feedbackThatExists => feedbackThatExists.Title == feedbackTitle);
+
+            if (!doesFeedbackExistInBoard)
+            {
+                var NoSuchFeedbackInBoardExceptionMessage = string.Format(NoSuchFeedbackInBoard, feedbackTitle, boardToAddFeedbackFor, teamToAddFeedbackFor);
+                throw new NoSuchFeedbackInBoardException(NoSuchFeedbackInBoardExceptionMessage);
             }
         }
 
