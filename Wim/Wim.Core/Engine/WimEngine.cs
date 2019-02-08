@@ -383,7 +383,7 @@ namespace Wim.Core.Engine
             inputValidator.ValdateIfAnyMembersExist(allMembers);            
 
             var peopleToDisplay = allMembers.ShowAllMembersToString();
-
+                
             return string.Format(peopleToDisplay);
         }
 
@@ -694,8 +694,8 @@ namespace Wim.Core.Engine
             var boardTypeForChecking = "Board Name";
             inputValidator.IsNullOrEmpty(boardToChangeBugSeverityFor, boardTypeForChecking);
 
-            var priorityTypeForChecking = "Severity";
-            inputValidator.IsNullOrEmpty(newSeverity, priorityTypeForChecking);
+            var severityTypeForChecking = "Severity";
+            inputValidator.IsNullOrEmpty(newSeverity, severityTypeForChecking);
 
             var authorTypeForChecking = "Author";
             inputValidator.IsNullOrEmpty(authorOfBugSeverityChange, authorTypeForChecking);
@@ -708,49 +708,32 @@ namespace Wim.Core.Engine
 
             var newSeverityEnum = enumParser.GetSeverity(newSeverity);
 
-            allTeams.AllTeamsList[teamToChangeBugSeverityFor].Boards
-              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeBugSeverityFor).WorkItems
-                .Select(item => (IBug)item)
-                 .First(bugInSelectedBoard => bugInSelectedBoard.Title == bugToChangeSeverityFor)
-                  .ChangeBugSeverity(newSeverityEnum);
+            var castedBugForPriorityChange = allTeams.FindBugAndCast(teamToChangeBugSeverityFor, boardToChangeBugSeverityFor, bugToChangeSeverityFor);
 
+            castedBugForPriorityChange.ChangeBugSeverity(newSeverityEnum);
 
-            //Add to member activity history
-            allTeams.AllTeamsList[teamToChangeBugSeverityFor].Members
-                .Find(member => member.Name == authorOfBugSeverityChange)
-                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeBugSeverityFor]
-                        .Boards.Find(board => board.Name == boardToChangeBugSeverityFor)
-                            .WorkItems.Find(workItem => workItem.Title == bugToChangeSeverityFor),
-                                allTeams.AllTeamsList[teamToChangeBugSeverityFor],
-                                    allTeams.AllTeamsList[teamToChangeBugSeverityFor]
-                                        .Boards.Find(board => board.Name == boardToChangeBugSeverityFor));
+            var memberToAddActivityFor = allTeams.FindMemberInTeam(teamToChangeBugSeverityFor, authorOfBugSeverityChange);
 
-            //Add to board activity history
+            var teamToAddActivityFor = allTeams.FindMemberInTeam(teamToChangeBugSeverityFor, authorOfBugSeverityChange);
 
-            allTeams.AllTeamsList[teamToChangeBugSeverityFor]
-               .Boards.Find(board => board.Name == boardToChangeBugSeverityFor)
-                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeBugSeverityFor]
-                 .Members.Find(member => member.Name == authorOfBugSeverityChange),
-                  allTeams.AllTeamsList[teamToChangeBugSeverityFor]
-                       .Boards.Find(board => board.Name == boardToChangeBugSeverityFor)
-                           .WorkItems.Find(workItem => workItem.Title == bugToChangeSeverityFor));
+            var bugToAddActivityFor = allTeams.FindWorkItem(teamToChangeBugSeverityFor, boardToChangeBugSeverityFor, bugToChangeSeverityFor);
 
-            //Add to WorkItem Activity History
-            allTeams.AllTeamsList[teamToChangeBugSeverityFor]
-                .Boards.Find(board => board.Name == boardToChangeBugSeverityFor)
-                .WorkItems.Find(item => item.Title == bugToChangeSeverityFor)
-                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeBugSeverityFor]
-                  .Members.Find(member => member.Name == authorOfBugSeverityChange),
-                   allTeams.AllTeamsList[teamToChangeBugSeverityFor]
-                        .Boards.Find(board => board.Name == boardToChangeBugSeverityFor)
-                            .WorkItems.Find(workItem => workItem.Title == bugToChangeSeverityFor), newSeverityEnum);
+            var teamToFindIn = allTeams.AllTeamsList[teamToChangeBugSeverityFor];
 
-            // .Add.Format(BugSeverityChanged, bugToChangeSeverityFor, newSeverityEnum);
+            var boardToAddActivityFor = allTeams.FindBoardInTeam(teamToChangeBugSeverityFor, boardToChangeBugSeverityFor);
+
+            boardToAddActivityFor.AddActivityHistoryToBoard(memberToAddActivityFor, bugToAddActivityFor, newSeverity);
+
+            memberToAddActivityFor.AddActivityHistoryToMember(bugToAddActivityFor, teamToFindIn, boardToAddActivityFor, newSeverity);
+
+            bugToAddActivityFor.AddActivityHistoryToWorkItem(memberToAddActivityFor, bugToAddActivityFor, newSeverity);
+
             return string.Format(BugSeverityChanged, bugToChangeSeverityFor, newSeverityEnum);
         }
 
         private string ChangeBugStatus(string teamToChangeBugStatusFor, string boardToChangeBugStatusFor, string bugToChangeStatusFor, string newStatus, string authorOfBugStatusChange)
         {
+            //Validations
             var bugTypeForChecking = "Bug Title";
             inputValidator.IsNullOrEmpty(bugToChangeStatusFor, bugTypeForChecking);
 
@@ -772,43 +755,29 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateBugNotInBoard(allTeams, boardToChangeBugStatusFor, teamToChangeBugStatusFor, bugToChangeStatusFor);
 
+            //Operations
             var newStatusEnum = enumParser.GetBugStatus(newStatus);
 
-            allTeams.AllTeamsList[teamToChangeBugStatusFor].Boards
-              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToChangeBugStatusFor).WorkItems
-                .Select(item => (IBug)item)
-                 .First(bugInSelectedBoard => bugInSelectedBoard.Title == bugToChangeStatusFor)
-                  .ChangeBugStatus(newStatusEnum);
+            var castedBugToChangeStatusIn = allTeams.FindBugAndCast(teamToChangeBugStatusFor, boardToChangeBugStatusFor, bugToChangeStatusFor);
 
-            //Add To Member Activity History
-            allTeams.AllTeamsList[teamToChangeBugStatusFor].Members
-                .Find(member => member.Name == authorOfBugStatusChange)
-                    .AddActivityHistoryToMember(allTeams.AllTeamsList[teamToChangeBugStatusFor]
-                        .Boards.Find(board => board.Name == boardToChangeBugStatusFor)
-                            .WorkItems.Find(workItem => workItem.Title == bugToChangeStatusFor),
-                                allTeams.AllTeamsList[teamToChangeBugStatusFor],
-                                    allTeams.AllTeamsList[teamToChangeBugStatusFor]
-                                        .Boards.Find(board => board.Name == boardToChangeBugStatusFor));
+            var bugToChangeStatus = allTeams.FindWorkItem(teamToChangeBugStatusFor, boardToChangeBugStatusFor, bugToChangeStatusFor);
 
-            //Add to board activity history
-            allTeams.AllTeamsList[teamToChangeBugStatusFor]
-               .Boards.Find(board => board.Name == boardToChangeBugStatusFor)
-                .AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToChangeBugStatusFor]
-                 .Members.Find(member => member.Name == authorOfBugStatusChange),
-                  allTeams.AllTeamsList[teamToChangeBugStatusFor]
-                       .Boards.Find(board => board.Name == boardToChangeBugStatusFor)
-                           .WorkItems.Find(workItem => workItem.Title == bugToChangeStatusFor));
+            var boardToChangeStatusIn = allTeams.FindBoardInTeam(teamToChangeBugStatusFor, boardToChangeBugStatusFor);
 
-            //Add to WorkItem Activity History
-            allTeams.AllTeamsList[teamToChangeBugStatusFor]
-                .Boards.Find(board => board.Name == boardToChangeBugStatusFor)
-                .WorkItems.Find(item => item.Title == bugToChangeStatusFor)
-                 .AddActivityHistoryToWorkItem(allTeams.AllTeamsList[teamToChangeBugStatusFor]
-                  .Members.Find(member => member.Name == authorOfBugStatusChange),
-                   allTeams.AllTeamsList[teamToChangeBugStatusFor]
-                        .Boards.Find(board => board.Name == boardToChangeBugStatusFor)
-                            .WorkItems.Find(workItem => workItem.Title == bugToChangeStatusFor), newStatusEnum);
+            var teamToChangeStatusOfBoardIn = allTeams.AllTeamsList[teamToChangeBugStatusFor];
 
+            var memberToChangeActivityHistoryFor = allTeams.FindMemberInTeam(teamToChangeBugStatusFor, authorOfBugStatusChange);
+
+            castedBugToChangeStatusIn.ChangeBugStatus(newStatusEnum);
+
+            memberToChangeActivityHistoryFor
+                .AddActivityHistoryToMember(bugToChangeStatus, teamToChangeStatusOfBoardIn, boardToChangeStatusIn, newStatusEnum);
+
+            boardToChangeStatusIn
+                .AddActivityHistoryToBoard(memberToChangeActivityHistoryFor, bugToChangeStatus, newStatusEnum);
+
+            bugToChangeStatus
+                .AddActivityHistoryToWorkItem(memberToChangeActivityHistoryFor, bugToChangeStatus, newStatusEnum);
 
             return string.Format(BugStatusChanged, bugToChangeStatusFor, newStatus);
         }
