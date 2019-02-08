@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Wim.Core.Contracts;
 using Wim.Core.CustomExceptions;
 using Wim.Models;
 using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine
 {
-    public class InputValidator
+    public class InputValidator : IInputValidator
     {
         private const string NoTeamsInApplication = "There are no Teams in the Application yet!";
 
