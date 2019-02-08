@@ -36,6 +36,7 @@ namespace Wim.Core.Engine
         private const string StoryAlreadyExists = "Story with name {0} in Board: {1} part of Team {2} already exists!";
         private const string FeedbackAlreadyExists = "Feedback with name {0} in Board: {1} part of Team {2} already exists!";
         private const string RatingCannotBeConverted = "The Rating: {0} from the input cannot be converted to Number!";
+        private const string MemberNotInTeam = "Member: {0} is not part of team {1}!";
 
 
         private const string NoPeopleInApplication = "There are no people!";
@@ -232,6 +233,18 @@ namespace Wim.Core.Engine
             {
                 var PersonAlreadyInTeamMessage = string.Format(PersonAlreadyInTeam, personName, teamToCheckForPerson);
                 throw new PersonAlreadyInTeamException(PersonAlreadyInTeamMessage);
+            }
+        }
+
+        public void ValidateIfMemberNotInTeam(IAllTeams allTeams, string teamToCheckForPerson, string personName)
+        {
+
+            if (allTeams.AllTeamsList[teamToCheckForPerson]
+                .Members.Where(member => member.Name == personName)
+                 .ToList().Count == 0)
+            {
+                var MemberNotInTeamMessage = string.Format(MemberNotInTeam, personName, teamToCheckForPerson);
+                throw new MemberNotInTeamException(MemberNotInTeamMessage);
             }
         }
 

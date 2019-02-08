@@ -507,7 +507,7 @@ namespace Wim.Core.Engine
             return string.Format(allTeamBoardsResult);
         }
 
-        private string CreateBug(string bugTitle, string teamToAddBugFor, string boardToAddBugFor, string bugPriority, string bugSeverity, string bugAsignee, IList<string> bugStepsToReproduce, string bugDescription)
+        private string CreateBug(string bugTitle, string teamToAddBugFor, string boardToAddBugFor, string bugPriority, string bugSeverity, string bugAssignee, IList<string> bugStepsToReproduce, string bugDescription)
         {
             var bugTypeForChecking = "Bug Title";
             inputValidator.IsNullOrEmpty(bugTitle, bugTypeForChecking);
@@ -520,24 +520,28 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateTeamExistance(allTeams, teamToAddBugFor);
 
+            inputValidator.ValidateMemberExistance(allMembers, bugAssignee);
+
+            inputValidator.ValidateIfMemberNotInTeam(allTeams, teamToAddBugFor, bugAssignee);
+
             inputValidator.ValidateBugExistanceInBoard(allTeams, boardToAddBugFor, teamToAddBugFor, bugTitle);
 
             Priority bugPriorityEnum = this.enumParser.GetPriority(bugPriority);
             Severity bugSeverityEnum = this.enumParser.GetSeverity(bugSeverity);
-            IBug bugToAddToCollection = this.factory.CreateBug(bugTitle, bugPriorityEnum, bugSeverityEnum, allMembers.AllMembersList[bugAsignee], bugStepsToReproduce, bugDescription);
+            IBug bugToAddToCollection = this.factory.CreateBug(bugTitle, bugPriorityEnum, bugSeverityEnum, allMembers.AllMembersList[bugAssignee], bugStepsToReproduce, bugDescription);
 
             var indexOfBoardInSelectedTeam = allTeams.AllTeamsList[teamToAddBugFor].Boards.FindIndex(boardIndex => boardIndex.Name == boardToAddBugFor);
 
             allTeams.AllTeamsList[teamToAddBugFor].Boards[indexOfBoardInSelectedTeam].AddWorkitemToBoard(bugToAddToCollection);
 
-            allTeams.AllTeamsList[teamToAddBugFor].Members.First(member => member.Name == bugAsignee).AddWorkItemIdToMember(bugToAddToCollection.Id);
+            allTeams.AllTeamsList[teamToAddBugFor].Members.First(member => member.Name == bugAssignee).AddWorkItemIdToMember(bugToAddToCollection.Id);
 
             var boardToPutHistoryFor = allTeams.AllTeamsList[teamToAddBugFor].Boards[indexOfBoardInSelectedTeam];
-            var memberToPutHistoryFor = allTeams.AllTeamsList[teamToAddBugFor].Members.First(member => member.Name == bugAsignee);
+            var memberToPutHistoryFor = allTeams.AllTeamsList[teamToAddBugFor].Members.First(member => member.Name == bugAssignee);
             var teamToPutHistoryFor = allTeams.AllTeamsList[teamToAddBugFor];
 
             allTeams.AllTeamsList[teamToAddBugFor].Boards[indexOfBoardInSelectedTeam].AddActivityHistoryToBoard(memberToPutHistoryFor, bugToAddToCollection);
-            allTeams.AllTeamsList[teamToAddBugFor].Members.First(member => member.Name == bugAsignee).AddActivityHistoryToMember(bugToAddToCollection, teamToPutHistoryFor, boardToPutHistoryFor);
+            allTeams.AllTeamsList[teamToAddBugFor].Members.First(member => member.Name == bugAssignee).AddActivityHistoryToMember(bugToAddToCollection, teamToPutHistoryFor, boardToPutHistoryFor);
 
             return string.Format(BugCreated, bugTitle);
         }
@@ -554,6 +558,10 @@ namespace Wim.Core.Engine
             inputValidator.IsNullOrEmpty(boardToAddStoryFor, boardTypeForChecking);
 
             inputValidator.ValidateTeamExistance(allTeams, teamToAddStoryFor);
+
+            inputValidator.ValidateMemberExistance(allMembers, storyAssignee);
+
+            inputValidator.ValidateIfMemberNotInTeam(allTeams, teamToAddStoryFor, storyAssignee);
 
             inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToAddStoryFor, teamToAddStoryFor);
 
