@@ -602,6 +602,8 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateTeamExistance(allTeams, teamToAddFeedbackFor);
 
+            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToAddFeedbackFor, teamToAddFeedbackFor);
+
             inputValidator.ValidateFeedbackExistanceInBoard(allTeams, boardToAddFeedbackFor, teamToAddFeedbackFor, feedbackTitle);
 
             var intFeedbackRating = inputValidator.ValidateRatingConversion(feedbackRaiting);            
