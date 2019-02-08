@@ -34,6 +34,8 @@ namespace Wim.Core.Engine
 
         private const string AddedCommentFor = "Comment {0} with author {1} is added to {2} with name: {3}.";
 
+        private const string AssignBugTo = "Bug {0} on the board {1} of the team {2} was assign to the member {3}!";
+
         private static readonly WimEngine SingleInstance = new WimEngine();
 
         private readonly WimFactory factory;
@@ -348,6 +350,14 @@ namespace Wim.Core.Engine
                     var factorToSortFeedbackBy = command.Parameters[0];
                     return this.SortFeedbackBy(factorToSortFeedbackBy);
 
+                case "AssignUnassignBug":
+                    var teamToAssignUnsignBug = command.Parameters[0];
+                    var boardToAssignUnsignBug = command.Parameters[1];
+                    var bugToAssignUnsign = command.Parameters[2];
+                    var memberToAssignBug = command.Parameters[3];
+
+                    return this.AssignUnassignBug(teamToAssignUnsignBug, boardToAssignUnsignBug, bugToAssignUnsign, memberToAssignBug);
+
                 default:
                     return string.Format(InvalidCommand, command.Name);
             }
@@ -610,7 +620,8 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateTeamExistance(allTeams, teamToShowBoardActivityFor);
 
-            inputValidator.ValidateBoardExistance(allTeams, boardActivityToShow, teamToShowBoardActivityFor);           
+            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardActivityToShow, teamToShowBoardActivityFor);      
+
 
             var boardToDisplayActivityFor = allTeams.AllTeamsList[teamToShowBoardActivityFor].Boards
               .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardActivityToShow).FirstOrDefault();
@@ -1691,6 +1702,109 @@ namespace Wim.Core.Engine
 
             var resultedAllItems = sb.ToString().Trim();
             return string.Format(resultedAllItems);
-        } 
+        }
+
+        public string AssignUnassignBug(string teamToAssignUnsignBug, string boardToAssignUnsignBug, string bugToAssignUnsign, string memberToAssignBug)
+        {
+            //if (string.IsNullOrEmpty(teamToAssignUnsignBug))
+            //{
+            //    return string.Format(NullOrEmptyTeamName);
+            //}
+
+            //if (string.IsNullOrEmpty(boardToAssignUnsignBug))
+            //{
+            //    return string.Format(NullOrEmptyBoardName);
+            //}
+
+            //if (string.IsNullOrEmpty(bugToAssignUnsign))
+            //{
+            //    return string.Format(NullOrEmptyBugName);
+            //}
+
+            //if (string.IsNullOrEmpty(memberToAssignBug))
+            //{
+            //    return string.Format(NullOrEmptyMemberName);
+            //}
+
+            //if (!this.allTeams.AllTeamsList.ContainsKey(teamToAssignUnsignBug))
+            //{
+            //    return string.Format(TeamDoesNotExist, teamToAssignUnsignBug);
+            //}
+
+            //var doesMemberExistInTeam = allTeams.AllTeamsList[teamToAssignUnsignBug].Members.Any(member => member.Name == memberToAssignBug);
+
+            //if (!doesMemberExistInTeam)
+            //{
+            //    return string.Format(MemberToAssignDoesNotExist, memberToAssignBug);
+            //}
+
+            //var boardToAssignBugForMatches = allTeams.AllTeamsList[teamToAssignUnsignBug].Boards
+            //.Any(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAssignUnsignBug);
+
+            //if (boardToAssignBugForMatches == false)
+            //{
+            //    return string.Format(BoardDoesNotExist, boardToAssignUnsignBug);
+            //}
+
+            //var boardToAssignBugFor = allTeams.AllTeamsList[teamToAssignUnsignBug].Boards
+            //.Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAssignUnsignBug).FirstOrDefault();
+
+            //var doesBugExistInBoard = boardToAssignBugFor.WorkItems
+            //    .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Bug)).Any(bugThatExists => bugThatExists.Title == bugToAssignUnsign);
+
+            //if (!doesBugExistInBoard)
+            //{
+            //    return string.Format(BugDoesNotExist, bugToAssignUnsign);
+            //}
+
+            var bugID = allTeams.AllTeamsList[teamToAssignUnsignBug].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAssignUnsignBug).WorkItems
+                .Select(item => (IBug)item)
+                 .First(bugInSelectedBoard => bugInSelectedBoard.Title == bugToAssignUnsign).Id;
+
+            var bugMemberBeforeUnssign = allTeams.AllTeamsList[teamToAssignUnsignBug].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAssignUnsignBug).WorkItems
+                .Select(item => (IBug)item)
+                 .First(bugInSelectedBoard => bugInSelectedBoard.Title == bugToAssignUnsign).Assignee;
+
+            var bugMemberToAssignBug = allTeams.AllTeamsList[teamToAssignUnsignBug].Members
+                 .Find(member => member.Name == memberToAssignBug);
+
+            //change Bug assignee value
+            allTeams.AllTeamsList[teamToAssignUnsignBug].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAssignUnsignBug).WorkItems
+                .Select(item => (IBug)item)
+                 .First(bugInSelectedBoard => bugInSelectedBoard.Title == bugToAssignUnsign)
+                 .AssignMemberToBug(allTeams.AllTeamsList[teamToAssignUnsignBug].Members
+                 .Find(member => member.Name == memberToAssignBug));
+
+            //remove workItem from list of member
+            allMembers.AllMembersList.First(X => X.Value.Name == bugMemberBeforeUnssign.Name).Value.
+            RemoveWorkItemIdToMember(allTeams.AllTeamsList[teamToAssignUnsignBug].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAssignUnsignBug).WorkItems
+                .Select(item => (IBug)item)
+                 .First(bugInSelectedBoard => bugInSelectedBoard.Title == bugToAssignUnsign).Id);
+
+            //add workItem to list of member
+            allTeams.AllTeamsList[teamToAssignUnsignBug].Members
+                 .Find(member => member.Name == memberToAssignBug).AddWorkItemIdToMember(allTeams.AllTeamsList[teamToAssignUnsignBug].Boards
+              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAssignUnsignBug).WorkItems
+                .Select(item => (IBug)item)
+                 .First(bugInSelectedBoard => bugInSelectedBoard.Title == bugToAssignUnsign).Id);
+
+            //history
+            var indexOfBoardInSelectedTeam = allTeams.AllTeamsList[teamToAssignUnsignBug].Boards.FindIndex(boardIndex => boardIndex.Name == boardToAssignUnsignBug);
+
+            //add history to board
+            allTeams.AllTeamsList[teamToAssignUnsignBug].Boards[indexOfBoardInSelectedTeam].AddActivityHistoryAfterAssignUnsignToBoard(bugToAssignUnsign, bugMemberToAssignBug, bugMemberBeforeUnssign);
+
+            //add history to member before unssign
+            bugMemberBeforeUnssign.AddActivityHistoryAfterUnsignToMember(bugToAssignUnsign, bugMemberBeforeUnssign);
+
+            //add history to member after assign
+            bugMemberToAssignBug.AddActivityHistoryAfterAssignToMember(bugToAssignUnsign, bugMemberToAssignBug);
+
+            return string.Format(AssignBugTo, bugToAssignUnsign, boardToAssignUnsignBug, teamToAssignUnsignBug, memberToAssignBug);
+        }
     }
 }

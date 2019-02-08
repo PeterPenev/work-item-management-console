@@ -21,5 +21,7 @@ namespace Wim.Models.Interfaces
         void ChangeBugSeverity(Severity severity);
 
         void ChangeBugStatus(BugStatus status);
+
+        void AssignMemberToBug(IMember memberToAssignBug);
     }
 }

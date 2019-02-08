@@ -102,5 +102,14 @@ namespace Wim.Models
             var activityHistoryToAddToBoard = new ActivityHistory(resultToAddAssMessage);
             this.activityHistory.Add(activityHistoryToAddToBoard);
         }
+
+        public void AddActivityHistoryAfterAssignUnsignToBoard(string workItemTitle, IMember memberToAssign, IMember memberFromUnsign)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"A WorkItem with Title: {workItemTitle} was unsigned from {memberFromUnsign.Name} and assign to {memberToAssign.Name}");
+            string resultToAddAssMessage = sb.ToString().Trim();
+            var activityHistoryToAddToBoard = new ActivityHistory(resultToAddAssMessage);
+            this.activityHistory.Add(activityHistoryToAddToBoard);
+        }
     }
 }

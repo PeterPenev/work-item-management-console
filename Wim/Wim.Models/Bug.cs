@@ -107,5 +107,10 @@ namespace Wim.Models
         {
             this.BugStatus = status;
         }
+
+        public void AssignMemberToBug(IMember memberToAssignBug)
+        {
+            this.Assignee = memberToAssignBug;
+        }
     }
 }
