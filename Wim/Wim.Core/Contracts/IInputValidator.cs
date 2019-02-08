@@ -12,11 +12,13 @@ namespace Wim.Core.Contracts
 
         void ValdateIfBoardsExistInTeam(IAllTeams allTeams, string teamToShowBoardsFor);
 
+        void ValidateBoardExistanceInTeam(IAllTeams allTeams, string boardNameToCheckFor, string teamToCheckForBoard);
+
+        void ValidateBoardAlreadyInTeam(IAllTeams allTeams, string boardToAddToTeam, string teamForAddingBoardTo);
+
         void ValidateMemberExistance(IAllMembers allMembers, string memberName);
 
-        void ValidateTeamExistance(IAllTeams allTeams, string teamName);
-
-        void ValidateBoardExistance(IAllTeams allTeams, string boardToAddToTeam, string teamForAddingBoardTo);
+        void ValidateTeamExistance(IAllTeams allTeams, string teamName);       
 
         void ValidateBugExistanceInBoard(IAllTeams allTeams, string boardToAddBugFor, string teamToAddBugFor, string bugTitle);
 
@@ -36,11 +38,8 @@ namespace Wim.Core.Contracts
 
         void ValidateIfAnyStoriesExist(IAllTeams allTeams);
 
-        void ValidateIfAnyFeedbacksExist(IAllTeams allTeams);
-
-        void ValidateBoardExistanceInTeam(IAllTeams allTeams, string boardNameToCheckFor, string teamToCheckForBoard);
+        void ValidateIfAnyFeedbacksExist(IAllTeams allTeams);       
 
         int ValidateRatingConversion(string ratingForCheck);
-
     }
 }

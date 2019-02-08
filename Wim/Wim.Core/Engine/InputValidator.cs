@@ -24,6 +24,7 @@ namespace Wim.Core.Engine
         private const string TeamAlreadyExists = "Team with name {0} already exists!";
         private const string NoSuchBoardInTeam = "There is no board with name {0} in team {1}!";
         private const string BugNotInBoard = "There is no bug with name {0} in board {1} part of team {2}!";
+        private const string BoardAlreadyExistsInTeam = "Board with name {0} already exists in team {1}!";
 
         private const string NoWorkItemsInApp = "There are no work items in the whole app yet!";
         private const string NoBugsInApp = "There are no Bugs in the whole app yet!";
@@ -94,6 +95,27 @@ namespace Wim.Core.Engine
             }
         }
 
+        public void ValidateBoardExistanceInTeam(IAllTeams allTeams, string boardNameToCheckFor, string teamToCheckForBoard)
+        {
+            if (allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).Where(board => board.Name == boardNameToCheckFor).ToList().Count == 0)
+            {
+                var NoSuchBoardInTeamMessage = string.Format(NoSuchBoardInTeam, boardNameToCheckFor, teamToCheckForBoard);
+                throw new NoSuchBoardInTeamException(NoSuchBoardInTeamMessage);
+            }
+        }
+
+        public void ValidateBoardAlreadyInTeam(IAllTeams allTeams, string boardToAddToTeam, string teamForAddingBoardTo)
+        {
+            var boardMatches = allTeams.AllTeamsList[teamForAddingBoardTo].Boards
+             .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddToTeam);
+
+            if (boardMatches.Count() > 0)
+            {
+                var BoardAlreadyExistsInTeamMessage = string.Format(BoardAlreadyExistsInTeam, boardToAddToTeam, teamForAddingBoardTo);
+                throw new BoardAlreadyExistsInTeamException(BoardAlreadyExistsInTeamMessage);
+            }
+        }
+
         public void ValidateMemberExistance(IAllMembers allMembers, string memberName)
         {
             if (!allMembers.AllMembersList.ContainsKey(memberName))
@@ -110,19 +132,7 @@ namespace Wim.Core.Engine
                 throw new TeamNotInAppException(NoSuchTeamInApplicationMessage);
             }
         }
-
-        public void ValidateBoardExistance(IAllTeams allTeams, string boardToAddToTeam, string teamForAddingBoardTo)
-        {
-            var boardMatches = allTeams.AllTeamsList[teamForAddingBoardTo].Boards
-             .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddToTeam);
-
-            if (boardMatches.Count() > 0)
-            {
-                var BoardAlreadyExistsMessage = string.Format(BoardAlreadyExists, boardToAddToTeam);
-                throw new BoardNotInAppException(BoardAlreadyExistsMessage);
-            }
-        }
-
+        
         public void ValidateBugExistanceInBoard(IAllTeams allTeams, string boardToAddBugFor, string teamToAddBugFor, string bugTitle)
         {
             var boardToCheckBugFor = allTeams.AllTeamsList[teamToAddBugFor].Boards
@@ -250,16 +260,7 @@ namespace Wim.Core.Engine
                 throw new NoFeedbacksInAppException(NoFeedbacksInApp);
             }
         }
-
-        public void ValidateBoardExistanceInTeam(IAllTeams allTeams, string boardNameToCheckFor, string teamToCheckForBoard)
-        {
-            if (allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).Where(board => board.Name == boardNameToCheckFor).ToList().Count == 0)
-            {
-                var NoSuchBoardInTeamMessage = string.Format(NoSuchBoardInTeam, boardNameToCheckFor, teamToCheckForBoard);
-                throw new NoSuchBoardInTeamException(NoSuchBoardInTeamMessage);
-            }
-        }
-
+        
         public int ValidateRatingConversion(string ratingForCheck)
         {
             bool isRatingConvertable = int.TryParse(ratingForCheck, out var intFeedbackRaiting);

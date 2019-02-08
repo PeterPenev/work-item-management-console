@@ -447,7 +447,6 @@ namespace Wim.Core.Engine
             return string.Format(teamActivityHistory);
         }
 
-
         private string AddPersonToTeam(string personToAddToTeam, string teamToAddPersonTo)
         {
             var personTypeForChecking = "Person Name";
@@ -485,14 +484,13 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateTeamExistance(allTeams, teamForAddingBoardTo);
 
-            inputValidator.ValidateBoardExistance(allTeams, boardToAddToTeam, teamForAddingBoardTo);
+            inputValidator.ValidateBoardAlreadyInTeam(allTeams, boardToAddToTeam, teamForAddingBoardTo);
 
             var board = this.factory.CreateBoard(boardToAddToTeam);
             allTeams.AllTeamsList[teamForAddingBoardTo].AddBoard(board);
 
             return string.Format(BoardAddedToTeam, boardToAddToTeam, teamForAddingBoardTo);
         }
-
 
         private string ShowAllTeamBoards(string teamToShowBoardsFor)
         {
