@@ -457,7 +457,9 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateTeamExistance(allTeams, teamToAddPersonTo);
 
-            inputValidator.ValidateMemberExistance(allMembers, personToAddToTeam);            
+            inputValidator.ValidateMemberExistance(allMembers, personToAddToTeam);
+
+            inputValidator.ValidateIfMemberAlreadyInTeam(allTeams, teamToAddPersonTo, personToAddToTeam);
 
             allTeams.AllTeamsList[teamToAddPersonTo].AddMember(allMembers.AllMembersList[personToAddToTeam]);
             return string.Format(PersonAddedToTeam, personToAddToTeam, teamToAddPersonTo);
@@ -1000,7 +1002,6 @@ namespace Wim.Core.Engine
             inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeFeedbackStatusFor, teamToChangeFeedbackStatusFor);
 
             inputValidator.ValidateNoSuchFeedbackInBoard(allTeams, boardToChangeFeedbackStatusFor, teamToChangeFeedbackStatusFor, feedbackToChangeStatusFor);
-
 
             //Operations
             var newStatusEnum = enumParser.GetFeedbackStatus(newFeedbackStatus);

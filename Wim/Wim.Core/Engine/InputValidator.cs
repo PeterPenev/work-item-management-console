@@ -30,6 +30,7 @@ namespace Wim.Core.Engine
         private const string NoBugsInApp = "There are no Bugs in the whole app yet!";
         private const string NoStoriesInApp = "There are no Stories in the whole app yet!";
         private const string NoFeedbacksInApp = "There are no Feedbacks in the whole app yet!";
+        private const string PersonAlreadyInTeam = "Person with name {0} is already in team {1}!";
 
         private const string BugAlreadyExists = "Bug with name {0} in Board: {1} part of Team {2} already exists!";
         private const string StoryAlreadyExists = "Story with name {0} in Board: {1} part of Team {2} already exists!";
@@ -218,7 +219,19 @@ namespace Wim.Core.Engine
             if (allMembers.AllMembersList.ContainsKey(personName))
             {
                 var PersonAlreadyExistsMessage = string.Format(PersonAlreadyExists, personName);
-                throw new PersonAlreadyInBoardException(PersonAlreadyExistsMessage);
+                throw new PersonAlreadyInAppException(PersonAlreadyExistsMessage);
+            }
+        }
+
+        public void ValidateIfMemberAlreadyInTeam(IAllTeams allTeams, string teamToCheckForPerson, string personName)
+        {
+
+            if (allTeams.AllTeamsList[teamToCheckForPerson]
+                .Members.Where(member => member.Name == personName)
+                 .ToList().Count > 0)
+            {
+                var PersonAlreadyInTeamMessage = string.Format(PersonAlreadyInTeam, personName, teamToCheckForPerson);
+                throw new PersonAlreadyInTeamException(PersonAlreadyInTeamMessage);
             }
         }
 
