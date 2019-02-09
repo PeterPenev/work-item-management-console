@@ -8,11 +8,11 @@ namespace Wim.Core.Engine
 {
     public static class WimEngineExtensionMethods
     {
-        public static IWorkItem FindWorkItem(this IAllTeams allTeams, string teamToFindItemFor, string boardToFindItemFor, string nameOfWorkItemToFind)
+        public static IWorkItem FindWorkItem(this IAllTeams allTeams, string teamToFindItemFor, string itemType, string boardToFindItemFor, string nameOfWorkItemToFind)
         {
             return allTeams.AllTeamsList[teamToFindItemFor]
                         .Boards.Find(board => board.Name == boardToFindItemFor)
-                            .WorkItems.Find(workItem => workItem.Title == nameOfWorkItemToFind);
+                            .WorkItems.Where(item => item.GetType().Name == itemType).First(workItem => workItem.Title == nameOfWorkItemToFind);
         }
 
         public static IMember FindMemberInTeam(this IAllTeams allTeams, string teamToFindMemberFor, string nameOfMemberToFind)

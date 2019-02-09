@@ -283,20 +283,21 @@ namespace Wim.Core.Engine
                 case "AddComment":
                     var teamToAddCommentToWorkItemFor = command.Parameters[0];
                     var boardToAddCommentToWorkItemFor = command.Parameters[1];
-                    var workitemToAddCommentFor = command.Parameters[2];
-                    var authorOfComment = command.Parameters[3];
+                    var itemTypeToAddWorkItemFor = command.Parameters[2];
+                    var workitemToAddCommentFor = command.Parameters[3];
+                    var authorOfComment = command.Parameters[4];
 
                     //build comment
                     var buildComment = new StringBuilder();
 
-                    for (int i = 4; i < command.Parameters.Count; i++)
+                    for (int i = 5; i < command.Parameters.Count; i++)
                     {
                         buildComment.Append(command.Parameters[i] + " ");
                     }
 
                     var commentToAdd = buildComment.ToString().Trim();
 
-                    return this.AddComment(teamToAddCommentToWorkItemFor, boardToAddCommentToWorkItemFor, workitemToAddCommentFor, authorOfComment, commentToAdd);
+                    return this.AddComment(teamToAddCommentToWorkItemFor, boardToAddCommentToWorkItemFor, itemTypeToAddWorkItemFor, workitemToAddCommentFor, authorOfComment, commentToAdd);
 
                 case "ListAllWorkItems":
                     return this.ListAllWorkItems();
@@ -667,6 +668,8 @@ namespace Wim.Core.Engine
             //Operations
             var newPriorityEnum = enumParser.GetPriority(priority);
 
+            var itemType = "Bug";
+
             var castedBugForPriorityChange = allTeams.FindBugAndCast(teamToChangeBugPriorityFor, boardToChangeBugPriorityFor, bugToChangePriorityFor);
 
             castedBugForPriorityChange.ChangeBugPriority(newPriorityEnum);
@@ -675,7 +678,7 @@ namespace Wim.Core.Engine
 
             var teamToAddActivityFor = allTeams.AllTeamsList[teamToChangeBugPriorityFor];
 
-            var bugToAddActivityFor = allTeams.FindWorkItem(teamToChangeBugPriorityFor, boardToChangeBugPriorityFor, bugToChangePriorityFor);
+            var bugToAddActivityFor = allTeams.FindWorkItem(teamToChangeBugPriorityFor, itemType, boardToChangeBugPriorityFor, bugToChangePriorityFor);
 
             var teamToFindIn = allTeams.AllTeamsList[teamToChangeBugPriorityFor];
 
@@ -716,6 +719,8 @@ namespace Wim.Core.Engine
             inputValidator.ValidateBugNotInBoard(allTeams, boardToChangeBugSeverityFor, teamToChangeBugSeverityFor, bugToChangeSeverityFor);
 
             //Operations
+            var itemType = "Bug";
+
             var newSeverityEnum = enumParser.GetSeverity(newSeverity);
 
             var castedBugForPriorityChange = allTeams.FindBugAndCast(teamToChangeBugSeverityFor, boardToChangeBugSeverityFor, bugToChangeSeverityFor);
@@ -726,7 +731,7 @@ namespace Wim.Core.Engine
 
             var teamToAddActivityFor = allTeams.AllTeamsList[teamToChangeBugSeverityFor];
 
-            var bugToAddActivityFor = allTeams.FindWorkItem(teamToChangeBugSeverityFor, boardToChangeBugSeverityFor, bugToChangeSeverityFor);
+            var bugToAddActivityFor = allTeams.FindWorkItem(teamToChangeBugSeverityFor, itemType, boardToChangeBugSeverityFor, bugToChangeSeverityFor);
 
             var teamToFindIn = allTeams.AllTeamsList[teamToChangeBugSeverityFor];
 
@@ -766,11 +771,13 @@ namespace Wim.Core.Engine
             inputValidator.ValidateBugNotInBoard(allTeams, boardToChangeBugStatusFor, teamToChangeBugStatusFor, bugToChangeStatusFor);
 
             //Operations
+            var itemType = "Bug";
+
             var newStatusEnum = enumParser.GetBugStatus(newStatus);
 
             var castedBugToChangeStatusIn = allTeams.FindBugAndCast(teamToChangeBugStatusFor, boardToChangeBugStatusFor, bugToChangeStatusFor);
 
-            var bugToChangeStatus = allTeams.FindWorkItem(teamToChangeBugStatusFor, boardToChangeBugStatusFor, bugToChangeStatusFor);
+            var bugToChangeStatus = allTeams.FindWorkItem(teamToChangeBugStatusFor, itemType, boardToChangeBugStatusFor, bugToChangeStatusFor);
 
             var boardToChangeStatusIn = allTeams.FindBoardInTeam(teamToChangeBugStatusFor, boardToChangeBugStatusFor);
 
@@ -816,6 +823,8 @@ namespace Wim.Core.Engine
             inputValidator.ValidateStoryExistanceInBoard(allTeams, boardToChangeStoryPriorityFor, teamToChangeStoryPriorityFor, storyToChangePriorityFor);
 
             //Operations
+            var itemType = "Story";
+
             var newPriorityEnum = enumParser.GetPriority(newStoryPriority);
 
             var castedStoryForPriorityChange = allTeams.FindStoryAndCast(teamToChangeStoryPriorityFor, boardToChangeStoryPriorityFor, storyToChangePriorityFor);
@@ -826,7 +835,7 @@ namespace Wim.Core.Engine
 
             var teamToAddActivityFor = allTeams.AllTeamsList[teamToChangeStoryPriorityFor];
 
-            var storyToAddActivityFor = allTeams.FindWorkItem(teamToChangeStoryPriorityFor, boardToChangeStoryPriorityFor, storyToChangePriorityFor);
+            var storyToAddActivityFor = allTeams.FindWorkItem(teamToChangeStoryPriorityFor, itemType, boardToChangeStoryPriorityFor, storyToChangePriorityFor);
 
             var teamToFindIn = allTeams.AllTeamsList[teamToChangeStoryPriorityFor];
 
@@ -866,6 +875,8 @@ namespace Wim.Core.Engine
             inputValidator.ValidateStoryExistanceInBoard(allTeams, boardToChangeStorySizeFor, teamToChangeStorySizeFor, storyToChangeSizeFor);
 
             //Operations
+            var itemType = "Story";
+
             var newSizeEnum = enumParser.GetStorySize(newStorySize);
 
             var castedStoryForSizeChange = allTeams.FindStoryAndCast(teamToChangeStorySizeFor, boardToChangeStorySizeFor, storyToChangeSizeFor);
@@ -876,7 +887,7 @@ namespace Wim.Core.Engine
 
             var teamToAddActivityFor = allTeams.AllTeamsList[teamToChangeStorySizeFor];
 
-            var storyToAddActivityFor = allTeams.FindWorkItem(teamToChangeStorySizeFor, boardToChangeStorySizeFor, storyToChangeSizeFor);
+            var storyToAddActivityFor = allTeams.FindWorkItem(teamToChangeStorySizeFor, itemType, boardToChangeStorySizeFor, storyToChangeSizeFor);
 
             var teamToFindIn = allTeams.AllTeamsList[teamToChangeStorySizeFor];
 
@@ -916,6 +927,8 @@ namespace Wim.Core.Engine
 
 
             //Operations
+            var itemType = "Story";
+
             var newStatusEnum = enumParser.GetStoryStatus(newStoryStatus);
 
             var castedStoryForStatusChange = allTeams.FindStoryAndCast(teamToChangeStoryStatusFor, boardToChangeStoryStatusFor, storyToChangeStatusFor);
@@ -926,7 +939,7 @@ namespace Wim.Core.Engine
 
             var teamToAddActivityFor = allTeams.AllTeamsList[teamToChangeStoryStatusFor];
 
-            var storyToAddActivityFor = allTeams.FindWorkItem(teamToChangeStoryStatusFor, boardToChangeStoryStatusFor, storyToChangeStatusFor);
+            var storyToAddActivityFor = allTeams.FindWorkItem(teamToChangeStoryStatusFor, itemType, boardToChangeStoryStatusFor, storyToChangeStatusFor);
 
             var teamToFindIn = allTeams.AllTeamsList[teamToChangeStoryStatusFor];
 
@@ -965,7 +978,8 @@ namespace Wim.Core.Engine
 
             var integerRating = inputValidator.ValidateRatingConversion(newFeedbackRating);
 
-            //Operations           
+            //Operations  
+            var itemType = "Feedback";
 
             var castedFeedbackForRatingChange = allTeams.FindFeedbackAndCast(teamToChangeFeedbackRatingFor, boardToChangeFeedbackRatingFor, feedbackToChangeRatingFor);
 
@@ -975,7 +989,7 @@ namespace Wim.Core.Engine
 
             var teamToAddActivityFor = allTeams.AllTeamsList[teamToChangeFeedbackRatingFor];
 
-            var feedbackToAddActivityFor = allTeams.FindWorkItem(teamToChangeFeedbackRatingFor, boardToChangeFeedbackRatingFor, feedbackToChangeRatingFor);
+            var feedbackToAddActivityFor = allTeams.FindWorkItem(teamToChangeFeedbackRatingFor, itemType, boardToChangeFeedbackRatingFor, feedbackToChangeRatingFor);
 
             var teamToFindIn = allTeams.AllTeamsList[teamToChangeFeedbackRatingFor];
 
@@ -1014,6 +1028,8 @@ namespace Wim.Core.Engine
             inputValidator.ValidateNoSuchFeedbackInBoard(allTeams, boardToChangeFeedbackStatusFor, teamToChangeFeedbackStatusFor, feedbackToChangeStatusFor);
 
             //Operations
+            var itemType = "Feedback";
+
             var newStatusEnum = enumParser.GetFeedbackStatus(newFeedbackStatus);
 
             var castedFeedbackForStatusChange = allTeams.FindFeedbackAndCast(teamToChangeFeedbackStatusFor, boardToChangeFeedbackStatusFor, feedbackToChangeStatusFor);
@@ -1024,7 +1040,7 @@ namespace Wim.Core.Engine
 
             var teamToAddActivityFor = allTeams.AllTeamsList[teamToChangeFeedbackStatusFor];
 
-            var feedbackToAddActivityFor = allTeams.FindWorkItem(teamToChangeFeedbackStatusFor, boardToChangeFeedbackStatusFor, feedbackToChangeStatusFor);
+            var feedbackToAddActivityFor = allTeams.FindWorkItem(teamToChangeFeedbackStatusFor, itemType, boardToChangeFeedbackStatusFor, feedbackToChangeStatusFor);
 
             var teamToFindIn = allTeams.AllTeamsList[teamToChangeFeedbackStatusFor];
 
@@ -1039,22 +1055,21 @@ namespace Wim.Core.Engine
             return string.Format(FeedbackStatusChanged, feedbackToChangeStatusFor, newStatusEnum);
         }
 
-        private string AddComment(string teamToAddCommentToWorkItemFor, string boardToAddCommentToWorkItemFor, string workitemToAddCommentFor, string authorOfComment, string commentToAdd)
-        {
-            allTeams.AllTeamsList[teamToAddCommentToWorkItemFor].Boards
-              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddCommentToWorkItemFor).WorkItems
-                 .First(workitemInSelectedBoard => workitemInSelectedBoard.Title == workitemToAddCommentFor)
-                  .AddComment(commentToAdd, authorOfComment);
+        private string AddComment(string teamToAddCommentToWorkItemFor, string boardToAddCommentToWorkItemFor, string itemTypeToAddWorkItemFor, string workitemToAddCommentFor, string authorOfComment, string commentToAdd)
+        {    
+            //Validations
 
-            var workItemType = allTeams.AllTeamsList[teamToAddCommentToWorkItemFor].Boards
-              .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddCommentToWorkItemFor).WorkItems
-                 .First(workitemInSelectedBoard => workitemInSelectedBoard.Title == workitemToAddCommentFor).GetType().Name;
+            //Operations
+            var workItemToAddCommentTo = allTeams.FindWorkItem(teamToAddCommentToWorkItemFor, itemTypeToAddWorkItemFor, boardToAddCommentToWorkItemFor, workitemToAddCommentFor);
 
-            return string.Format(AddedCommentFor, commentToAdd, authorOfComment, workItemType, workitemToAddCommentFor);
+            workItemToAddCommentTo.AddComment(commentToAdd, authorOfComment);
+
+            return string.Format(AddedCommentFor, commentToAdd, authorOfComment, itemTypeToAddWorkItemFor, workitemToAddCommentFor);
         }
 
         public string AssignUnassignBug(string teamToAssignUnsignBug, string boardToAssignUnsignBug, string bugToAssignUnsign, string memberToAssignBug)
         {
+            //Validations
             var bugTypeForChecking = "Bug Title";
             inputValidator.IsNullOrEmpty(bugToAssignUnsign, bugTypeForChecking);
 
@@ -1073,6 +1088,8 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToAssignUnsignBug, teamToAssignUnsignBug);
 
+
+            //Operations
             var bugMemberToAssignBug = allTeams.FindMemberInTeam(teamToAssignUnsignBug, memberToAssignBug);
 
             var bugToChangeIn = allTeams.FindBugAndCast(teamToAssignUnsignBug, boardToAssignUnsignBug, bugToAssignUnsign);
