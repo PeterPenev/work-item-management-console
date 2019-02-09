@@ -16,9 +16,11 @@ namespace Wim.Core.Contracts
 
         void ValidateBoardAlreadyInTeam(IAllTeams allTeams, string boardToAddToTeam, string teamForAddingBoardTo);
 
+        void ValidateItemExistanceInBoard(IAllTeams allTeams, string boardNameToCheckFor, string teamToCheckForBoard, string itemNameToCheckFor);
+
         void ValidateMemberExistance(IAllMembers allMembers, string memberName);
 
-        void ValidateTeamExistance(IAllTeams allTeams, string teamName);       
+        void ValidateTeamExistance(IAllTeams allTeams, string teamName);
 
         void ValidateBugExistanceInBoard(IAllTeams allTeams, string boardToAddBugFor, string teamToAddBugFor, string bugTitle);
 
@@ -28,7 +30,13 @@ namespace Wim.Core.Contracts
 
         void ValidateFeedbackExistanceInBoard(IAllTeams allTeams, string boardToAddFeedbackFor, string teamToAddFeedbackFor, string feedbackTitle);
 
+        void ValidateNoSuchFeedbackInBoard(IAllTeams allTeams, string boardToAddFeedbackFor, string teamToAddFeedbackFor, string feedbackTitle);
+
         void ValidateIfPersonExists(IAllMembers allMembers, string personName);
+
+        void ValidateIfMemberAlreadyInTeam(IAllTeams allTeams, string teamToCheckForPerson, string personName);
+
+        void ValidateIfMemberNotInTeam(IAllTeams allTeams, string teamToCheckForPerson, string personName);
 
         void ValidateIfTeamExists(IAllTeams allTeams, string teamName);
 
@@ -38,7 +46,7 @@ namespace Wim.Core.Contracts
 
         void ValidateIfAnyStoriesExist(IAllTeams allTeams);
 
-        void ValidateIfAnyFeedbacksExist(IAllTeams allTeams);       
+        void ValidateIfAnyFeedbacksExist(IAllTeams allTeams);
 
         int ValidateRatingConversion(string ratingForCheck);
     }
