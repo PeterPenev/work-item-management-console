@@ -25,6 +25,7 @@ namespace Wim.Core.Engine
         private const string NoSuchBoardInTeam = "There is no board with name {0} in team {1}!";
         private const string BugNotInBoard = "There is no bug with name {0} in board {1} part of team {2}!";
         private const string BoardAlreadyExistsInTeam = "Board with name {0} already exists in team {1}!";
+        private const string NoSuchItemInBoard = "No item with name: {0} in board {1} part of team {2}!";
 
         private const string NoWorkItemsInApp = "There are no work items in the whole app yet!";
         private const string NoBugsInApp = "There are no Bugs in the whole app yet!";
@@ -100,7 +101,9 @@ namespace Wim.Core.Engine
 
         public void ValidateBoardExistanceInTeam(IAllTeams allTeams, string boardNameToCheckFor, string teamToCheckForBoard)
         {
-            if (allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).Where(board => board.Name == boardNameToCheckFor).ToList().Count == 0)
+            if (allTeams.AllTeamsList.Values.SelectMany(x => x.Boards)
+                .Where(board => board.Name == boardNameToCheckFor)
+                 .ToList().Count == 0)
             {
                 var NoSuchBoardInTeamMessage = string.Format(NoSuchBoardInTeam, boardNameToCheckFor, teamToCheckForBoard);
                 throw new NoSuchBoardInTeamException(NoSuchBoardInTeamMessage);
@@ -116,6 +119,17 @@ namespace Wim.Core.Engine
             {
                 var BoardAlreadyExistsInTeamMessage = string.Format(BoardAlreadyExistsInTeam, boardToAddToTeam, teamForAddingBoardTo);
                 throw new BoardAlreadyExistsInTeamException(BoardAlreadyExistsInTeamMessage);
+            }
+        }
+
+        public void ValidateItemExistanceInBoard(IAllTeams allTeams, string boardNameToCheckFor, string teamToCheckForBoard, string itemNameToCheckFor)
+        {
+            if (!allTeams.AllTeamsList.Values.SelectMany(x => x.Boards)
+                 .First(board => board.Name == boardNameToCheckFor)
+                  .WorkItems.Any(item => item.Title == itemNameToCheckFor))
+            {
+                var NoSuchItemInBoardMessage = string.Format(NoSuchItemInBoard, itemNameToCheckFor, boardNameToCheckFor, teamToCheckForBoard);
+                throw new NoSuchItemInBoardException(NoSuchItemInBoardMessage);
             }
         }
 
@@ -143,7 +157,8 @@ namespace Wim.Core.Engine
                    .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddBugFor).First();
 
             var doesBugExistInBoard = boardToCheckBugFor.WorkItems
-                   .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Bug)).Any(bugThatExists => bugThatExists.Title == bugTitle);
+                   .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Bug))
+                    .Any(bugThatExists => bugThatExists.Title == bugTitle);
 
             if (doesBugExistInBoard)
             {
@@ -158,7 +173,8 @@ namespace Wim.Core.Engine
                    .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddBugFor).First();
 
             var doesBugExistInBoard = boardToCheckBugFor.WorkItems
-                   .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Bug)).Any(bugThatExists => bugThatExists.Title == bugTitle);
+                   .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Bug))
+                    .Any(bugThatExists => bugThatExists.Title == bugTitle);
 
             if (!doesBugExistInBoard)
             {
@@ -170,7 +186,8 @@ namespace Wim.Core.Engine
         public void ValidateStoryExistanceInBoard(IAllTeams allTeams, string boardToAddStoryFor, string teamToAddStoryFor, string storyTitle)
         {
             var boardToCheckStoryFor = allTeams.AllTeamsList[teamToAddStoryFor].Boards
-                   .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddStoryFor).First();
+                   .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddStoryFor)
+                    .First();
 
             var doesStoryExistInBoard = boardToCheckStoryFor.WorkItems
                    .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Story)).Any(storyThatExists => storyThatExists.Title == storyTitle);
@@ -189,7 +206,7 @@ namespace Wim.Core.Engine
 
             var doesFeedbackExistInBoard = boardToCheckFeedbackFor.WorkItems
                    .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Feedback))
-                   .Any(feedbackThatExists => feedbackThatExists.Title == feedbackTitle);
+                    .Any(feedbackThatExists => feedbackThatExists.Title == feedbackTitle);
 
             if (doesFeedbackExistInBoard)
             {
@@ -205,7 +222,7 @@ namespace Wim.Core.Engine
 
             var doesFeedbackExistInBoard = boardToCheckFeedbackFor.WorkItems
                    .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Feedback))
-                   .Any(feedbackThatExists => feedbackThatExists.Title == feedbackTitle);
+                    .Any(feedbackThatExists => feedbackThatExists.Title == feedbackTitle);
 
             if (!doesFeedbackExistInBoard)
             {
@@ -260,7 +277,10 @@ namespace Wim.Core.Engine
 
         public void ValidateIfAnyWorkItemsExist(IAllTeams allTeams)
         {
-            if (allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).ToList().Count() == 0)
+            if (allTeams.AllTeamsList.Values
+                 .SelectMany(x => x.Boards)
+                  .SelectMany(x => x.WorkItems)
+                   .ToList().Count() == 0)
             {                
                 throw new NoWorkItemsInAppException(NoWorkItemsInApp);
             }

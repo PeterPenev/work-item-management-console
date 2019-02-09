@@ -1056,8 +1056,27 @@ namespace Wim.Core.Engine
         }
 
         private string AddComment(string teamToAddCommentToWorkItemFor, string boardToAddCommentToWorkItemFor, string itemTypeToAddWorkItemFor, string workitemToAddCommentFor, string authorOfComment, string commentToAdd)
-        {    
+        {
             //Validations
+            var itemTypeForChecking = "Item Title";
+            inputValidator.IsNullOrEmpty(workitemToAddCommentFor, itemTypeForChecking);
+
+            var teamTypeForChecking = "Team Name";
+            inputValidator.IsNullOrEmpty(teamToAddCommentToWorkItemFor, teamTypeForChecking);
+
+            var boardTypeForChecking = "Board Name";
+            inputValidator.IsNullOrEmpty(boardToAddCommentToWorkItemFor, boardTypeForChecking);
+
+            var authorTypeForChecking = "Author";
+            inputValidator.IsNullOrEmpty(authorOfComment, authorTypeForChecking);
+
+            inputValidator.ValidateTeamExistance(allTeams, teamToAddCommentToWorkItemFor);
+
+            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToAddCommentToWorkItemFor, teamToAddCommentToWorkItemFor);
+
+            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+
+            inputValidator.ValidateItemExistanceInBoard(allTeams, boardToAddCommentToWorkItemFor, teamToAddCommentToWorkItemFor, workitemToAddCommentFor);
 
             //Operations
             var workItemToAddCommentTo = allTeams.FindWorkItem(teamToAddCommentToWorkItemFor, itemTypeToAddWorkItemFor, boardToAddCommentToWorkItemFor, workitemToAddCommentFor);
