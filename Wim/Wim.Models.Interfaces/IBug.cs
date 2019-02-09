@@ -6,7 +6,7 @@ namespace Wim.Models.Interfaces
 {
     public interface IBug : IWorkItem
     {
-        IList<string> StepsToReproduce { get;}
+        IList<string> StepsToReproduce { get; }
 
         Priority Priority { get; }
 
@@ -14,7 +14,7 @@ namespace Wim.Models.Interfaces
 
         BugStatus BugStatus { get; }
 
-        IMember Assignee { get; set; }
+        IMember Assignee { get; }
 
         void ChangeBugPriority(Priority priority);
 

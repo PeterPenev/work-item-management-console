@@ -99,19 +99,19 @@ namespace Wim.Models
             this.activityHistory.Add(activityHistoryToAddToBoard);
         }
 
-        public void AddActivityHistoryAfterAssignToMember(string workItemTitle, IMember memberToAssign)
+        public void AddActivityHistoryAfterAssignToMember(string itemType, string workItemTitle, IMember memberToAssign)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"WorkItem with Title: {workItemTitle} was assigned to member {memberToAssign.Name}!");
+            sb.AppendLine($"{itemType} with Title: {workItemTitle} was assigned to member {memberToAssign.Name}!");
             string resultToAddAssMessage = sb.ToString().Trim();
             var activityHistoryToAddToMember = new ActivityHistory(resultToAddAssMessage);
             activityHistory.Add(activityHistoryToAddToMember);
         }
 
-        public void AddActivityHistoryAfterUnsignToMember(string workItemTitle, IMember memberFromUnsign)
+        public void AddActivityHistoryAfterUnsignToMember(string itemType, string workItemTitle, IMember memberFromUnsign)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"WorkItem with Title: {workItemTitle} was unssigned from member {memberFromUnsign.Name}!"); ;
+            sb.AppendLine($"{itemType} with Title: {workItemTitle} was unssigned from member {memberFromUnsign.Name}!"); ;
             string resultToAddAssMessage = sb.ToString().Trim();
             var activityHistoryToAddToMember = new ActivityHistory(resultToAddAssMessage);
             activityHistory.Add(activityHistoryToAddToMember);

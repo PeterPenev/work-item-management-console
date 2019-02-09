@@ -22,6 +22,6 @@ namespace Wim.Models.Interfaces
 
         void AddWorkitemToBoard(IWorkItem workItemToAdd);
 
-        void AddActivityHistoryAfterAssignUnsignToBoard(string workItemTitle, IMember memberToAssign, IMember memberFromUnsign);
+        void AddActivityHistoryAfterAssignUnsignToBoard(string itemType, string workItemTitle, IMember memberToAssign, IMember memberFromUnsign);
     }
 }

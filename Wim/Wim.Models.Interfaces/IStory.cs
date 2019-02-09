@@ -20,5 +20,7 @@ namespace Wim.Models.Interfaces
         void ChangeStorySize(Size size);
 
         void ChangeStoryStatus(StoryStatus status);
+
+        void AssignMemberToStory(IMember memberToAssignStory);
     }
 }

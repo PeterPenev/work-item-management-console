@@ -64,7 +64,7 @@ namespace Wim.Models
             {
                 return this.assignee;
             }
-            set
+            private set
             {
                 this.assignee = value;
             }
@@ -84,6 +84,11 @@ namespace Wim.Models
         public void ChangeStoryStatus(StoryStatus status)
         {
             this.StoryStatus = status;
+        }
+
+        public void AssignMemberToStory(IMember memberToAssignStory)
+        {
+            this.Assignee = memberToAssignStory;
         }
     }
 }

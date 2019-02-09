@@ -33,8 +33,7 @@ namespace Wim.Core.Engine
         private const string FeedbackStatusChanged = "Feedback {0} status is changed to {1}";
 
         private const string AddedCommentFor = "Comment {0} with author {1} is added to {2} with name: {3}.";
-
-        private const string AssignBugTo = "Bug {0} on the board {1} of the team {2} was assign to the member {3}!";
+        private const string AssignItemTo = "{0} with name: {1} on board {2} part of team {3} was assigned to member {4}!";
 
         private static readonly WimEngine SingleInstance = new WimEngine();
 
@@ -298,6 +297,15 @@ namespace Wim.Core.Engine
                     var commentToAdd = buildComment.ToString().Trim();
 
                     return this.AddComment(teamToAddCommentToWorkItemFor, boardToAddCommentToWorkItemFor, itemTypeToAddWorkItemFor, workitemToAddCommentFor, authorOfComment, commentToAdd);
+                        
+                case "AssignUnassignItem":
+                    var teamToAssignUnsignBug = command.Parameters[0];
+                    var boardToAssignUnsignBug = command.Parameters[1];
+                    var typeOfItem = command.Parameters[2];
+                    var itemToAssignUnsign = command.Parameters[3];
+                    var memberToAssignBug = command.Parameters[4];
+
+                    return this.AssignUnassignItem(teamToAssignUnsignBug, boardToAssignUnsignBug, typeOfItem, itemToAssignUnsign, memberToAssignBug);
 
                 case "ListAllWorkItems":
                     return this.ListAllWorkItems();
@@ -351,14 +359,7 @@ namespace Wim.Core.Engine
                     var factorToSortFeedbacksBy = command.Parameters[0];
                     return this.SortFeedbacksBy(factorToSortFeedbacksBy);
 
-                case "AssignUnassignBug":
-                    var teamToAssignUnsignBug = command.Parameters[0];
-                    var boardToAssignUnsignBug = command.Parameters[1];
-                    var bugToAssignUnsign = command.Parameters[2];
-                    var memberToAssignBug = command.Parameters[3];
-
-                    return this.AssignUnassignBug(teamToAssignUnsignBug, boardToAssignUnsignBug, bugToAssignUnsign, memberToAssignBug);
-
+                
                 default:
                     return string.Format(InvalidCommand, command.Name);
             }
@@ -1086,54 +1087,72 @@ namespace Wim.Core.Engine
             return string.Format(AddedCommentFor, commentToAdd, authorOfComment, itemTypeToAddWorkItemFor, workitemToAddCommentFor);
         }
 
-        public string AssignUnassignBug(string teamToAssignUnsignBug, string boardToAssignUnsignBug, string bugToAssignUnsign, string memberToAssignBug)
+        public string AssignUnassignItem(string teamToAssignUnsignItem, string boardToAssignUnsignItem, string itemType, string itemToAssignUnsign, string memberToAssignItem)
         {
             //Validations
-            var bugTypeForChecking = "Bug Title";
-            inputValidator.IsNullOrEmpty(bugToAssignUnsign, bugTypeForChecking);
+            var itemTypeForChecking = "Item Title";
+            inputValidator.IsNullOrEmpty(itemToAssignUnsign, itemTypeForChecking);
 
             var teamTypeForChecking = "Team Name";
-            inputValidator.IsNullOrEmpty(teamToAssignUnsignBug, teamTypeForChecking);
+            inputValidator.IsNullOrEmpty(teamToAssignUnsignItem, teamTypeForChecking);
 
             var boardTypeForChecking = "Board Name";
-            inputValidator.IsNullOrEmpty(boardToAssignUnsignBug, boardTypeForChecking);
+            inputValidator.IsNullOrEmpty(boardToAssignUnsignItem, boardTypeForChecking);
 
             var authorTypeForChecking = "Author";
-            inputValidator.IsNullOrEmpty(memberToAssignBug, authorTypeForChecking);
+            inputValidator.IsNullOrEmpty(memberToAssignItem, authorTypeForChecking);
 
-            inputValidator.ValidateTeamExistance(allTeams, teamToAssignUnsignBug);
+            inputValidator.ValidateTeamExistance(allTeams, teamToAssignUnsignItem);
 
-            inputValidator.ValidateMemberExistance(allMembers, memberToAssignBug);
+            inputValidator.ValidateMemberExistance(allMembers, memberToAssignItem);
 
-            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToAssignUnsignBug, teamToAssignUnsignBug);
-
+            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToAssignUnsignItem, teamToAssignUnsignItem);
 
             //Operations
-            var bugMemberToAssignBug = allTeams.FindMemberInTeam(teamToAssignUnsignBug, memberToAssignBug);
+            var itemMemberToAssign = allTeams.FindMemberInTeam(teamToAssignUnsignItem, memberToAssignItem);
 
-            var bugToChangeIn = allTeams.FindBugAndCast(teamToAssignUnsignBug, boardToAssignUnsignBug, bugToAssignUnsign);
+            var itemToChangeIn = allTeams.FindWorkItem(teamToAssignUnsignItem, itemType, boardToAssignUnsignItem, itemToAssignUnsign);
 
-            var bugMemberBeforeUnssign = bugToChangeIn.Assignee;
+            IMember itemMemberBeforeUnssign = null;
 
-            bugToChangeIn.AssignMemberToBug(bugMemberToAssignBug);
+            if (itemType == "Bug")
+            {
+                var typedItem = (Bug)itemToChangeIn;               
 
-            bugMemberBeforeUnssign.RemoveWorkItemIdToMember(bugToChangeIn.Id);
+                itemMemberBeforeUnssign = typedItem.Assignee;
 
-            bugMemberToAssignBug.AddWorkItemIdToMember(bugToChangeIn.Id);
+                typedItem.AssignMemberToBug(itemMemberToAssign);
 
+                itemMemberBeforeUnssign.RemoveWorkItemIdToMember(typedItem.Id);
+
+                itemMemberToAssign.AddWorkItemIdToMember(typedItem.Id);
+            }
+            else if (itemType == "Story")
+            {
+                var typedItem = (Story)itemToChangeIn;
+
+                itemMemberBeforeUnssign = typedItem.Assignee;
+
+                typedItem.AssignMemberToStory(itemMemberToAssign);
+
+                itemMemberBeforeUnssign.RemoveWorkItemIdToMember(typedItem.Id);
+
+                itemMemberToAssign.AddWorkItemIdToMember(typedItem.Id);
+            }           
+                   
             //history
-            var indexOfBoardInSelectedTeam = allTeams.AllTeamsList[teamToAssignUnsignBug].Boards.FindIndex(boardIndex => boardIndex.Name == boardToAssignUnsignBug);
+            var indexOfBoardInSelectedTeam = allTeams.AllTeamsList[teamToAssignUnsignItem].Boards.FindIndex(boardIndex => boardIndex.Name == boardToAssignUnsignItem);
 
             //add history to board
-            allTeams.AllTeamsList[teamToAssignUnsignBug].Boards[indexOfBoardInSelectedTeam].AddActivityHistoryAfterAssignUnsignToBoard(bugToAssignUnsign, bugMemberToAssignBug, bugMemberBeforeUnssign);
+            allTeams.AllTeamsList[teamToAssignUnsignItem].Boards[indexOfBoardInSelectedTeam].AddActivityHistoryAfterAssignUnsignToBoard(itemType, itemToAssignUnsign, itemMemberToAssign, itemMemberBeforeUnssign);
 
             //add history to member before unssign
-            bugMemberBeforeUnssign.AddActivityHistoryAfterUnsignToMember(bugToAssignUnsign, bugMemberBeforeUnssign);
+            itemMemberBeforeUnssign.AddActivityHistoryAfterUnsignToMember(itemType, itemToAssignUnsign, itemMemberBeforeUnssign);
 
             //add history to member after assign
-            bugMemberToAssignBug.AddActivityHistoryAfterAssignToMember(bugToAssignUnsign, bugMemberToAssignBug);
+            itemMemberToAssign.AddActivityHistoryAfterAssignToMember(itemType, itemToAssignUnsign, itemMemberToAssign);
 
-            return string.Format(AssignBugTo, bugToAssignUnsign, boardToAssignUnsignBug, teamToAssignUnsignBug, memberToAssignBug);
+            return string.Format(AssignItemTo, itemType, itemToAssignUnsign, boardToAssignUnsignItem, teamToAssignUnsignItem, memberToAssignItem);
         }
 
         private string ListAllWorkItems()

@@ -87,7 +87,7 @@ namespace Wim.Models
             {
                return this.assignee;
             }
-            set
+            private set
             {
                 this.assignee = value;
             }

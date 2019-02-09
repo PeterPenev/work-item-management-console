@@ -22,9 +22,9 @@ namespace Wim.Models.Interfaces
 
         bool FindIfMemberIsAssigned(IDictionary<string, ITeam> allTeamsInput);
 
-        void AddActivityHistoryAfterAssignToMember(string workItemTitle, IMember memberToAssign);
+        void AddActivityHistoryAfterAssignToMember(string itemType, string workItemTitle, IMember memberToAssign);
 
-        void AddActivityHistoryAfterUnsignToMember(string workItemTitle, IMember memberFromUnsign);
+        void AddActivityHistoryAfterUnsignToMember(string itemType, string workItemTitle, IMember memberFromUnsign);
 
         void RemoveWorkItemIdToMember(Guid workItemIdInput);
     }
