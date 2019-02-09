@@ -1552,6 +1552,7 @@ namespace Wim.Core.Engine
             inputValidator.ValidateIfAnyStoriesExist(allTeams);
 
             var filteredStories = new List<Story>();
+
             if (factorToSortBy.ToLower() == "title")
             {
                 filteredStories = allTeams.AllTeamsList.Values
@@ -1580,6 +1581,16 @@ namespace Wim.Core.Engine
                         .Where(x => x.GetType() == typeof(Story))
                             .Select(workItem => (Story)workItem)
                                   .OrderBy(storyToOrder => storyToOrder.StoryStatus)
+                                        .ToList();
+            }
+            else if (factorToSortBy.ToLower() == "size")
+            {
+                filteredStories = allTeams.AllTeamsList.Values
+                .SelectMany(x => x.Boards)
+                    .SelectMany(x => x.WorkItems)
+                        .Where(x => x.GetType() == typeof(Story))
+                            .Select(workItem => (Story)workItem)
+                                  .OrderBy(storyToOrder => storyToOrder.Size)
                                         .ToList();
             }
             StringBuilder sb = new StringBuilder();
