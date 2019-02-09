@@ -346,9 +346,9 @@ namespace Wim.Core.Engine
                     var factorToSortStoriesBy = command.Parameters[0];
                     return this.SortStoriesBy(factorToSortStoriesBy);
 
-                case "SortFeedbackBy":
-                    var factorToSortFeedbackBy = command.Parameters[0];
-                    return this.SortFeedbackBy(factorToSortFeedbackBy);
+                case "SortFeedbacksBy":
+                    var factorToSortFeedbacksBy = command.Parameters[0];
+                    return this.SortFeedbacksBy(factorToSortFeedbacksBy);
 
                 case "AssignUnassignBug":
                     var teamToAssignUnsignBug = command.Parameters[0];
@@ -1607,7 +1607,7 @@ namespace Wim.Core.Engine
             return string.Format(resultedAllItems);
         }
 
-        private string SortFeedbackBy(string factorToSortBy)
+        private string SortFeedbacksBy(string factorToSortBy)
         {
             var factorTypeForChecking = $"{factorToSortBy}";
             inputValidator.IsNullOrEmpty(factorToSortBy, factorTypeForChecking);
