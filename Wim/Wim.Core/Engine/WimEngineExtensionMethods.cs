@@ -54,6 +54,5 @@ namespace Wim.Core.Engine
                   .Select(item => (Feedback)item)
                    .First(bugInSelectedBoard => bugInSelectedBoard.Title == nameOfFeedbackToCast);
         }
-
     }
 }

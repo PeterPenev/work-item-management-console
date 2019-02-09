@@ -37,11 +37,12 @@ namespace Wim.Core.Engine
 
         private static readonly WimEngine SingleInstance = new WimEngine();
 
-        private readonly WimFactory factory;
+        private readonly IWimFactory factory;
         private readonly IAllMembers allMembers;
         private readonly IAllTeams allTeams;
         private readonly IEnumParser enumParser;
-        private readonly InputValidator inputValidator;
+        private readonly IInputValidator inputValidator;
+        private readonly ICommandHelper commandHelper;
 
         private WimEngine()
         {
@@ -50,6 +51,7 @@ namespace Wim.Core.Engine
             this.allTeams = new AllTeams();
             this.enumParser = new EnumParser();
             this.inputValidator = new InputValidator();
+            this.commandHelper = new CommandHelper();
         }
 
         public static WimEngine Instance
@@ -62,6 +64,7 @@ namespace Wim.Core.Engine
 
         public void Start()
         {
+            Console.WriteLine(commandHelper.Help);
             var commands = this.ReadCommands();
             var commandResult = this.ProcessCommands(commands);
             this.PrintReports(commandResult);
