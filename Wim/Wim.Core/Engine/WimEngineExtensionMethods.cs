@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Wim.Models;
 using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine
@@ -31,7 +32,8 @@ namespace Wim.Core.Engine
         {
             return allTeams.AllTeamsList[teamToFindBoardFor].Boards
                 .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToFindBugIn).WorkItems
-                  .Select(item => (IBug)item)
+                 .Where(item => item.GetType() == typeof(Bug))
+                  .Select(item => (Bug)item)
                    .First(bugInSelectedBoard => bugInSelectedBoard.Title == nameOfBugToCast);
         }
 
@@ -39,7 +41,8 @@ namespace Wim.Core.Engine
         {
             return allTeams.AllTeamsList[teamToFindBoardFor].Boards
                 .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToFindStoryIn).WorkItems
-                  .Select(item => (IStory)item)
+                .Where(item => item.GetType() == typeof(Story))
+                  .Select(item => (Story)item)
                    .First(bugInSelectedBoard => bugInSelectedBoard.Title == nameOfStoryToCast);
         }
 
@@ -47,7 +50,8 @@ namespace Wim.Core.Engine
         {
             return allTeams.AllTeamsList[teamToFindBoardFor].Boards
                 .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToFindFeedbackIn).WorkItems
-                  .Select(item => (IFeedback)item)
+                 .Where(item => item.GetType() == typeof(Feedback))
+                  .Select(item => (Feedback)item)
                    .First(bugInSelectedBoard => bugInSelectedBoard.Title == nameOfFeedbackToCast);
         }
 

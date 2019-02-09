@@ -38,7 +38,8 @@ namespace Wim.Core.Engine
         private const string FeedbackAlreadyExists = "Feedback with name {0} in Board: {1} part of Team {2} already exists!";
         private const string RatingCannotBeConverted = "The Rating: {0} from the input cannot be converted to Number!";
         private const string MemberNotInTeam = "Member: {0} is not part of team {1}!";
-
+        private const string NoSuchStoryInBoard = "Story with name {0}  from board {1} part of team {2} does not exist!";
+        private const string NoSuchBugInBoard = "Bug with name {0}  from board {1} part of team {2} does not exist!";
 
         private const string NoPeopleInApplication = "There are no people!";
         private const string MemberDoesNotExist = "The member does not exist!";
@@ -167,22 +168,6 @@ namespace Wim.Core.Engine
             }
         }
 
-        public void ValidateBugNotInBoard(IAllTeams allTeams, string boardToAddBugFor, string teamToAddBugFor, string bugTitle)
-        {
-            var boardToCheckBugFor = allTeams.AllTeamsList[teamToAddBugFor].Boards
-                   .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddBugFor).First();
-
-            var doesBugExistInBoard = boardToCheckBugFor.WorkItems
-                   .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Bug))
-                    .Any(bugThatExists => bugThatExists.Title == bugTitle);
-
-            if (!doesBugExistInBoard)
-            {
-                var BugNotInBoardMessage = string.Format(BugNotInBoard, bugTitle, boardToAddBugFor, teamToAddBugFor);
-                throw new BugNotInBoardException(BugNotInBoardMessage);
-            }
-        }
-
         public void ValidateStoryExistanceInBoard(IAllTeams allTeams, string boardToAddStoryFor, string teamToAddStoryFor, string storyTitle)
         {
             var boardToCheckStoryFor = allTeams.AllTeamsList[teamToAddStoryFor].Boards
@@ -228,6 +213,38 @@ namespace Wim.Core.Engine
             {
                 var NoSuchFeedbackInBoardExceptionMessage = string.Format(NoSuchFeedbackInBoard, feedbackTitle, boardToAddFeedbackFor, teamToAddFeedbackFor);
                 throw new NoSuchFeedbackInBoardException(NoSuchFeedbackInBoardExceptionMessage);
+            }
+        }
+
+        public void ValidateNoSuchStoryInBoard(IAllTeams allTeams, string boardToAddFeedbackFor, string teamToAddFeedbackFor, string storyTitle)
+        {
+            var boardToCheckFeedbackFor = allTeams.AllTeamsList[teamToAddFeedbackFor].Boards
+                   .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddFeedbackFor).First();
+
+            var doesStoryExistInBoard = boardToCheckFeedbackFor.WorkItems
+                   .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Story))
+                    .Any(storyThatExists => storyThatExists.Title == storyTitle);
+
+            if (!doesStoryExistInBoard)
+            {
+                var NoSuchStoryInBoardMessage = string.Format(NoSuchStoryInBoard, storyTitle, boardToAddFeedbackFor, teamToAddFeedbackFor);
+                throw new NoSuchStoryInBoardException(NoSuchStoryInBoardMessage);
+            }
+        }
+
+        public void ValidateNoSuchBugInBoard(IAllTeams allTeams, string boardToAddFeedbackFor, string teamToAddFeedbackFor, string bugTitle)
+        {
+            var boardToCheckFeedbackFor = allTeams.AllTeamsList[teamToAddFeedbackFor].Boards
+                   .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardToAddFeedbackFor).First();
+
+            var doesBugExistInBoard = boardToCheckFeedbackFor.WorkItems
+                   .Where(boardInSelectedTeam => boardInSelectedTeam.GetType() == typeof(Bug))
+                    .Any(feedbackThatExists => feedbackThatExists.Title == bugTitle);
+
+            if (!doesBugExistInBoard)
+            {
+                var NoSuchBugInBoardMessage = string.Format(NoSuchBugInBoard, bugTitle, boardToAddFeedbackFor, teamToAddFeedbackFor);
+                throw new NoSuchBugInBoardException(NoSuchBugInBoardMessage);
             }
         }
 

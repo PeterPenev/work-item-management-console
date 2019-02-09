@@ -24,13 +24,15 @@ namespace Wim.Core.Contracts
 
         void ValidateBugExistanceInBoard(IAllTeams allTeams, string boardToAddBugFor, string teamToAddBugFor, string bugTitle);
 
-        void ValidateBugNotInBoard(IAllTeams allTeams, string boardToAddBugFor, string teamToAddBugFor, string bugTitle);
+        void ValidateNoSuchBugInBoard(IAllTeams allTeams, string boardToAddBugFor, string teamToAddBugFor, string bugTitle);
+
+        void ValidateNoSuchStoryInBoard(IAllTeams allTeams, string boardToAddBugFor, string teamToAddBugFor, string storyTitle);
+
+        void ValidateNoSuchFeedbackInBoard(IAllTeams allTeams, string boardToAddFeedbackFor, string teamToAddFeedbackFor, string feedbackTitle);
 
         void ValidateStoryExistanceInBoard(IAllTeams allTeams, string boardToAddStoryFor, string teamToAddStoryFor, string storyTitle);
 
         void ValidateFeedbackExistanceInBoard(IAllTeams allTeams, string boardToAddFeedbackFor, string teamToAddFeedbackFor, string feedbackTitle);
-
-        void ValidateNoSuchFeedbackInBoard(IAllTeams allTeams, string boardToAddFeedbackFor, string teamToAddFeedbackFor, string feedbackTitle);
 
         void ValidateIfPersonExists(IAllMembers allMembers, string personName);
 
