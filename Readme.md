@@ -311,11 +311,11 @@ CreateBoard workBoard Alpha
 CreateStory story123456 Alpha workBoard High Medium InProgress Peter This is the first story in the Board
 CreateFeedback feedback123456 Alpha workBoard 10 Done This is the first feedback in the Board
 ListAllWorkItems
-FilterStories
+FilterStories 
 
 ======================
 END of Example Demos
 ======================
 
-___________________________Type Your Commands Below___________________________
+____________________________Type Your Commands Below____________________________
 
