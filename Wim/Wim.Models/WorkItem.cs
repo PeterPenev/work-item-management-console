@@ -41,11 +41,7 @@ namespace Wim.Models
                 return this.description;
             }
             private set
-            {
-                if(value.Length < 10 || value.Length > 500)
-                {
-                    throw new ArgumentException("Description should be between 10 and 500 symbols");
-                }
+            {                
                 this.description = value;
             }
            

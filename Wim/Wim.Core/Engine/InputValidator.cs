@@ -16,7 +16,9 @@ namespace Wim.Core.Engine
         private const string InvalidCommand = "Invalid command name: {0}!";
         private const string ImproperMemberNameLength = "Member name should be between 5 and 15 symbols!";
         private const string ImproperBoardNameLength = "Board name should be between 5 and 10 symbols!";
-        private const string ImproperItemTitleLength = "Item title should be between 10 50 symbols!";
+        private const string ImproperItemTitleLength = "Item title should be between 10 and 50 symbols!";
+        private const string ImproperItemDescriptionLength = "Item description should be between 10 and 500 symbols!";
+
         private const string PersonExists = "Person with name {0} already exists!";
         private const string PersonCreated = "Person with name {0} was created!";
         private const string NullOrEmptyInput = "{0} cannot be null or empty!";
@@ -97,19 +99,19 @@ namespace Wim.Core.Engine
 
         public void ValdateItemTitleLength(string itemTitleToCheck)
         {
+            if (itemTitleToCheck.Length < 10 || itemTitleToCheck.Length > 500)
+            {
+                throw new ImproperItemDecriptionLengthException(ImproperItemDescriptionLength);
+            }
+        }
+
+        public void ValdateItemDescriptionLength(string itemTitleToCheck)
+        {
             if (itemTitleToCheck.Length < 10 || itemTitleToCheck.Length > 50)
             {
                 throw new ImproperItemTitleLengthException(ImproperItemTitleLength);
             }
         }
-
-        //public void ValdateItemTitleLength(string itemTitleToCheck)
-        //{
-        //    if (itemTitleToCheck.Length < 10 || itemTitleToCheck.Length > 50)
-        //    {
-        //        throw new ImproperItemTitleLengthException(ImproperItemTitleLength);
-        //    }
-        //}
 
         public void ValdateIfAnyTeamsExist(IAllTeams allTeams)
         {

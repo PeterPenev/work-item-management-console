@@ -12,6 +12,8 @@ namespace Wim.Core.Contracts
 
         void ValdateItemTitleLength(string itemTitleToCheck);
 
+        void ValdateItemDescriptionLength(string itemTitleToCheck);
+
         void ValdateIfAnyTeamsExist(IAllTeams allTeams);
 
         void ValdateIfAnyMembersExist(IAllMembers allMembers);

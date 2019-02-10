@@ -546,6 +546,10 @@ namespace Wim.Core.Engine
             var boardTypeForChecking = "Board Name";
             inputValidator.IsNullOrEmpty(boardToAddBugFor, boardTypeForChecking);
 
+            inputValidator.ValdateItemTitleLength(bugTitle);
+
+            inputValidator.ValdateItemDescriptionLength(bugDescription);
+
             inputValidator.ValidateTeamExistance(allTeams, teamToAddBugFor);
 
             inputValidator.ValidateMemberExistance(allMembers, bugAssignee);
@@ -586,6 +590,10 @@ namespace Wim.Core.Engine
 
             var boardTypeForChecking = "Board Name";
             inputValidator.IsNullOrEmpty(boardToAddStoryFor, boardTypeForChecking);
+
+            inputValidator.ValdateItemTitleLength(storyTitle);
+
+            inputValidator.ValdateItemDescriptionLength(storyDescription);
 
             inputValidator.ValidateTeamExistance(allTeams, teamToAddStoryFor);
 
@@ -631,6 +639,10 @@ namespace Wim.Core.Engine
 
             var boardTypeForChecking = "Board Name";
             inputValidator.IsNullOrEmpty(boardToAddFeedbackFor, boardTypeForChecking);
+
+            inputValidator.ValdateItemTitleLength(feedbackTitle);
+
+            inputValidator.ValdateItemDescriptionLength(feedbackDescription);
 
             inputValidator.ValidateTeamExistance(allTeams, teamToAddFeedbackFor);
 
