@@ -7,10 +7,11 @@ namespace Wim.Models
 {
     public class Team : ITeam
     {
+        //Fields
         private List<IBoard> boards;
-
         private List<IMember> members;
 
+        //Constructors
         public Team(string name)
         {
             this.Name = name;
@@ -18,6 +19,7 @@ namespace Wim.Models
             members = new List<IMember>();
         }
 
+        //Properties
         public string Name { get; private set; }
 
         public List<IBoard> Boards
@@ -46,6 +48,7 @@ namespace Wim.Models
             boards.Add(addToBoard);
         }
 
+        //Methods
         public string ShowAllTeamBoards()
         {
             int teamBoards = 1;

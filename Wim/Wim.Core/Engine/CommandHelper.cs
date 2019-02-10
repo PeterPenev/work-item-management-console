@@ -32,7 +32,6 @@ namespace Wim.Core.Engine
             StringBuilder Sb = new StringBuilder();
             using (StreamReader Reader = new StreamReader("..\\..\\..\\..\\..\\Readme.md"))
             {
-
                 Sb.Append(Reader.ReadToEnd());
             }
             return Sb.ToString().Trim();

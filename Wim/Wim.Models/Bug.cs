@@ -8,13 +8,14 @@ namespace Wim.Models
 {
     public class Bug : WorkItem, IBug
     {
+        //Fields
         private IList<string> stepsToReproduce;
         private Priority priority;
         private Severity severity;
         private BugStatus bugStatus = BugStatus.Active;
         private IMember assignee;
 
-        //Constructor
+        //Constructors
         public Bug(string title, Priority priority, Severity severity, IMember assignee, IList<string> stepsToReproduce, string description)
             : base(title, description)
         {
@@ -24,6 +25,8 @@ namespace Wim.Models
             this.Assignee = assignee;
 
         }
+
+        //Properties
         public IList<string> StepsToReproduce
         {
             get
@@ -56,7 +59,6 @@ namespace Wim.Models
             }
         }
 
-
         public BugStatus BugStatus
         {
             get
@@ -81,6 +83,7 @@ namespace Wim.Models
             }
         }
 
+        //Methods
         public void ChangeBugPriority(Priority priority)
         {
             this.Priority = priority;

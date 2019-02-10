@@ -6,16 +6,16 @@ namespace Wim.Models
 {
     public class AllTeams : IAllTeams
     {
-        //field
+        //Fields
         private Dictionary<string, ITeam> allTeamsList;
 
-        //constructor
+        //Constructors
         public AllTeams()
         {
             this.allTeamsList = new Dictionary<string, ITeam>();
         }
 
-        //properties
+        //Properties
         public IDictionary<string, ITeam> AllTeamsList
         {
             get
@@ -24,16 +24,13 @@ namespace Wim.Models
             }
         }
 
-        //methods
+        //Methods
 
-        //Adding Person to the Global Dictionary of Members
         public void AddTeam(ITeam team)
         {
             allTeamsList.Add(team.Name, team);
         }
 
-
-        //Returning String Representation of the Teams'names in the Dictionary of allTeamsInput
         public string ShowAllTeamsToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -48,6 +45,5 @@ namespace Wim.Models
 
             return sb.ToString().Trim();
         }
-
     }
 }

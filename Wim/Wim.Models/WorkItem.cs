@@ -7,11 +7,13 @@ namespace Wim.Models
 {
     public abstract class WorkItem : IWorkItem
     {
+        //Fields
         private string title;
         private string description;
         private IList<string> comments;
         private IList<IActivityHistory> activityHistory;
 
+        //Constructors
         public WorkItem(string title, string description)
         {
             this.Title = title;
@@ -21,6 +23,7 @@ namespace Wim.Models
             this.activityHistory = new List<IActivityHistory>();
         }
 
+        //Properties
         public Guid Id { get; private set; }
 
         public string Title
@@ -34,6 +37,7 @@ namespace Wim.Models
                 this.title = value;
             }
         }
+
         public string Description
         {
             get
@@ -61,6 +65,7 @@ namespace Wim.Models
             }
         }
 
+        //Methods
         public void AddActivityHistoryToWorkItem(IMember trackedMember, IWorkItem trackedWorkItem)
         {
             StringBuilder sb = new StringBuilder();

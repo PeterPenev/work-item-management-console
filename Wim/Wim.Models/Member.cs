@@ -8,14 +8,13 @@ namespace Wim.Models
 {
     public class Member : IMember
     {
+        //Fields
         private string name;
-
         private bool isAssigned = false;
-
         private List<IActivityHistory> activityHistory;
-
         private List<Guid> workItemsId;
 
+        //Constructors
         public Member(string name)
         {
             this.Name = name;
@@ -23,6 +22,7 @@ namespace Wim.Models
             this.workItemsId = new List<Guid>();
         }
 
+        //Properties
         public string Name
         {
             get
@@ -52,8 +52,7 @@ namespace Wim.Models
             }
         }
 
-        //methods
-
+        //Methods
         public void AddWorkItemIdToMember(Guid workItemIdInput)
         {
             this.workItemsId.Add(workItemIdInput);
@@ -61,7 +60,6 @@ namespace Wim.Models
 
         public bool FindIfMemberIsAssigned(IDictionary<string, ITeam> allTeamsInput)
         {
-
             foreach (var team in allTeamsInput)
             {
                 if (team.Value.Members.Contains(this))
@@ -73,7 +71,6 @@ namespace Wim.Models
                     this.isAssigned = false;
                 }
             }
-
             return isAssigned;
         }
 

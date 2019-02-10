@@ -7,7 +7,7 @@ namespace Wim.Models.Interfaces
 {
     public interface IFeedback : IWorkItem
     {     
-        int Rating { get; set; }
+        int Rating { get; }
 
         FeedbackStatus FeedbackStatus { get; }
 

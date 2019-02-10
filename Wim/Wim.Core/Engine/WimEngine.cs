@@ -846,6 +846,7 @@ namespace Wim.Core.Engine
 
         private string ChangeStoryPriority(string teamToChangeStoryPriorityFor, string boardToChangeStoryPriorityFor, string storyToChangePriorityFor, string newStoryPriority, string authorOfStoryPriorityChange)
         {
+            //Validations
             var storyTypeForChecking = "Story Title";
             inputValidator.IsNullOrEmpty(storyToChangePriorityFor, storyTypeForChecking);
 
@@ -898,6 +899,7 @@ namespace Wim.Core.Engine
 
         private string ChangeStorySize(string teamToChangeStorySizeFor, string boardToChangeStorySizeFor, string storyToChangeSizeFor, string newStorySize, string authorOfStorySizeChange)
         {
+            //Validations
             var storyTypeForChecking = "Story Title";
             inputValidator.IsNullOrEmpty(storyToChangeSizeFor, storyTypeForChecking);
 
@@ -949,6 +951,7 @@ namespace Wim.Core.Engine
 
         private string ChangeStoryStatus(string teamToChangeStoryStatusFor, string boardToChangeStoryStatusFor, string storyToChangeStatusFor, string newStoryStatus, string authorOfStoryStatusChange)
         {
+            //Validations
             var storyTypeForChecking = "Story Title";
             inputValidator.IsNullOrEmpty(storyToChangeStatusFor, storyTypeForChecking);
 
@@ -1002,6 +1005,7 @@ namespace Wim.Core.Engine
 
         private string ChangeFeedbackRating(string teamToChangeFeedbackRatingFor, string boardToChangeFeedbackRatingFor, string feedbackToChangeRatingFor, string newFeedbackRating, string authorOfFeedbackRatingChange)
         {
+            //Validations
             var feedbackTypeForChecking = "Feedback Title";
             inputValidator.IsNullOrEmpty(feedbackToChangeRatingFor, feedbackTypeForChecking);
 
@@ -1053,6 +1057,7 @@ namespace Wim.Core.Engine
 
         private string ChangeFeedbackStatus(string teamToChangeFeedbackStatusFor, string boardToChangeFeedbackStatusFor, string feedbackToChangeStatusFor, string newFeedbackStatus, string authorOfFeedbackStatusChange)
         {
+            //Validations
             var feedbackTypeForChecking = "Feedback Title";
             inputValidator.IsNullOrEmpty(feedbackToChangeStatusFor, feedbackTypeForChecking);
 
@@ -1203,8 +1208,10 @@ namespace Wim.Core.Engine
 
         private string ListAllWorkItems()
         {
+            //Validations
             inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
 
+            //Operations
             var AllWorkItems = allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).ToList();
 
             StringBuilder sb = new StringBuilder();
@@ -1223,10 +1230,12 @@ namespace Wim.Core.Engine
 
         private string FilterBugs()
         {
+            //Validations
             inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
 
             inputValidator.ValidateIfAnyBugsExist(allTeams);
 
+            //Operations
             var AllWorkItems = allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).Where(x => x.GetType() == typeof(Bug)).ToList();
 
             StringBuilder sb = new StringBuilder();
@@ -1245,10 +1254,12 @@ namespace Wim.Core.Engine
 
         private string FilterStories()
         {
+            //Validations
             inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
 
             inputValidator.ValidateIfAnyStoriesExist(allTeams);
 
+            //Operations
             var AllWorkItems = allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).Where(x => x.GetType() == typeof(Story)).ToList();
 
             StringBuilder sb = new StringBuilder();
@@ -1267,10 +1278,12 @@ namespace Wim.Core.Engine
 
         private string FilterFeedbacks()
         {
+            //Validations
             inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
 
             inputValidator.ValidateIfAnyFeedbacksExist(allTeams);
 
+            //Operations
             var AllWorkItems = allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).Where(x => x.GetType() == typeof(Feedback)).ToList();
 
             StringBuilder sb = new StringBuilder();
@@ -1289,6 +1302,7 @@ namespace Wim.Core.Engine
 
         private string FilterBugsByPriority(string priorityToFilterBugFor)
         {
+            //Validations
             var priorityTypeForChecking = "Priority";
             inputValidator.IsNullOrEmpty(priorityToFilterBugFor, priorityTypeForChecking);
 
@@ -1296,6 +1310,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateIfAnyBugsExist(allTeams);
 
+            //Operations
             var priorityToCheckFor = this.enumParser.GetPriority(priorityToFilterBugFor);
 
             var filteredBugsByPriority = allTeams.AllTeamsList.Values
@@ -1332,6 +1347,7 @@ namespace Wim.Core.Engine
 
         private string FilterBugsByAssignee(string assigneeToFilterBugFor)
         {
+            //Validations
             var assigneeTypeForChecking = "Assignee";
             inputValidator.IsNullOrEmpty(assigneeToFilterBugFor, assigneeTypeForChecking);
 
@@ -1339,6 +1355,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateIfAnyBugsExist(allTeams);
 
+            //Operations
             var filteredBugsByAssignee = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
                     .SelectMany(x => x.WorkItems)
@@ -1372,6 +1389,7 @@ namespace Wim.Core.Engine
 
         private string FilterBugsByStatus(string statusToFilterBugFor)
         {
+            //Validations
             var statusTypeForChecking = "Status";
             inputValidator.IsNullOrEmpty(statusToFilterBugFor, statusTypeForChecking);
 
@@ -1379,6 +1397,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateIfAnyBugsExist(allTeams);
 
+            //Operations
             var bugStatusToCheckFor = this.enumParser.GetBugStatus(statusToFilterBugFor);
 
             var filteredBugsByStatus = allTeams.AllTeamsList.Values
@@ -1414,6 +1433,7 @@ namespace Wim.Core.Engine
 
         private string FilterStoriesByPriority(string priorityToFilterStoryFor)
         {
+            //Validations
             var priorityTypeForChecking = "Priority";
             inputValidator.IsNullOrEmpty(priorityToFilterStoryFor, priorityTypeForChecking);
 
@@ -1421,6 +1441,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateIfAnyStoriesExist(allTeams);
 
+            //Operations
             var priorityToCheckFor = this.enumParser.GetPriority(priorityToFilterStoryFor);
 
             var filteredStoriesByPriority = allTeams.AllTeamsList.Values
@@ -1456,6 +1477,7 @@ namespace Wim.Core.Engine
 
         private string FilterStoriesByAssignee(string assigneeToFilterStoryFor)
         {
+            //Validations
             var assigneeTypeForChecking = "Assignee";
             inputValidator.IsNullOrEmpty(assigneeToFilterStoryFor, assigneeTypeForChecking);
 
@@ -1463,6 +1485,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateIfAnyStoriesExist(allTeams);
 
+            //Operations
             var filteredStoriesByAssignee = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
                     .SelectMany(x => x.WorkItems)
@@ -1496,6 +1519,7 @@ namespace Wim.Core.Engine
 
         private string FilterStoriesByStatus(string statusToFilterStoryFor)
         {
+            //Validations
             var statusTypeForChecking = "Status";
             inputValidator.IsNullOrEmpty(statusToFilterStoryFor, statusTypeForChecking);
 
@@ -1503,6 +1527,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateIfAnyStoriesExist(allTeams);
 
+            //Operations
             var storyStatusToCheckFor = this.enumParser.GetStoryStatus(statusToFilterStoryFor);
 
             var filteredStoriesbyStatus = allTeams.AllTeamsList.Values
@@ -1538,6 +1563,7 @@ namespace Wim.Core.Engine
 
         private string FilterFeedbacksByStatus(string statusToFilterFeedbacksFor)
         {
+            //Validations
             var statusTypeForChecking = "Status";
             inputValidator.IsNullOrEmpty(statusToFilterFeedbacksFor, statusTypeForChecking);
 
@@ -1545,6 +1571,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateIfAnyFeedbacksExist(allTeams);
 
+            //Operations
             var feedbacksStatusToCheckFor = this.enumParser.GetFeedbackStatus(statusToFilterFeedbacksFor);
 
             var filteredFeedbacksbyStatus = allTeams.AllTeamsList.Values
@@ -1580,6 +1607,7 @@ namespace Wim.Core.Engine
 
         private string SortBugsBy(string factorToSortBy)
         {
+            //Validations
             var factorTypeForChecking = $"{factorToSortBy}";
             inputValidator.IsNullOrEmpty(factorToSortBy, factorTypeForChecking);
 
@@ -1587,6 +1615,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateIfAnyBugsExist(allTeams);
 
+            //Operations
             var filteredBugs = new List<Bug>();
             if (factorToSortBy.ToLower() == "title")
             {
@@ -1645,6 +1674,7 @@ namespace Wim.Core.Engine
 
         private string SortStoriesBy(string factorToSortBy)
         {
+            //Validations
             var factorTypeForChecking = $"{factorToSortBy}";
             inputValidator.IsNullOrEmpty(factorToSortBy, factorTypeForChecking);
 
@@ -1652,6 +1682,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateIfAnyStoriesExist(allTeams);
 
+            //Operations
             var filteredStories = new List<Story>();
 
             if (factorToSortBy.ToLower() == "title")
@@ -1710,6 +1741,7 @@ namespace Wim.Core.Engine
 
         private string SortFeedbacksBy(string factorToSortBy)
         {
+            //Validations
             var factorTypeForChecking = $"{factorToSortBy}";
             inputValidator.IsNullOrEmpty(factorToSortBy, factorTypeForChecking);
 
@@ -1717,6 +1749,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateIfAnyFeedbacksExist(allTeams);
 
+            //Operations
             var filteredFeedbacks = new List<Feedback>();
             if (factorToSortBy.ToLower() == "title")
             {

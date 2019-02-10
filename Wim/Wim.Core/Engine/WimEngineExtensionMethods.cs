@@ -13,7 +13,8 @@ namespace Wim.Core.Engine
         {
             return allTeams.AllTeamsList[teamToFindItemFor]
                         .Boards.Find(board => board.Name == boardToFindItemFor)
-                            .WorkItems.Where(item => item.GetType().Name == itemType).First(workItem => workItem.Title == nameOfWorkItemToFind);
+                            .WorkItems.Where(item => item.GetType().Name == itemType)
+                             .First(workItem => workItem.Title == nameOfWorkItemToFind);
         }
 
         public static IMember FindMemberInTeam(this IAllTeams allTeams, string teamToFindMemberFor, string nameOfMemberToFind)

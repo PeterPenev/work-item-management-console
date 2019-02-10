@@ -5,12 +5,11 @@ namespace Wim.Models
 {
     public class ActivityHistory : IActivityHistory
     {
-        //field
+        //Fields
         private string message;
         private DateTime loggingDate;
 
-
-        //constructor
+        //Constructors
         public ActivityHistory(string message)
         {
             this.Id = Guid.NewGuid();
@@ -26,7 +25,7 @@ namespace Wim.Models
             {
                 return this.message;
             }
-            set
+            private set
             {
                 this.message = value;
             }
@@ -38,12 +37,12 @@ namespace Wim.Models
             {
                 return this.loggingDate;
             }
-            set
+            private set
             {
                 this.loggingDate = value;
             }
         }
 
-        //methods
+        //Methods
     }
 }

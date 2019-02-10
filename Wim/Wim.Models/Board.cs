@@ -7,12 +7,12 @@ namespace Wim.Models
 {
     public class Board : IBoard
     {
-        //fiels
+        //Fields
         private string name;
         private List<IWorkItem> workItems;
         private List<IActivityHistory> activityHistory;
 
-        //constructor
+        //Constructors
         public Board(string name)
         {
             this.Name = name;
@@ -20,14 +20,14 @@ namespace Wim.Models
             this.activityHistory = new List<IActivityHistory>();
         }
 
-        //properties
+        //Properties
         public string Name
         {
             get
             {
                 return this.name;
             }
-            set
+            private set
             {               
                 this.name = value;
             }
@@ -49,7 +49,7 @@ namespace Wim.Models
             }
         }
 
-        //methods
+        //Methods
         public string ShowBoardActivityToString()
         {
             int activityCounter = 1;
