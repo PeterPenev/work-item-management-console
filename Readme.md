@@ -284,103 +284,38 @@ ShowPersonsActivity Peter
 ShowBoardActivity Alpha board01
 ShowTeamsActivity Alpha
 
+
 ======================
 Demo 2 -- WARNING -- SOME LINES CONTAIN FALSE OPERATIONS TO SHOW MISTAKE-HANDLING! 
-Wrong Commands #7; #8; #12; #?;
+Wrong Commands #2; #4; #7;
 ======================
 
-CreatePerson Pesho
-CreatePerson Gosho
-CreatePerson Sasho
-CreateTeam Alpha
 CreateTeam Beta
-CreateBoard workboard Alpha
-CreateBoard testboard01 Alpha
-AddPersonToTeam Pesho Team
-AddPersonToTeam Gosho Beta
-AddPersonToTeam Sasho Alpha
-CreateBug bug12345678 Alpha workboard Low Minor Sasho !Steps #1. open application #2. type command Create Bug #3. error message appear !Steps First description to the message
-CreateBug bug Alpha workboard High Major Sasho !Steps #1. open application #2. type command Create Bug #3. error message appear !Steps Second description to the message
-FilterBugs
-CreateStory story Alpha workboard High Medium InProgress Sasho This is the first story in the Board
-CreatePerson Vasil
-AddPersonToTeam Vasil Alpha
-AssignUnassignItem Alpha workboard Bug bug12345678 Vasil
-ChangeBugPriority Alpha workboard bug12345678 High Vasil
-ChangeBugSeverity Alpha board01 bug12345678 Critical Vasil
-ChangeBugStatus Alpha board01 bug12345678 Fixed Vasil
-ShowPersonsActivity Vasil
-CreateStory story123456 Alpha workboard Medium Large NotDone Vasil This is the second story in the Board
-ShowTeamsActivity Alpha
-ListAllWorkItems
-CreateBoard newboard Alpha
-CreateFeedback feedback123456 Alpha newboard 10 Done This is the first feedback in the Board
-ShowBoardActivity Alpha newboard
-ChangeStoryPriority Alpha workboard story123456 Low Vasil
-FilterStories
-FilterFeedbacks
-FilterBugsByPriority High
-FilterBugsByAssignee Vasil
-FilterBugsByStatus Active
-FilterStoriesByPriority High
-FilterStoriesByAssignee Vasil
-FilterStoriesByStatus Done
-FilterFeedbacksByStatus Done
-SortBugsBy title
-SortBugsBy priority
-SortBugsBy severity
-SortStoriesBy title
-SortStoriesBy priority
-SortStoriesBy size
-SortFeedbacksBy rating
 CreatePerson Ivan
-ChangeStorySize Alpha newboard story123456 Small Vasil
-AddComment Alpha workboard Bug bug12345678 Vasil "Bug has been eliminated"
-ListAllWorkItems
+CreatePerson Vasil
+AddPersonToTeam Ivan Beta
+AddPersonToTeam Vasil Beta
+CreateBoard testBoard Beta
+CreateBug bug12345678 Alpha testBoard Low Minor Vasil !Steps #1. open application #2. type command Create Bug #3. error message appear !Steps First description to the message
 
 ======================
-Demo 2 -- WARNING -- SOME LINES CONTAIN FALSE OPERATIONS TO SHOW MISTAKE-HANDLING! 
-Wrong Commands #?; #?; #??;
+Demo 3 -- Short Demo - All Commands are Valid!
 ======================
 
-CreatePerson Peter
-CreatePerson Peter
-CreatePerson Mitk
 CreateTeam Alpha
-CreateTeam Beta
-CreateBoard board01 Alpha
-CreateBoard boar Alpha
-AddPersonToTeam Peter Alpha
-AddPersonToTeam Peter Alpha
-AddPersonToTeam Mitko Alpha
-CreateBug bug Alpha board01 Low Minor Peter !Steps #1. open application #2. type command Create Bug #3. error message appear !Steps First description to the message
-CreateBug bugMultiplyHighWidth Alph board01 Low Minor Peter !Steps #1. open application #2. type command Create Bug #3. error message appear !Steps First description to the message
-CreateBug bugMultiplyHighWidt Alpha board01 Low Minor Pete !Steps #1. open application #2. type command Create Bug #3. error message appear !Steps First description to the message
-CreateBug bugMultiplyHighWidt Alpha board01 Low Minor Peter !Steps #1. open application #2. type command Create Bug #3. error message appear !Steps First description to the message
-CreateBug bugCollectData Alpha board01 High Major Peter !Steps #1. open application #2. type command Create Bug #3. error message appear !Steps First description to the message
-CreateStory storyAddPersonFeature Alpha board01 High Medium InProgress Peter This is the first story in the Board
-CreateStory storyRemoveTeam Alpha board01 Low Medium NotDone Peter This is the second story in the Board
-CreateFeedback feedbackAddPerson Alpha board01 10 Done This is the first feedback in the Board
-CreateFeedback feedbackRemoveTeam Alpha board01 9 New This is the second feedback in the Board
-ChangeBugPriority Alpha board01 bugMultiplyHighWidt Hig Peter
-ChangeBugPriority Alpha board01 bugMultiplyHighWidt High Peter
-ChangeStoryPriority Alpha board01 storyAddPersonFeature Lo Peter
-ChangeStoryPriority Alpha board01 storyAddPersonFeature Low Peter
-ChangeFeedbackStatus Alpha board01 feedbackAddPerson Don Peter
-ChangeFeedbackStatus Alpha board01 feedbackAddPerson Done Peter
-AddComment Alph board01 Bug bugCollectData Peter "Tova e komentar"
-AddComment Alpha board01 Bug bugCollectData Peter "Tova e komentar"
-ListAllWorkItems
-FilterBugsByPriority Lo
-FilterBugsByPriority Low
-FilterBugsByAssigne Peter
-FilterBugsByAssignee Peter
+CreatePerson Peter
 CreatePerson Mitko
+AddPersonToTeam Peter Alpha
 AddPersonToTeam Mitko Alpha
-AssignUnassignItem Alpha board01 Bug bugCollectData Mitko
-ShowPersonsActivity Peter
-ShowPersonsActivity Mitko
-ShowBoardActivity Alpha board01
-ShowTeamsActivity Alpha
+CreateBoard workBoard Alpha
+CreateStory story123456 Alpha workBoard High Medium InProgress Peter This is the first story in the Board
+CreateFeedback feedback123456 Alpha workBoard 10 Done This is the first feedback in the Board
+ListAllWorkItems
+FilterStories
 
-_______________________________________________________________________________
+======================
+END of Example Demos
+======================
+
+___________________________Type Your Commands Below___________________________
+
