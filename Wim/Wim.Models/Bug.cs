@@ -40,10 +40,6 @@ namespace Wim.Models
             }
             private set
             {
-                if (value != Priority.Low && value != Priority.Medium && value != Priority.High)
-                {
-                    throw new ArgumentOutOfRangeException("Priority can be Low, Medium or High");
-                }
                 this.priority = value;
             }
         }
@@ -55,11 +51,7 @@ namespace Wim.Models
                 return this.severity;
             }
             private set
-            {
-                if (value != Severity.Critical && value != Severity.Major && value != Severity.Minor)
-                {
-                    throw new ArgumentException("Severity can be Minor, Major or Critical");
-                }
+            {                
                 this.severity = value;
             }
         }
@@ -72,11 +64,7 @@ namespace Wim.Models
                 return this.bugStatus;
             }
             private set
-            {
-                if (value != BugStatus.Active && value != BugStatus.Fixed)
-                {
-                    throw new ArgumentException("Status can be Active or Fixed");
-                }
+            {                
                 this.bugStatus = value;
             }
         }

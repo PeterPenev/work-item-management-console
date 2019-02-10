@@ -382,11 +382,15 @@ namespace Wim.Core.Engine
 
         private string CreatePerson(string personName)
         {
+            //Validations          
             var personTypeForChecking = "Person Name";
             inputValidator.IsNullOrEmpty(personName, personTypeForChecking);
 
+            inputValidator.ValdateMemberNameLength(personName);
+
             inputValidator.ValidateIfPersonExists(allMembers, personName);
 
+            //Operations
             var person = this.factory.CreateMember(personName);
             allMembers.AddMember(person);
 
@@ -395,8 +399,10 @@ namespace Wim.Core.Engine
 
         private string ShowAllPeople()
         {
+            //Validations
             inputValidator.ValdateIfAnyMembersExist(allMembers);            
 
+            //Operations
             var peopleToDisplay = allMembers.ShowAllMembersToString();
                 
             return string.Format(peopleToDisplay);
@@ -404,8 +410,10 @@ namespace Wim.Core.Engine
 
         private string ShowAllTeams()
         {
+            //Validations
             inputValidator.ValdateIfAnyTeamsExist(allTeams);  
 
+            //Operations
             var teamsToDisplay = allTeams.ShowAllTeamsToString();
 
             return string.Format(teamsToDisplay);
@@ -413,11 +421,13 @@ namespace Wim.Core.Engine
 
         private string ShowMemberActivityToString(string memberName)
         {
+            //Validations
             var inputTypeForChecking = "Member Name";
             inputValidator.IsNullOrEmpty(memberName, inputTypeForChecking);
 
             inputValidator.ValidateMemberExistance(allMembers, memberName);            
 
+            //Operations
             var selectedMember = this.allMembers.AllMembersList[memberName];
             var memberActivities = selectedMember.ShowMemberActivityToString();
 
@@ -426,11 +436,13 @@ namespace Wim.Core.Engine
 
         private string CreateTeam(string teamName)
         {
+            //Validations
             var inputTypeForChecking = "Team Name";
             inputValidator.IsNullOrEmpty(teamName, inputTypeForChecking);
 
             inputValidator.ValidateIfTeamExists(allTeams, teamName);
 
+            //Operations
             var team = this.factory.CreateTeam(teamName);
             allTeams.AddTeam(team);
 
@@ -439,6 +451,7 @@ namespace Wim.Core.Engine
 
         private string ShowTeamActivityToString(string teamName)
         {
+            //Validations
             var inputTypeForChecking = "Team Name";
             inputValidator.IsNullOrEmpty(teamName, inputTypeForChecking);
 
@@ -446,6 +459,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateTeamExistance(allTeams, teamName);
             
+            //Operations
             var teamToCheckHistoryFor = allTeams.AllTeamsList[teamName];
             var teamActivityHistory = teamToCheckHistoryFor.ShowTeamActivityToString();            
 
@@ -454,6 +468,7 @@ namespace Wim.Core.Engine
 
         private string AddPersonToTeam(string personToAddToTeam, string teamToAddPersonTo)
         {
+            //Validations
             var personTypeForChecking = "Person Name";
             inputValidator.IsNullOrEmpty(personToAddToTeam, personTypeForChecking);
 
@@ -466,6 +481,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateIfMemberAlreadyInTeam(allTeams, teamToAddPersonTo, personToAddToTeam);
 
+            //Operations
             allTeams.AllTeamsList[teamToAddPersonTo].AddMember(allMembers.AllMembersList[personToAddToTeam]);
             return string.Format(PersonAddedToTeam, personToAddToTeam, teamToAddPersonTo);
         }
@@ -483,16 +499,20 @@ namespace Wim.Core.Engine
 
         private string CreateBoardToTeam(string boardToAddToTeam, string teamForAddingBoardTo)
         {
+            //Validations
             var boardTypeForChecking = "Board Name";
             inputValidator.IsNullOrEmpty(boardToAddToTeam, boardTypeForChecking);
 
             var teamTypeForChecking = "Person Name";
             inputValidator.IsNullOrEmpty(teamForAddingBoardTo, teamTypeForChecking);
 
+            inputValidator.ValdateBoardNameLength(boardToAddToTeam);
+
             inputValidator.ValidateTeamExistance(allTeams, teamForAddingBoardTo);
 
             inputValidator.ValidateBoardAlreadyInTeam(allTeams, boardToAddToTeam, teamForAddingBoardTo);
 
+            //Operations
             var board = this.factory.CreateBoard(boardToAddToTeam);
             allTeams.AllTeamsList[teamForAddingBoardTo].AddBoard(board);
 
@@ -501,6 +521,7 @@ namespace Wim.Core.Engine
 
         private string ShowAllTeamBoards(string teamToShowBoardsFor)
         {
+            //Validations
             var teamTypeForChecking = "Team Name";
             inputValidator.IsNullOrEmpty(teamToShowBoardsFor, teamTypeForChecking);
 
@@ -508,12 +529,14 @@ namespace Wim.Core.Engine
 
             inputValidator.ValdateIfBoardsExistInTeam(allTeams, teamToShowBoardsFor);
 
+            //Operations
             var allTeamBoardsResult = allTeams.AllTeamsList[teamToShowBoardsFor].ShowAllTeamBoards();
             return string.Format(allTeamBoardsResult);
         }
 
         private string CreateBug(string bugTitle, string teamToAddBugFor, string boardToAddBugFor, string bugPriority, string bugSeverity, string bugAssignee, IList<string> bugStepsToReproduce, string bugDescription)
         {
+            //Validations
             var bugTypeForChecking = "Bug Title";
             inputValidator.IsNullOrEmpty(bugTitle, bugTypeForChecking);
 
@@ -531,6 +554,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateBugExistanceInBoard(allTeams, boardToAddBugFor, teamToAddBugFor, bugTitle);
 
+            //Operations
             Priority bugPriorityEnum = this.enumParser.GetPriority(bugPriority);
             Severity bugSeverityEnum = this.enumParser.GetSeverity(bugSeverity);
             IBug bugToAddToCollection = this.factory.CreateBug(bugTitle, bugPriorityEnum, bugSeverityEnum, allMembers.AllMembersList[bugAssignee], bugStepsToReproduce, bugDescription);
@@ -553,6 +577,7 @@ namespace Wim.Core.Engine
 
         private string CreateStory(string storyTitle, string teamToAddStoryFor, string boardToAddStoryFor, string storyPriority, string storySize, string storyStatus, string storyAssignee, string storyDescription)
         {
+            //Validations
             var storyTypeForChecking = "Story Title";
             inputValidator.IsNullOrEmpty(storyTitle, storyTypeForChecking);
 
@@ -572,6 +597,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateStoryExistanceInBoard(allTeams, boardToAddStoryFor, teamToAddStoryFor, storyTitle);
 
+            //Operations
             Priority storyPriorityEnum = this.enumParser.GetPriority(storyPriority);
             Size storySizeEnum = this.enumParser.GetStorySize(storySize);
             StoryStatus storyStatusEnum = this.enumParser.GetStoryStatus(storyStatus);
@@ -596,6 +622,7 @@ namespace Wim.Core.Engine
 
         private string CreateFeedback(string feedbackTitle, string teamToAddFeedbackFor, string boardToAddFeedbackFor, string feedbackRaiting, string feedbackStatus, string feedbackDescription)
         {
+            //Validations
             var feedbackTypeForChecking = "Feedback Title";
             inputValidator.IsNullOrEmpty(feedbackTitle, feedbackTypeForChecking);
 
@@ -613,6 +640,7 @@ namespace Wim.Core.Engine
 
             var intFeedbackRating = inputValidator.ValidateRatingConversion(feedbackRaiting);            
 
+            //Operations
             FeedbackStatus feedbackStatusEnum = this.enumParser.GetFeedbackStatus(feedbackStatus);
 
             IFeedback feedbackToAddToCollection = this.factory.CreateFeedback(feedbackTitle, feedbackDescription, intFeedbackRating, feedbackStatusEnum);
@@ -626,7 +654,8 @@ namespace Wim.Core.Engine
         }
 
         private string ShowBoardActivityToString(string teamToShowBoardActivityFor, string boardActivityToShow)
-        {           
+        { 
+            //Validations
             var teamTypeForChecking = "Team Name";
             inputValidator.IsNullOrEmpty(teamToShowBoardActivityFor, teamTypeForChecking);
 
@@ -637,7 +666,7 @@ namespace Wim.Core.Engine
 
             inputValidator.ValidateBoardExistanceInTeam(allTeams, boardActivityToShow, teamToShowBoardActivityFor);      
 
-
+            //Operations
             var boardToDisplayActivityFor = allTeams.AllTeamsList[teamToShowBoardActivityFor].Boards
               .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardActivityToShow).FirstOrDefault();
 

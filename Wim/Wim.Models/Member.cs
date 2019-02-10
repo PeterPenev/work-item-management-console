@@ -31,11 +31,7 @@ namespace Wim.Models
             }
 
             private set
-            {
-                if(value.Length < 5 || value.Length > 15)
-                {
-                    throw new ArgumentException("Name should be between 5 and 15 symbols");
-                }
+            {              
                 this.name = value;
             }
         }        
