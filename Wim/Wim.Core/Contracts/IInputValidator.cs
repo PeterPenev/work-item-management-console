@@ -6,6 +6,8 @@ namespace Wim.Core.Contracts
     {
         void IsNullOrEmpty(string inputToCheck, string inputType);
 
+        void ValdateMemberNameLength(string inputNameToCheck);
+
         void ValdateIfAnyTeamsExist(IAllTeams allTeams);
 
         void ValdateIfAnyMembersExist(IAllMembers allMembers);

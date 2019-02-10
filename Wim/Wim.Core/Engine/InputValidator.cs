@@ -14,6 +14,8 @@ namespace Wim.Core.Engine
         private const string NoTeamsInApplication = "There are no Teams in the Application yet!";
 
         private const string InvalidCommand = "Invalid command name: {0}!";
+        private const string ImproperMemberNameLength = "Member name should be between 5 and 15 characters!";
+        private const string ImproperBoardNameLength = "Board name should be between 5 and 10 characters!";
         private const string PersonExists = "Person with name {0} already exists!";
         private const string PersonCreated = "Person with name {0} was created!";
         private const string NullOrEmptyInput = "{0} cannot be null or empty!";
@@ -73,6 +75,22 @@ namespace Wim.Core.Engine
             if (string.IsNullOrEmpty(inputToCheck))
             {
                 throw new ArgumentNullException(NoTeamsInApplication);
+            }
+        }
+
+        public void ValdateMemberNameLength(string memberNameToCheck)
+        {
+            if (memberNameToCheck.Length < 5 || memberNameToCheck.Length > 10)
+            {
+                throw new ImproperMemberNameLengthException(ImproperMemberNameLength);
+            }
+        }
+
+        public void ValdateBoardNameLength(string boardNameToCheck)
+        {
+            if (boardNameToCheck.Length < 5 || boardNameToCheck.Length > 10)
+            {
+                throw new ImproperBoardNameLengthException(ImproperBoardNameLength);
             }
         }
 
