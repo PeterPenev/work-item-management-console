@@ -30,11 +30,7 @@ namespace Wim.Models
                 return this.title;
             }
             private set
-            {
-                if(value.Length < 10 || value.Length > 50)
-                {
-                    throw new ArgumentException("Title should be between 10 and 50 symbols");
-                }
+            {               
                 this.title = value;
             }
         }

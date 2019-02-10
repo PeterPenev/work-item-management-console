@@ -10,6 +10,8 @@ namespace Wim.Core.Contracts
 
         void ValdateBoardNameLength(string boardNameToCheck);
 
+        void ValdateItemTitleLength(string itemTitleToCheck);
+
         void ValdateIfAnyTeamsExist(IAllTeams allTeams);
 
         void ValdateIfAnyMembersExist(IAllMembers allMembers);
