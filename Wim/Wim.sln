@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wim.Core", "Wim.Core\Wim.Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wim.CLI", "Wim.CLI\Wim.CLI.csproj", "{13245D4E-E210-4852-8D06-D1FAE4589882}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wim.Models.Enums", "Wim.Models.Enums\Wim.Models.Enums.csproj", "{E0485EAF-58A4-4A44-A8B7-14089AF90332}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wim.Models.Enums", "Wim.Models.Enums\Wim.Models.Enums.csproj", "{E0485EAF-58A4-4A44-A8B7-14089AF90332}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

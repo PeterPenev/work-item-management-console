@@ -17,6 +17,7 @@ namespace Wim.Core.Engine
                              .First(workItem => workItem.Title == nameOfWorkItemToFind);
         }
 
+
         public static IMember FindMemberInTeam(this IAllTeams allTeams, string teamToFindMemberFor, string nameOfMemberToFind)
         {
             return allTeams.AllTeamsList[teamToFindMemberFor].Members
@@ -27,6 +28,15 @@ namespace Wim.Core.Engine
         {
             return allTeams.AllTeamsList[teamToFindBoardFor]
                                         .Boards.Find(board => board.Name == nameOfBoardToFind);
+        }
+
+        public static IBug FindItemAndCast(this IAllTeams allTeams, string itemType, string teamToFindBoardFor, string boardToFindBugIn, string nameOfBugToCast)
+        {
+            return allTeams.AllTeamsList[teamToFindBoardFor].Boards
+                .Find(boardInSelectedTeam => boardInSelectedTeam.Name == boardToFindBugIn).WorkItems
+                 .Where(item => item.GetType().Name == itemType)
+                  .Select(item => (Bug)item)
+                   .First(bugInSelectedBoard => bugInSelectedBoard.Title == nameOfBugToCast);
         }
 
         public static IBug FindBugAndCast(this IAllTeams allTeams, string teamToFindBoardFor, string boardToFindBugIn, string nameOfBugToCast)

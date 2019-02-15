@@ -12,7 +12,7 @@ namespace Wim.Core.Engine.EngineOperations
     {
         private const string AssignItemTo = "{0} with name: {1} on board {2} part of team {3} was assigned to member {4}!";
 
-        private const string BugPriorityChanged = "Bug {0} priority is changed to {1}";
+     
         private const string BugSeverityChanged = "Bug {0} severity is changed to {1}";
         private const string BugStatusChanged = "Bug {0} status is changed to {1}";
 
@@ -38,60 +38,7 @@ namespace Wim.Core.Engine.EngineOperations
             this.allTeams = allTeams;
             this.allMembers = allMembers;
             this.enumParser = enumParser;
-        }
-
-        public string ChangeBugPriority(string teamToChangeBugPriorityFor, string boardToChangeBugPriorityFor, string bugToChangePriorityFor, string priority, string authorOfBugPriorityChange)
-        {
-            //Validations
-            var bugTypeForChecking = "Bug Title";
-            inputValidator.IsNullOrEmpty(bugToChangePriorityFor, bugTypeForChecking);
-
-            var teamTypeForChecking = "Team Name";
-            inputValidator.IsNullOrEmpty(teamToChangeBugPriorityFor, teamTypeForChecking);
-
-            var boardTypeForChecking = "Board Name";
-            inputValidator.IsNullOrEmpty(boardToChangeBugPriorityFor, boardTypeForChecking);
-
-            var priorityTypeForChecking = "Priority";
-            inputValidator.IsNullOrEmpty(priority, priorityTypeForChecking);
-
-            var authorTypeForChecking = "Author";
-            inputValidator.IsNullOrEmpty(authorOfBugPriorityChange, authorTypeForChecking);
-
-            inputValidator.ValidateTeamExistance(allTeams, teamToChangeBugPriorityFor);
-
-            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeBugPriorityFor, teamToChangeBugPriorityFor);
-
-            inputValidator.ValidateNoSuchBugInBoard(allTeams, boardToChangeBugPriorityFor, teamToChangeBugPriorityFor, bugToChangePriorityFor);
-
-            //Operations
-            var newPriorityEnum = enumParser.GetPriority(priority);
-
-            var itemType = "Bug";
-
-            var castedBugForPriorityChange = allTeams.FindBugAndCast(teamToChangeBugPriorityFor, boardToChangeBugPriorityFor, bugToChangePriorityFor);
-
-            castedBugForPriorityChange.ChangeBugPriority(newPriorityEnum);
-
-            var memberToAddActivityFor = allTeams.FindMemberInTeam(teamToChangeBugPriorityFor, authorOfBugPriorityChange);
-
-            var teamToAddActivityFor = allTeams.AllTeamsList[teamToChangeBugPriorityFor];
-
-            var bugToAddActivityFor = allTeams.FindWorkItem(teamToChangeBugPriorityFor, itemType, boardToChangeBugPriorityFor, bugToChangePriorityFor);
-
-            var teamToFindIn = allTeams.AllTeamsList[teamToChangeBugPriorityFor];
-
-            var boardToAddActivityFor = allTeams.FindBoardInTeam(teamToChangeBugPriorityFor, boardToChangeBugPriorityFor);
-
-            boardToAddActivityFor.AddActivityHistoryToBoard(memberToAddActivityFor, bugToAddActivityFor, priority);
-
-            memberToAddActivityFor.AddActivityHistoryToMember(bugToAddActivityFor, teamToFindIn, boardToAddActivityFor, priority);
-
-            bugToAddActivityFor.AddActivityHistoryToWorkItem(memberToAddActivityFor, bugToAddActivityFor, priority);
-
-            return string.Format(BugPriorityChanged, bugToChangePriorityFor, newPriorityEnum);
-
-        }
+        }        
 
         public string ChangeBugSeverity(string teamToChangeBugSeverityFor, string boardToChangeBugSeverityFor, string bugToChangeSeverityFor, string newSeverity, string authorOfBugSeverityChange)
         {

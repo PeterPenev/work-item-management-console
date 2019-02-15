@@ -16,7 +16,7 @@ namespace Wim.Core.Engine.EngineOperations
         private const string AssignItemTo = "{0} with name: {1} on board {2} part of team {3} was assigned to member {4}!";
         private const string BoardAddedToTeam = "Board {0} was added to team {1}!";
 
-        private const string PersonCreated = "Person with name {0} was created!";
+      
         private const string TeamCreated = "Team with name {0} was created!";
         private const string PersonAddedToTeam = "Person {0} was added to team {1}!";
 
@@ -45,22 +45,7 @@ namespace Wim.Core.Engine.EngineOperations
             this.factory = factory;
         }
 
-        public string CreatePerson(string personName)
-        {
-            //Validations          
-            var personTypeForChecking = "Person Name";
-            inputValidator.IsNullOrEmpty(personName, personTypeForChecking);
-
-            inputValidator.ValdateMemberNameLength(personName);
-
-            inputValidator.ValidateIfPersonExists(allMembers, personName);
-
-            //Operations
-            var person = this.factory.CreateMember(personName);
-            allMembers.AddMember(person);
-
-            return string.Format(PersonCreated, personName);
-        }
+       
 
         public string CreateTeam(string teamName)
         {

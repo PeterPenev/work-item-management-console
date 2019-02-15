@@ -41,7 +41,7 @@ namespace Wim.Models
             {
                 return this.priority;
             }
-            private set
+            set
             {
                 this.priority = value;
             }

@@ -8,7 +8,7 @@ namespace Wim.Models.Interfaces
     {
         IList<string> StepsToReproduce { get; }
 
-        Priority Priority { get; }
+        Priority Priority { get; set; }
 
         Severity Severity { get; }
 
