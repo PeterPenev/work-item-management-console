@@ -17,7 +17,6 @@ namespace Wim.CLI
             var commandHelper = new CommandHelper();
             var commandReader = new WimCommandReader();
 
-
             var engine = new WimEngine(factory, allMembers, allTeams, enumParser, validator, commandHelper, commandReader);
             engine.Start();
         }

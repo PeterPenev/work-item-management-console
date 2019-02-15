@@ -7,19 +7,39 @@ namespace Wim.Core.Engine
 {
     public class WimProcessSingleCommander : IWimProcessSingleCommander
     {
+        private readonly IChangeOperations changeOperations;
+        private readonly ICreateOperations createOperations;
+        private readonly IFilterOperations filterOperations;
+        private readonly IShowOperations showOperations;
+        private readonly ISortOperations sortOperations;
+
+        public WimProcessSingleCommander(
+            IChangeOperations changeOperations, 
+            ICreateOperations createOperations,
+            IFilterOperations filterOperations,
+            IShowOperations showOperations,
+            ISortOperations sortOperations)
+        {
+            this.changeOperations = changeOperations;
+            this.createOperations = createOperations;
+            this.filterOperations = filterOperations;
+            this.showOperations = showOperations;
+            this.showOperations = sortOperations;
+        }
+
         public string ProcessSingleCommand(ICommand command)
         {
             switch (command.Name)
             {
                 case "CreatePerson":
                     var personName = command.Parameters[0];
-                    return this.CreatePerson(personName);
+                    return this.createOperations.CreatePerson(personName);
 
                 case "ShowAllPeople":
-                    return this.ShowAllPeople();
+                    return this.showOperations.ShowAllPeople();
 
                 case "ShowAllTeams":
-                    return this.ShowAllTeams();
+                    return this.showOperations.ShowAllTeams();
 
                 case "ShowPersonsActivity":
                     var memberName = command.Parameters[0];
@@ -252,7 +272,7 @@ namespace Wim.Core.Engine
 
                 case "SortBugsBy":
                     var factorToSortBugBy = command.Parameters[0];
-                    return this.SortBugsBy(factorToSortBugBy);
+                    return SortOperations.SortBugsBy(factorToSortBugBy);
 
                 case "SortStoriesBy":
                     var factorToSortStoriesBy = command.Parameters[0];

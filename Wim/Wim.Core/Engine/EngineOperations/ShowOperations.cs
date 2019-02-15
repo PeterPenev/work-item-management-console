@@ -71,8 +71,6 @@ namespace Wim.Core.Engine.EngineOperations
             return string.Format(allTeamMembersStringResult);
         }
 
-
-
         private string ShowAllTeamBoards(string teamToShowBoardsFor)
         {
             //Validations
@@ -108,6 +106,28 @@ namespace Wim.Core.Engine.EngineOperations
 
             var boardActivityToString = boardToDisplayActivityFor.ShowBoardActivityToString();
             return string.Format(boardActivityToString);
+        }
+
+        private string ListAllWorkItems()
+        {
+            //Validations
+            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+
+            //Operations
+            var AllWorkItems = allTeams.AllTeamsList.Values.SelectMany(x => x.Boards).SelectMany(x => x.WorkItems).ToList();
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("----ALL WORK ITEMS IN APPLICAITION----");
+            long workItemCounter = 1;
+            foreach (var item in AllWorkItems)
+            {
+                sb.AppendLine($"{workItemCounter}. {item.GetType().Name} with name: {item.Title} ");
+                workItemCounter++;
+            }
+            sb.AppendLine("---------------------------------");
+
+            var resultedAllItems = sb.ToString().Trim();
+            return string.Format(resultedAllItems);
         }
 
     }
