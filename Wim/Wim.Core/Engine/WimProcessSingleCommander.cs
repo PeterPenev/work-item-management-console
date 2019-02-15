@@ -43,39 +43,39 @@ namespace Wim.Core.Engine
 
                 case "ShowPersonsActivity":
                     var memberName = command.Parameters[0];
-                    return this.ShowMemberActivityToString(memberName);
+                    return this.showOperations.ShowMemberActivityToString(memberName);
 
                 case "CreateTeam":
                     var teamName = command.Parameters[0];
-                    return this.CreateTeam(teamName);
+                    return this.createOperations.CreateTeam(teamName);
 
                 case "ShowTeamsActivity":
                     var teamToShowActivityFor = command.Parameters[0];
-                    return this.ShowTeamActivityToString(teamToShowActivityFor);
+                    return this.showOperations.ShowTeamActivityToString(teamToShowActivityFor);
 
                 case "AddPersonToTeam":
                     var personToAddToTeam = command.Parameters[0];
                     var teamForAddingPersonTo = command.Parameters[1];
-                    return this.AddPersonToTeam(personToAddToTeam, teamForAddingPersonTo);
+                    return this.createOperations.AddPersonToTeam(personToAddToTeam, teamForAddingPersonTo);
 
                 case "ShowAllTeamMembers":
                     var teamToShowMembersFor = command.Parameters[0];
 
-                    return this.ShowAllTeamMembers(teamToShowMembersFor);
+                    return this.showOperations.ShowAllTeamMembers(teamToShowMembersFor);
 
                 case "CreateBoard":
                     var boardToAddToTeam = command.Parameters[0];
                     var teamForAddingBoardTo = command.Parameters[1];
-                    return this.CreateBoardToTeam(boardToAddToTeam, teamForAddingBoardTo);
+                    return this.createOperations.CreateBoardToTeam(boardToAddToTeam, teamForAddingBoardTo);
 
                 case "ShowAllTeamBoards":
                     var teamToShowBoards = command.Parameters[0];
-                    return this.ShowAllTeamBoards(teamToShowBoards);
+                    return this.showOperations.ShowAllTeamBoards(teamToShowBoards);
 
                 case "ShowBoardActivity":
                     var team = command.Parameters[0];
                     var boardToShowActivityFor = command.Parameters[1];
-                    return this.ShowBoardActivityToString(team, boardToShowActivityFor);
+                    return this.showOperations.ShowBoardActivityToString(team, boardToShowActivityFor);
 
                 case "CreateBug":
                     var bugToAdd = command.Parameters[0];
@@ -90,7 +90,7 @@ namespace Wim.Core.Engine
                     var bugSteps = stepsAndDescriptionArr[1].Split('#').ToList();
                     var bugDescription = stepsAndDescriptionArr[2].ToString().Trim();
 
-                    return this.CreateBug(bugToAdd, teamToAddBugFor, boardToAddBugFor, bugPriority, bugSeverity, bugAsignee, bugSteps, bugDescription);
+                    return this.createOperations.CreateBug(bugToAdd, teamToAddBugFor, boardToAddBugFor, bugPriority, bugSeverity, bugAsignee, bugSteps, bugDescription);
 
                 case "CreateStory":
                     var storyToAdd = command.Parameters[0];
@@ -110,7 +110,7 @@ namespace Wim.Core.Engine
 
                     var storyDescription = buildStoryDescription.ToString().Trim();
 
-                    return this.CreateStory(storyToAdd, teamToAddStoryFor, boardToAddStoryFor, storyPriority, storySize, storyStatus, storyAssignee, storyDescription);
+                    return this.createOperations.CreateStory(storyToAdd, teamToAddStoryFor, boardToAddStoryFor, storyPriority, storySize, storyStatus, storyAssignee, storyDescription);
 
                 case "CreateFeedback":
                     var feedbackToAdd = command.Parameters[0];
@@ -128,7 +128,7 @@ namespace Wim.Core.Engine
 
                     var feedbackDescription = buildFeedbackDescription.ToString().Trim();
 
-                    return this.CreateFeedback(feedbackToAdd, teamToAddFeedbackFor, boardToAddFeedbackFor, feedbackRaiting, feedbackStatus, feedbackDescription);
+                    return this.createOperations.CreateFeedback(feedbackToAdd, teamToAddFeedbackFor, boardToAddFeedbackFor, feedbackRaiting, feedbackStatus, feedbackDescription);
 
 
                 case "ChangeBugPriority":
@@ -138,7 +138,7 @@ namespace Wim.Core.Engine
                     var newPriority = command.Parameters[3];
                     var authorOfBugPriorityChange = command.Parameters[4];
 
-                    return this.ChangeBugPriority(teamToChangeBugPriorityFor, boardToChangeBugPriorityFor, bugToChangePriorityFor, newPriority, authorOfBugPriorityChange);
+                    return this.changeOperations.ChangeBugPriority(teamToChangeBugPriorityFor, boardToChangeBugPriorityFor, bugToChangePriorityFor, newPriority, authorOfBugPriorityChange);
 
                 case "ChangeBugSeverity":
                     var teamToChangeBugSeverityFor = command.Parameters[0];
@@ -147,7 +147,7 @@ namespace Wim.Core.Engine
                     var newSeverity = command.Parameters[3];
                     var authorOfBugSeverityChange = command.Parameters[4];
 
-                    return this.ChangeBugSeverity(teamToChangeBugSeverityFor, boardToChangeBugSeverityFor, bugToChangeBugSeverityFor, newSeverity, authorOfBugSeverityChange);
+                    return this.changeOperations.ChangeBugSeverity(teamToChangeBugSeverityFor, boardToChangeBugSeverityFor, bugToChangeBugSeverityFor, newSeverity, authorOfBugSeverityChange);
 
                 case "ChangeBugStatus":
                     var teamToChangeBugStatusFor = command.Parameters[0];
@@ -156,7 +156,7 @@ namespace Wim.Core.Engine
                     var newStatus = command.Parameters[3];
                     var authorOfBugStatusChange = command.Parameters[4];
 
-                    return this.ChangeBugStatus(teamToChangeBugStatusFor, boardToChangeBugStatusFor, bugToChangeStatusFor, newStatus, authorOfBugStatusChange);
+                    return this.changeOperations.ChangeBugStatus(teamToChangeBugStatusFor, boardToChangeBugStatusFor, bugToChangeStatusFor, newStatus, authorOfBugStatusChange);
 
                 case "ChangeStoryPriority":
                     var teamToChangeStoryPriorityFor = command.Parameters[0];
@@ -165,7 +165,7 @@ namespace Wim.Core.Engine
                     var newStoryPriority = command.Parameters[3];
                     var authorOfStoryPriorityChange = command.Parameters[4];
 
-                    return this.ChangeStoryPriority(teamToChangeStoryPriorityFor, boardToChangeStoryPriorityFor, storyToChangePriorityFor, newStoryPriority, authorOfStoryPriorityChange);
+                    return this.changeOperations.ChangeStoryPriority(teamToChangeStoryPriorityFor, boardToChangeStoryPriorityFor, storyToChangePriorityFor, newStoryPriority, authorOfStoryPriorityChange);
 
                 case "ChangeStorySize":
                     var teamToChangeStorySizeFor = command.Parameters[0];
@@ -174,7 +174,7 @@ namespace Wim.Core.Engine
                     var newStorySize = command.Parameters[3];
                     var authorOfStorySizeChange = command.Parameters[4];
 
-                    return this.ChangeStorySize(teamToChangeStorySizeFor, boardToChangeStorySizeFor, storyToChangeSizeFor, newStorySize, authorOfStorySizeChange);
+                    return this.changeOperations.ChangeStorySize(teamToChangeStorySizeFor, boardToChangeStorySizeFor, storyToChangeSizeFor, newStorySize, authorOfStorySizeChange);
 
                 case "ChangeStoryStatus":
                     var teamToChangeStoryStatusFor = command.Parameters[0];
@@ -183,7 +183,7 @@ namespace Wim.Core.Engine
                     var newStoryStatus = command.Parameters[3];
                     var authorOfStoryStatusChange = command.Parameters[4];
 
-                    return this.ChangeStoryStatus(teamToChangeStoryStatusFor, boardToChangeStoryStatusFor, storyToChangeStatusFor, newStoryStatus, authorOfStoryStatusChange);
+                    return this.changeOperations.ChangeStoryStatus(teamToChangeStoryStatusFor, boardToChangeStoryStatusFor, storyToChangeStatusFor, newStoryStatus, authorOfStoryStatusChange);
 
                 case "ChangeFeedbackRating":
                     var teamToChangeFeedbackRatingFor = command.Parameters[0];
@@ -192,7 +192,7 @@ namespace Wim.Core.Engine
                     var newFeedbackRating = command.Parameters[3];
                     var authorOfFeedbackRatingChange = command.Parameters[4];
 
-                    return this.ChangeFeedbackRating(teamToChangeFeedbackRatingFor, boardToChangeFeedbackRatingFor, feedbackToChangeRatingFor, newFeedbackRating, authorOfFeedbackRatingChange);
+                    return this.changeOperations.ChangeFeedbackRating(teamToChangeFeedbackRatingFor, boardToChangeFeedbackRatingFor, feedbackToChangeRatingFor, newFeedbackRating, authorOfFeedbackRatingChange);
 
                 case "ChangeFeedbackStatus":
                     var teamToChangeFeedbackStatusFor = command.Parameters[0];
@@ -200,7 +200,7 @@ namespace Wim.Core.Engine
                     var feedbackToChangeStatusFor = command.Parameters[2];
                     var newFeedbackStatus = command.Parameters[3];
                     var authorOfFeedbackStatusChange = command.Parameters[4];
-                    return this.ChangeFeedbackStatus(teamToChangeFeedbackStatusFor, boardToChangeFeedbackStatusFor, feedbackToChangeStatusFor, newFeedbackStatus, authorOfFeedbackStatusChange);
+                    return this.changeOperations.ChangeFeedbackStatus(teamToChangeFeedbackStatusFor, boardToChangeFeedbackStatusFor, feedbackToChangeStatusFor, newFeedbackStatus, authorOfFeedbackStatusChange);
 
                 case "AddComment":
                     var teamToAddCommentToWorkItemFor = command.Parameters[0];
@@ -219,7 +219,7 @@ namespace Wim.Core.Engine
 
                     var commentToAdd = buildComment.ToString().Trim();
 
-                    return this.AddComment(teamToAddCommentToWorkItemFor, boardToAddCommentToWorkItemFor, itemTypeToAddWorkItemFor, workitemToAddCommentFor, authorOfComment, commentToAdd);
+                    return this.createOperations.AddComment(teamToAddCommentToWorkItemFor, boardToAddCommentToWorkItemFor, itemTypeToAddWorkItemFor, workitemToAddCommentFor, authorOfComment, commentToAdd);
 
                 case "AssignUnassignItem":
                     var teamToAssignUnsignBug = command.Parameters[0];
@@ -228,59 +228,59 @@ namespace Wim.Core.Engine
                     var itemToAssignUnsign = command.Parameters[3];
                     var memberToAssignBug = command.Parameters[4];
 
-                    return this.AssignUnassignItem(teamToAssignUnsignBug, boardToAssignUnsignBug, typeOfItem, itemToAssignUnsign, memberToAssignBug);
+                    return this.changeOperations.AssignUnassignItem(teamToAssignUnsignBug, boardToAssignUnsignBug, typeOfItem, itemToAssignUnsign, memberToAssignBug);
 
                 case "ListAllWorkItems":
-                    return this.ListAllWorkItems();
+                    return this.showOperations.ListAllWorkItems();
 
                 case "FilterBugs":
-                    return this.FilterBugs();
+                    return this.filterOperations.FilterBugs();
 
                 case "FilterStories":
-                    return this.FilterStories();
+                    return this.filterOperations.FilterStories();
 
                 case "FilterFeedbacks":
-                    return this.FilterFeedbacks();
+                    return this.filterOperations.FilterFeedbacks();
 
                 case "FilterBugsByPriority":
                     var priorityToFilterBugFor = command.Parameters[0];
-                    return this.FilterBugsByPriority(priorityToFilterBugFor);
+                    return this.filterOperations.FilterBugsByPriority(priorityToFilterBugFor);
 
                 case "FilterBugsByAssignee":
                     var assigneeToFilterBugFor = command.Parameters[0];
-                    return this.FilterBugsByAssignee(assigneeToFilterBugFor);
+                    return this.filterOperations.FilterBugsByAssignee(assigneeToFilterBugFor);
 
                 case "FilterBugsByStatus":
                     var statusToFilterBugFor = command.Parameters[0];
-                    return this.FilterBugsByStatus(statusToFilterBugFor);
+                    return this.filterOperations.FilterBugsByStatus(statusToFilterBugFor);
 
                 case "FilterStoriesByPriority":
                     var priorityToFilterStoryFor = command.Parameters[0];
-                    return this.FilterStoriesByPriority(priorityToFilterStoryFor);
+                    return this.filterOperations.FilterStoriesByPriority(priorityToFilterStoryFor);
 
                 case "FilterStoriesByAssignee":
                     var assigneeToFilterStoriesFor = command.Parameters[0];
-                    return this.FilterStoriesByAssignee(assigneeToFilterStoriesFor);
+                    return this.filterOperations.FilterStoriesByAssignee(assigneeToFilterStoriesFor);
 
                 case "FilterStoriesByStatus":
                     var statusToFilterStoriesFor = command.Parameters[0];
-                    return this.FilterStoriesByStatus(statusToFilterStoriesFor);
+                    return this.filterOperations.FilterStoriesByStatus(statusToFilterStoriesFor);
 
                 case "FilterFeedbacksByStatus":
                     var statusToFilterFeedbackFor = command.Parameters[0];
-                    return this.FilterFeedbacksByStatus(statusToFilterFeedbackFor);
+                    return this.filterOperations.FilterFeedbacksByStatus(statusToFilterFeedbackFor);
 
                 case "SortBugsBy":
                     var factorToSortBugBy = command.Parameters[0];
-                    return SortOperations.SortBugsBy(factorToSortBugBy);
+                    return this.sortOperations.SortBugsBy(factorToSortBugBy);
 
                 case "SortStoriesBy":
                     var factorToSortStoriesBy = command.Parameters[0];
-                    return this.SortStoriesBy(factorToSortStoriesBy);
+                    return this.sortOperations.SortStoriesBy(factorToSortStoriesBy);
 
                 case "SortFeedbacksBy":
                     var factorToSortFeedbacksBy = command.Parameters[0];
-                    return this.SortFeedbacksBy(factorToSortFeedbacksBy);
+                    return this.sortOperations.SortFeedbacksBy(factorToSortFeedbacksBy);
 
 
                 default:

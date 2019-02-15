@@ -426,5 +426,73 @@ namespace Wim.Core.Engine.EngineOperations
 
             return string.Format(FeedbackStatusChanged, feedbackToChangeStatusFor, newStatusEnum);
         }
+
+        public string AssignUnassignItem(string teamToAssignUnsignItem, string boardToAssignUnsignItem, string itemType, string itemToAssignUnsign, string memberToAssignItem)
+        {
+            //Validations
+            var itemTypeForChecking = "Item Title";
+            inputValidator.IsNullOrEmpty(itemToAssignUnsign, itemTypeForChecking);
+
+            var teamTypeForChecking = "Team Name";
+            inputValidator.IsNullOrEmpty(teamToAssignUnsignItem, teamTypeForChecking);
+
+            var boardTypeForChecking = "Board Name";
+            inputValidator.IsNullOrEmpty(boardToAssignUnsignItem, boardTypeForChecking);
+
+            var authorTypeForChecking = "Author";
+            inputValidator.IsNullOrEmpty(memberToAssignItem, authorTypeForChecking);
+
+            inputValidator.ValidateTeamExistance(allTeams, teamToAssignUnsignItem);
+
+            inputValidator.ValidateMemberExistance(allMembers, memberToAssignItem);
+
+            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToAssignUnsignItem, teamToAssignUnsignItem);
+
+            //Operations
+            var itemMemberToAssign = allTeams.FindMemberInTeam(teamToAssignUnsignItem, memberToAssignItem);
+
+            var itemToChangeIn = allTeams.FindWorkItem(teamToAssignUnsignItem, itemType, boardToAssignUnsignItem, itemToAssignUnsign);
+
+            IMember itemMemberBeforeUnssign = null;
+
+            if (itemType == "Bug")
+            {
+                var typedItem = (Bug)itemToChangeIn;
+
+                itemMemberBeforeUnssign = typedItem.Assignee;
+
+                typedItem.AssignMemberToBug(itemMemberToAssign);
+
+                itemMemberBeforeUnssign.RemoveWorkItemIdToMember(typedItem.Id);
+
+                itemMemberToAssign.AddWorkItemIdToMember(typedItem.Id);
+            }
+            else if (itemType == "Story")
+            {
+                var typedItem = (Story)itemToChangeIn;
+
+                itemMemberBeforeUnssign = typedItem.Assignee;
+
+                typedItem.AssignMemberToStory(itemMemberToAssign);
+
+                itemMemberBeforeUnssign.RemoveWorkItemIdToMember(typedItem.Id);
+
+                itemMemberToAssign.AddWorkItemIdToMember(typedItem.Id);
+            }
+
+            //history
+            var indexOfBoardInSelectedTeam = allTeams.AllTeamsList[teamToAssignUnsignItem].Boards.FindIndex(boardIndex => boardIndex.Name == boardToAssignUnsignItem);
+
+            //add history to board
+            allTeams.AllTeamsList[teamToAssignUnsignItem].Boards[indexOfBoardInSelectedTeam].AddActivityHistoryAfterAssignUnsignToBoard(itemType, itemToAssignUnsign, itemMemberToAssign, itemMemberBeforeUnssign);
+
+            //add history to member before unssign
+            itemMemberBeforeUnssign.AddActivityHistoryAfterUnsignToMember(itemType, itemToAssignUnsign, itemMemberBeforeUnssign);
+
+            //add history to member after assign
+            itemMemberToAssign.AddActivityHistoryAfterAssignToMember(itemType, itemToAssignUnsign, itemMemberToAssign);
+
+            return string.Format(AssignItemTo, itemType, itemToAssignUnsign, boardToAssignUnsignItem, teamToAssignUnsignItem, memberToAssignItem);
+        }
     }
 }
