@@ -77,7 +77,7 @@ namespace Wim.Core.Engine.EngineOperations
 
             storyToAddActivityFor.AddActivityHistoryToWorkItem(memberToAddActivityFor, storyToAddActivityFor, newStoryStatus);
 
-            return string.Format(StoryPriorityChanged, storyToChangeStatusFor, newStatusEnum);
+            return string.Format(StoryStatusChanged, storyToChangeStatusFor, newStatusEnum);
 
         }
     }
