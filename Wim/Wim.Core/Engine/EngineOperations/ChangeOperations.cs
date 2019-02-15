@@ -1,11 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Wim.Core.Contracts;
+using Wim.Core.Engine.EngineOperationsContracts;
+using Wim.Models;
+using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class ChangeOperations
+    public class ChangeOperations : IChangeOperations
     {
+        private const string AssignItemTo = "{0} with name: {1} on board {2} part of team {3} was assigned to member {4}!";
+
+        private const string BugPriorityChanged = "Bug {0} priority is changed to {1}";
+        private const string BugSeverityChanged = "Bug {0} severity is changed to {1}";
+        private const string BugStatusChanged = "Bug {0} status is changed to {1}";
+
+        private const string StoryPriorityChanged = "Story {0} priority is changed to {1}";
+        private const string StorySizeChanged = "Story {0} size is changed to {1}";
+        private const string StoryStatusChanged = "Story {0} status is changed to{1}";
+
+        private const string FeedbackRatingChanged = "Feedback {0} rating is changed to {1}";
+        private const string FeedbackStatusChanged = "Feedback {0} status is changed to {1}";
+
+        private readonly IInputValidator inputValidator;
+        private readonly IAllTeams allTeams;
+        private readonly IAllMembers allMembers;
+        private readonly IEnumParser enumParser;
+
+        public ChangeOperations(
+            IInputValidator inputValidator,
+            IAllTeams allTeams,
+            IAllMembers allMembers,
+            IEnumParser enumParser)
+        {
+            this.inputValidator = inputValidator;
+            this.allTeams = allTeams;
+            this.allMembers = allMembers;
+            this.enumParser = enumParser;
+        }
+
         public string ChangeBugPriority(string teamToChangeBugPriorityFor, string boardToChangeBugPriorityFor, string bugToChangePriorityFor, string priority, string authorOfBugPriorityChange)
         {
             //Validations
@@ -59,7 +93,7 @@ namespace Wim.Core.Engine.EngineOperations
 
         }
 
-        private string ChangeBugSeverity(string teamToChangeBugSeverityFor, string boardToChangeBugSeverityFor, string bugToChangeSeverityFor, string newSeverity, string authorOfBugSeverityChange)
+        public string ChangeBugSeverity(string teamToChangeBugSeverityFor, string boardToChangeBugSeverityFor, string bugToChangeSeverityFor, string newSeverity, string authorOfBugSeverityChange)
         {
             //Validations
             var bugTypeForChecking = "Bug Title";

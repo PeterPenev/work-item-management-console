@@ -1,11 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using Wim.Core.Contracts;
+using Wim.Core.Engine.EngineOperationsContracts;
+using Wim.Models;
+using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class SortOperations
+    public class SortOperations : ISortOperations
     {
+        private readonly IInputValidator inputValidator;
+        private readonly IAllTeams allTeams;
+        private readonly IAllMembers allMembers;
+        private readonly IEnumParser enumParser;
+
+        public SortOperations(
+            IInputValidator inputValidator,
+            IAllTeams allTeams,
+            IAllMembers allMembers,
+            IEnumParser enumParser)
+        {
+            this.inputValidator = inputValidator;
+            this.allTeams = allTeams;
+            this.allMembers = allMembers;
+            this.enumParser = enumParser;
+        }
+
         public string SortBugsBy(string factorToSortBy)
         {
             //Validations

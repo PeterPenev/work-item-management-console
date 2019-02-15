@@ -1,12 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using Wim.Core.Contracts;
+using Wim.Core.Engine.EngineOperationsContracts;
+using Wim.Models;
+using Wim.Models.Enums;
+using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class CreateOperations
+    public class CreateOperations : ICreateOperations
     {
-        private string CreatePerson(string personName)
+        private const string AddedCommentFor = "Comment {0} with author {1} is added to {2} with name: {3}.";
+        private const string AssignItemTo = "{0} with name: {1} on board {2} part of team {3} was assigned to member {4}!";
+        private const string BoardAddedToTeam = "Board {0} was added to team {1}!";
+
+        private const string PersonCreated = "Person with name {0} was created!";
+        private const string TeamCreated = "Team with name {0} was created!";
+        private const string PersonAddedToTeam = "Person {0} was added to team {1}!";
+
+        private const string BugCreated = "Bug {0} was created!";
+        private const string StoryCreated = "Story {0} was created!";
+        private const string FeedbackCreated = "Feedback {0} was created!";
+
+
+        private readonly IInputValidator inputValidator;
+        private readonly IAllTeams allTeams;
+        private readonly IAllMembers allMembers;
+        private readonly IEnumParser enumParser;
+        private readonly IWimFactory factory;
+
+        public CreateOperations(
+            IInputValidator inputValidator,
+            IAllTeams allTeams,
+            IAllMembers allMembers,
+            IEnumParser enumParser,
+            IWimFactory factory)
+        {
+            this.inputValidator = inputValidator;
+            this.allTeams = allTeams;
+            this.allMembers = allMembers;
+            this.enumParser = enumParser;
+            this.factory = factory;
+        }
+
+        public string CreatePerson(string personName)
         {
             //Validations          
             var personTypeForChecking = "Person Name";
@@ -23,7 +62,7 @@ namespace Wim.Core.Engine.EngineOperations
             return string.Format(PersonCreated, personName);
         }
 
-        private string CreateTeam(string teamName)
+        public string CreateTeam(string teamName)
         {
             //Validations
             var inputTypeForChecking = "Team Name";
@@ -38,7 +77,7 @@ namespace Wim.Core.Engine.EngineOperations
             return string.Format(TeamCreated, teamName);
         }
 
-        private string CreateBoardToTeam(string boardToAddToTeam, string teamForAddingBoardTo)
+        public string CreateBoardToTeam(string boardToAddToTeam, string teamForAddingBoardTo)
         {
             //Validations
             var boardTypeForChecking = "Board Name";
@@ -60,7 +99,7 @@ namespace Wim.Core.Engine.EngineOperations
             return string.Format(BoardAddedToTeam, boardToAddToTeam, teamForAddingBoardTo);
         }
 
-        private string CreateBug(string bugTitle, string teamToAddBugFor, string boardToAddBugFor, string bugPriority, string bugSeverity, string bugAssignee, IList<string> bugStepsToReproduce, string bugDescription)
+        public string CreateBug(string bugTitle, string teamToAddBugFor, string boardToAddBugFor, string bugPriority, string bugSeverity, string bugAssignee, IList<string> bugStepsToReproduce, string bugDescription)
         {
             //Validations
             var bugTypeForChecking = "Bug Title";
@@ -105,7 +144,7 @@ namespace Wim.Core.Engine.EngineOperations
             return string.Format(BugCreated, bugTitle);
         }
 
-        private string CreateStory(string storyTitle, string teamToAddStoryFor, string boardToAddStoryFor, string storyPriority, string storySize, string storyStatus, string storyAssignee, string storyDescription)
+        public string CreateStory(string storyTitle, string teamToAddStoryFor, string boardToAddStoryFor, string storyPriority, string storySize, string storyStatus, string storyAssignee, string storyDescription)
         {
             //Validations
             var storyTypeForChecking = "Story Title";
@@ -154,7 +193,7 @@ namespace Wim.Core.Engine.EngineOperations
             return string.Format(StoryCreated, storyTitle);
         }
 
-        private string CreateFeedback(string feedbackTitle, string teamToAddFeedbackFor, string boardToAddFeedbackFor, string feedbackRaiting, string feedbackStatus, string feedbackDescription)
+        public string CreateFeedback(string feedbackTitle, string teamToAddFeedbackFor, string boardToAddFeedbackFor, string feedbackRaiting, string feedbackStatus, string feedbackDescription)
         {
             //Validations
             var feedbackTypeForChecking = "Feedback Title";
@@ -191,7 +230,7 @@ namespace Wim.Core.Engine.EngineOperations
             return string.Format(FeedbackCreated, feedbackTitle);
         }
 
-        private string AddComment(string teamToAddCommentToWorkItemFor, string boardToAddCommentToWorkItemFor, string itemTypeToAddWorkItemFor, string workitemToAddCommentFor, string authorOfComment, string commentToAdd)
+        public string AddComment(string teamToAddCommentToWorkItemFor, string boardToAddCommentToWorkItemFor, string itemTypeToAddWorkItemFor, string workitemToAddCommentFor, string authorOfComment, string commentToAdd)
         {
             //Validations
             var itemTypeForChecking = "Item Title";
@@ -290,7 +329,7 @@ namespace Wim.Core.Engine.EngineOperations
             return string.Format(AssignItemTo, itemType, itemToAssignUnsign, boardToAssignUnsignItem, teamToAssignUnsignItem, memberToAssignItem);
         }
 
-        private string AddPersonToTeam(string personToAddToTeam, string teamToAddPersonTo)
+        public string AddPersonToTeam(string personToAddToTeam, string teamToAddPersonTo)
         {
             //Validations
             var personTypeForChecking = "Person Name";

@@ -1,12 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using Wim.Core.Contracts;
+using Wim.Core.Engine.EngineOperationsContracts;
+using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class ShowOperations
+    public class ShowOperations : IShowOperations
     {
-        private string ShowAllPeople()
+        private readonly IInputValidator inputValidator;
+        private readonly IAllTeams allTeams;
+        private readonly IAllMembers allMembers;
+        private readonly IEnumParser enumParser;
+
+        public ShowOperations(
+            IInputValidator inputValidator,
+            IAllTeams allTeams,
+            IAllMembers allMembers,
+            IEnumParser enumParser)
+        {
+            this.inputValidator = inputValidator;
+            this.allTeams = allTeams;
+            this.allMembers = allMembers;
+            this.enumParser = enumParser;
+        }
+
+        public string ShowAllPeople()
         {
             //Validations
             inputValidator.ValdateIfAnyMembersExist(allMembers);
@@ -17,7 +38,7 @@ namespace Wim.Core.Engine.EngineOperations
             return string.Format(peopleToDisplay);
         }
 
-        private string ShowAllTeams()
+        public string ShowAllTeams()
         {
             //Validations
             inputValidator.ValdateIfAnyTeamsExist(allTeams);
@@ -28,7 +49,7 @@ namespace Wim.Core.Engine.EngineOperations
             return string.Format(teamsToDisplay);
         }
 
-        private string ShowMemberActivityToString(string memberName)
+        public string ShowMemberActivityToString(string memberName)
         {
             //Validations
             var inputTypeForChecking = "Member Name";
@@ -43,7 +64,7 @@ namespace Wim.Core.Engine.EngineOperations
             return string.Format(memberActivities);
         }
 
-        private string ShowTeamActivityToString(string teamName)
+        public string ShowTeamActivityToString(string teamName)
         {
             //Validations
             var inputTypeForChecking = "Team Name";
@@ -60,7 +81,7 @@ namespace Wim.Core.Engine.EngineOperations
             return string.Format(teamActivityHistory);
         }
 
-        private string ShowAllTeamMembers(string teamToShowMembersFor)
+        public string ShowAllTeamMembers(string teamToShowMembersFor)
         {
             var teamTypeForChecking = "Team Name";
             inputValidator.IsNullOrEmpty(teamToShowMembersFor, teamTypeForChecking);
@@ -71,7 +92,7 @@ namespace Wim.Core.Engine.EngineOperations
             return string.Format(allTeamMembersStringResult);
         }
 
-        private string ShowAllTeamBoards(string teamToShowBoardsFor)
+        public string ShowAllTeamBoards(string teamToShowBoardsFor)
         {
             //Validations
             var teamTypeForChecking = "Team Name";
@@ -87,7 +108,7 @@ namespace Wim.Core.Engine.EngineOperations
         }
 
 
-        private string ShowBoardActivityToString(string teamToShowBoardActivityFor, string boardActivityToShow)
+        public string ShowBoardActivityToString(string teamToShowBoardActivityFor, string boardActivityToShow)
         {
             //Validations
             var teamTypeForChecking = "Team Name";
@@ -108,7 +129,7 @@ namespace Wim.Core.Engine.EngineOperations
             return string.Format(boardActivityToString);
         }
 
-        private string ListAllWorkItems()
+        public string ListAllWorkItems()
         {
             //Validations
             inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
