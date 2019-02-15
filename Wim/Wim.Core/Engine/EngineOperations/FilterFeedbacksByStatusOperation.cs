@@ -18,12 +18,10 @@ namespace Wim.Core.Engine.EngineOperations
         public FilterFeedbacksByStatusOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
-            IAllMembers allMembers,
             IEnumParser enumParser)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
-            this.allMembers = allMembers;
             this.enumParser = enumParser;
         }
 

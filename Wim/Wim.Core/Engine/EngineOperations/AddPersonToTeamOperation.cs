@@ -13,21 +13,15 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
         private readonly IAllMembers allMembers;
-        private readonly IEnumParser enumParser;
-        private readonly IWimFactory factory;
 
         public AddPersonToTeamOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
-            IAllMembers allMembers,
-            IEnumParser enumParser,
-            IWimFactory factory)
+            IAllMembers allMembers)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
-            this.allMembers = allMembers;
-            this.enumParser = enumParser;
-            this.factory = factory;
+            this.allMembers = allMembers;;
         }
 
         public string AddPersonToTeam(string personToAddToTeam, string teamToAddPersonTo)

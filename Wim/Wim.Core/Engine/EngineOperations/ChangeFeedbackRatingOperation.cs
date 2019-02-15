@@ -9,22 +9,18 @@ namespace Wim.Core.Engine.EngineOperations
     public class ChangeFeedbackRatingOperation
     {
         private const string FeedbackRatingChanged = "Feedback {0} rating is changed to {1}";
-        private const string FeedbackStatusChanged = "Feedback {0} status is changed to {1}";
 
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
-        private readonly IAllMembers allMembers;
         private readonly IEnumParser enumParser;
 
         public ChangeFeedbackRatingOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
-            IAllMembers allMembers,
             IEnumParser enumParser)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
-            this.allMembers = allMembers;
             this.enumParser = enumParser;
         }
 

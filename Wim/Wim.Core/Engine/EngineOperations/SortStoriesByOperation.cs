@@ -12,19 +12,13 @@ namespace Wim.Core.Engine.EngineOperations
     {
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
-        private readonly IAllMembers allMembers;
-        private readonly IEnumParser enumParser;
 
         public SortStoriesByOperation(
             IInputValidator inputValidator,
-            IAllTeams allTeams,
-            IAllMembers allMembers,
-            IEnumParser enumParser)
+            IAllTeams allTeams)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
-            this.allMembers = allMembers;
-            this.enumParser = enumParser;
         }
 
         public string SortStoriesBy(string factorToSortBy)

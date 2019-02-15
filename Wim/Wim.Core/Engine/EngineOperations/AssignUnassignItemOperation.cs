@@ -19,13 +19,11 @@ namespace Wim.Core.Engine.EngineOperations
         public AssignUnassignItemOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
-            IAllMembers allMembers,
-            IEnumParser enumParser)
+            IAllMembers allMembers)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.allMembers = allMembers;
-            this.enumParser = enumParser;
         }
 
         public string AssignUnassignItem(string teamToAssignUnsignItem, string boardToAssignUnsignItem, string itemType, string itemToAssignUnsign, string memberToAssignItem)

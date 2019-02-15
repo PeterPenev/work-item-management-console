@@ -10,19 +10,13 @@ namespace Wim.Core.Engine.EngineOperations
     {
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
-        private readonly IAllMembers allMembers;
-        private readonly IEnumParser enumParser;
 
         public ShowAllTeamBoardsOperation(
             IInputValidator inputValidator,
-            IAllTeams allTeams,
-            IAllMembers allMembers,
-            IEnumParser enumParser)
+            IAllTeams allTeams)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
-            this.allMembers = allMembers;
-            this.enumParser = enumParser;
         }
 
         public string ShowAllTeamBoards(string teamToShowBoardsFor)

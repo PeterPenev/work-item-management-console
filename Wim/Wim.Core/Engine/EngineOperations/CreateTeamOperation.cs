@@ -12,20 +12,17 @@ namespace Wim.Core.Engine.EngineOperations
 
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
-        private readonly IAllMembers allMembers;
         private readonly IEnumParser enumParser;
         private readonly IWimFactory factory;
 
         public CreateTeamOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
-            IAllMembers allMembers,
             IEnumParser enumParser,
             IWimFactory factory)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
-            this.allMembers = allMembers;
             this.enumParser = enumParser;
             this.factory = factory;
         }

@@ -9,20 +9,14 @@ namespace Wim.Core.Engine.EngineOperations
     public class ShowMemberActivityOperation
     {
         private readonly IInputValidator inputValidator;
-        private readonly IAllTeams allTeams;
         private readonly IAllMembers allMembers;
-        private readonly IEnumParser enumParser;
 
         public ShowMemberActivityOperation(
             IInputValidator inputValidator,
-            IAllTeams allTeams,
-            IAllMembers allMembers,
-            IEnumParser enumParser)
+            IAllMembers allMembers)
         {
             this.inputValidator = inputValidator;
-            this.allTeams = allTeams;
             this.allMembers = allMembers;
-            this.enumParser = enumParser;
         }
 
         public string ShowMemberActivityToString(string memberName)

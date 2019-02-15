@@ -12,22 +12,13 @@ namespace Wim.Core.Engine.EngineOperations
 
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
-        private readonly IAllMembers allMembers;
-        private readonly IEnumParser enumParser;
-        private readonly IWimFactory factory;
 
         public AddCommentOperation(
             IInputValidator inputValidator,
-            IAllTeams allTeams,
-            IAllMembers allMembers,
-            IEnumParser enumParser,
-            IWimFactory factory)
+            IAllTeams allTeams)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
-            this.allMembers = allMembers;
-            this.enumParser = enumParser;
-            this.factory = factory;
         }
 
         public string AddComment(string teamToAddCommentToWorkItemFor, string boardToAddCommentToWorkItemFor, string itemTypeToAddWorkItemFor, string workitemToAddCommentFor, string authorOfComment, string commentToAdd)
