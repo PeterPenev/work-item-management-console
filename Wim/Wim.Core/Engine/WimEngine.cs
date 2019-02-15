@@ -35,7 +35,7 @@ namespace Wim.Core.Engine
         private const string AddedCommentFor = "Comment {0} with author {1} is added to {2} with name: {3}.";
         private const string AssignItemTo = "{0} with name: {1} on board {2} part of team {3} was assigned to member {4}!";
 
-        private static readonly WimEngine SingleInstance = new WimEngine();
+        //private static readonly WimEngine SingleInstance = new WimEngine();
 
         private readonly IWimFactory factory;
         private readonly IAllMembers allMembers;
@@ -44,23 +44,23 @@ namespace Wim.Core.Engine
         private readonly IInputValidator inputValidator;
         private readonly ICommandHelper commandHelper;
 
-        private WimEngine()
+        public WimEngine(IWimFactory factory, IAllMembers allMembers, IAllTeams allTeams, EnumParser enumParser, IInputValidator inputValidator, ICommandHelper commandHelper)
         {
-            this.factory = new WimFactory();
-            this.allMembers = new AllMembers();
-            this.allTeams = new AllTeams();
-            this.enumParser = new EnumParser();
-            this.inputValidator = new InputValidator();
-            this.commandHelper = new CommandHelper();
+            this.factory = factory;
+            this.allMembers = allMembers;
+            this.allTeams = allTeams;
+            this.enumParser = enumParser;
+            this.inputValidator = inputValidator;
+            this.commandHelper = commandHelper;
         }
 
-        public static WimEngine Instance
-        {
-            get
-            {
-                return SingleInstance;
-            }
-        }
+        //public static WimEngine Instance
+        //{
+        //    get
+        //    {
+        //        return SingleInstance;
+        //    }
+        //}
 
         public void Start()
         {
