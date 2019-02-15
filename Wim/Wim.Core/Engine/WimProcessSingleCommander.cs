@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Wim.Core.Contracts;
+using Wim.Core.Engine.EngineOperationsContracts;
 
 namespace Wim.Core.Engine
 {
     public class WimProcessSingleCommander : IWimProcessSingleCommander
     {
+        private const string InvalidCommand = "Invalid command name: {0}!";
+
         private readonly IChangeOperations changeOperations;
         private readonly ICreateOperations createOperations;
         private readonly IFilterOperations filterOperations;
@@ -24,7 +28,7 @@ namespace Wim.Core.Engine
             this.createOperations = createOperations;
             this.filterOperations = filterOperations;
             this.showOperations = showOperations;
-            this.showOperations = sortOperations;
+            this.sortOperations = sortOperations;
         }
 
         public string ProcessSingleCommand(ICommand command)

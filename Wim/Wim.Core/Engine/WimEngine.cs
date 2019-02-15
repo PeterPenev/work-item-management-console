@@ -11,7 +11,7 @@ namespace Wim.Core.Engine
 {
     public sealed class WimEngine : IEngine
     {
-        private const string InvalidCommand = "Invalid command name: {0}!";
+       
 
         private const string PersonCreated = "Person with name {0} was created!";
         private const string TeamCreated = "Team with name {0} was created!";
@@ -42,6 +42,9 @@ namespace Wim.Core.Engine
         private readonly IInputValidator inputValidator;
         private readonly ICommandHelper commandHelper;
         private readonly IWimCommandReader commandReader;
+        private readonly IWimCommandProcessor commandProcessor;
+        private readonly IWimProcessSingleCommander processSingleCommander;
+        private readonly IWimReportsPrinter reportsPrinter;
 
         public WimEngine(IWimFactory factory, 
             IAllMembers allMembers, 
@@ -49,7 +52,10 @@ namespace Wim.Core.Engine
             EnumParser enumParser, 
             IInputValidator inputValidator, 
             ICommandHelper commandHelper,
-            IWimCommandReader commandReader)
+            IWimCommandReader commandReader,
+            IWimCommandProcessor commandProcessor,
+            IWimProcessSingleCommander processSingleCommander,
+            IWimReportsPrinter reportsPrinter)
         {
             this.factory = factory;
             this.allMembers = allMembers;
@@ -57,14 +63,17 @@ namespace Wim.Core.Engine
             this.enumParser = enumParser;
             this.inputValidator = inputValidator;
             this.commandHelper = commandHelper;
+            this.commandProcessor = commandProcessor;
+            this.processSingleCommander = processSingleCommander;
+            this.reportsPrinter = reportsPrinter;
         }
 
         public void Start()
         {
             Console.WriteLine(commandHelper.Help);
-            var commands = commandReader.ReadCommands();
-            var commandResult = this.ProcessCommands(commands);
-            this.PrintReports(commandResult);
+            var commands = this.commandReader.ReadCommands();
+            var commandResult = this.commandProcessor.ProcessCommands(commands, processSingleCommander);
+            this.reportsPrinter.PrintReports(commandResult);
         }                             
     }
 }
