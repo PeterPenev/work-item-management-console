@@ -15,9 +15,10 @@ namespace Wim.CLI
             var enumParser = new EnumParser();
             var validator = new InputValidator();
             var commandHelper = new CommandHelper();
+            var commandReader = new WimCommandReader();
 
 
-            var engine = new WimEngine(factory, allMembers, allTeams, enumParser, validator, commandHelper);
+            var engine = new WimEngine(factory, allMembers, allTeams, enumParser, validator, commandHelper, commandReader);
             engine.Start();
         }
     }

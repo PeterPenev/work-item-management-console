@@ -4,10 +4,8 @@ using System.Text;
 
 namespace Wim.Core.Contracts
 {
-    public interface ICommand
+    public interface IWimProcessSingleCommander
     {
-        string Name { get; }
-
-        IList<string> Parameters { get; }
+        string ProcessSingleCommand(ICommand command);
     }
 }
