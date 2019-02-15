@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Wim.Core.Contracts;
+using Wim.Models;
 using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
@@ -26,6 +27,7 @@ namespace Wim.Core.Engine.EngineOperations
             this.allMembers = allMembers;
             this.enumParser = enumParser;
         }
+
         public string AssignUnassignItem(string teamToAssignUnsignItem, string boardToAssignUnsignItem, string itemType, string itemToAssignUnsign, string memberToAssignItem)
         {
             //Validations
