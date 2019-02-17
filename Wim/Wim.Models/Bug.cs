@@ -53,7 +53,7 @@ namespace Wim.Models
             {
                 return this.severity;
             }
-            private set
+            set
             {                
                 this.severity = value;
             }
@@ -65,7 +65,7 @@ namespace Wim.Models
             {
                 return this.bugStatus;
             }
-            private set
+            set
             {                
                 this.bugStatus = value;
             }
@@ -77,31 +77,10 @@ namespace Wim.Models
             {
                return this.assignee;
             }
-            private set
+            set
             {
                 this.assignee = value;
             }
-        }
-
-        //Methods
-        public void ChangeBugPriority(Priority priority)
-        {
-            this.Priority = priority;
-        }
-
-        public void ChangeBugSeverity(Severity severity)
-        {
-            this.Severity = severity;
-        }
-
-        public void ChangeBugStatus(BugStatus status)
-        {
-            this.BugStatus = status;
-        }
-
-        public void AssignMemberToBug(IMember memberToAssignBug)
-        {
-            this.Assignee = memberToAssignBug;
-        }
+        }        
     }
 }

@@ -10,18 +10,10 @@ namespace Wim.Models.Interfaces
 
         Priority Priority { get; set; }
 
-        Severity Severity { get; }
+        Severity Severity { get; set; }
 
-        BugStatus BugStatus { get; }
+        BugStatus BugStatus { get; set; }
 
-        IMember Assignee { get; }
-
-        void ChangeBugPriority(Priority priority);
-
-        void ChangeBugSeverity(Severity severity);
-
-        void ChangeBugStatus(BugStatus status);
-
-        void AssignMemberToBug(IMember memberToAssignBug);
+        IMember Assignee { get; set; }
     }
 }

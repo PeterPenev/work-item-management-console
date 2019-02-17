@@ -6,25 +6,24 @@ namespace Wim.Models.Operations
 {
     public class BugOperations
     {
-        //Methods
-        public void ChangeBugPriority(Bug bug, Priority priority)
+        public void ChangeBugPriority(IBug bug, Priority priority)
         {
             bug.Priority = priority;
         }
 
         public void ChangeBugSeverity(IBug bug, Severity severity)
         {
-            this.Severity = severity;
+            bug.Severity = severity;
         }
 
-        public void ChangeBugStatus(BugStatus status)
+        public void ChangeBugStatus(IBug bug, BugStatus status)
         {
-            this.BugStatus = status;
+            bug.BugStatus = status;
         }
 
-        public void AssignMemberToBug(IMember memberToAssignBug)
+        public void AssignMemberToBug(IBug bug, IMember memberToAssignBug)
         {
-            this.Assignee = memberToAssignBug;
+            bug.Assignee = memberToAssignBug;
         }
     }
 }
