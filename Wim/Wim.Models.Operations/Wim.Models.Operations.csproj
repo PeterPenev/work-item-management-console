@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Wim.Models.Enums\Wim.Models.Enums.csproj" />
+    <ProjectReference Include="..\Wim.Models.Interfaces\Wim.Models.Interfaces.csproj" />
+  </ItemGroup>
+
 </Project>

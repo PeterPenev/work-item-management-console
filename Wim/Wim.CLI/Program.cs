@@ -21,11 +21,7 @@ namespace Wim.CLI
             var reportsPrinter = new WimReportsPrinter();
             var inputValidator = new InputValidator();
 
-            var changeOperations = new ChangeOperations(inputValidator, allTeams, allMembers, enumParser);
-            var createOperations = new CreateOperations(inputValidator, allTeams, allMembers, enumParser, factory);
-            var filterOperations = new FilterOperations(inputValidator, allTeams, allMembers, enumParser);
-            var showOperations = new ShowOperations(inputValidator, allTeams, allMembers, enumParser);
-            var sortOperations = new SortOperations(inputValidator, allTeams, allMembers, enumParser);
+            
 
             var processSingleCommander = new WimProcessSingleCommander (
                 changeOperations,
