@@ -8,7 +8,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class FilterStoriesByPriorityOperation
+    public class FilterStoriesByPriorityOperation : IEngineOperations
     {
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
@@ -24,8 +24,11 @@ namespace Wim.Core.Engine.EngineOperations
             this.enumParser = enumParser;
         }      
 
-        public string FilterStoriesByPriority(string priorityToFilterStoryFor)
+        public string Execute(IList<string> inputParameters)
         {
+            //Assign Values From List Of Parameters 
+            string priorityToFilterStoryFor = inputParameters[0];
+            
             //Validations
             var priorityTypeForChecking = "Priority";
             inputValidator.IsNullOrEmpty(priorityToFilterStoryFor, priorityTypeForChecking);

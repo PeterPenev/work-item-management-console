@@ -8,7 +8,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class FilterStoriesByStatusOperation
+    public class FilterStoriesByStatusOperation : IEngineOperations
     {
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
@@ -24,8 +24,11 @@ namespace Wim.Core.Engine.EngineOperations
             this.enumParser = enumParser;
         }
 
-        public string FilterStoriesByStatus(string statusToFilterStoryFor)
+        public string Execute(IList<string> inputParameters)
         {
+            //Assign Values From List Of Parameters 
+            string statusToFilterStoryFor = inputParameters[0];
+            
             //Validations
             var statusTypeForChecking = "Status";
             inputValidator.IsNullOrEmpty(statusToFilterStoryFor, statusTypeForChecking);
