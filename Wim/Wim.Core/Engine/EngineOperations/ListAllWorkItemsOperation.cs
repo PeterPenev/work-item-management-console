@@ -7,7 +7,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class ListAllWorkItemsOperation
+    public class ListAllWorkItemsOperation : IEngineOperations
     {
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
@@ -20,7 +20,7 @@ namespace Wim.Core.Engine.EngineOperations
             this.allTeams = allTeams;
         }
 
-        public string ListAllWorkItems()
+        public string Execute(IList<string> inputParameters)
         {
             //Validations
             inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
