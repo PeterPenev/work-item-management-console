@@ -6,7 +6,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class CreateTeamOperation
+    public class CreateTeamOperation : IEngineOperations
     {
         private const string TeamCreated = "Team with name {0} was created!";
 
@@ -27,8 +27,9 @@ namespace Wim.Core.Engine.EngineOperations
             this.factory = factory;
         }
 
-        public string CreateTeam(string teamName)
+        public string Execute(IList<string> inputParameters)
         {
+            string teamName = inputParameters[0];
             //Validations
             var inputTypeForChecking = "Team Name";
             inputValidator.IsNullOrEmpty(teamName, inputTypeForChecking);
