@@ -6,7 +6,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class ShowMemberActivityOperation
+    public class ShowMemberActivityOperation : IEngineOperations
     {
         private readonly IInputValidator inputValidator;
         private readonly IAllMembers allMembers;
@@ -19,8 +19,11 @@ namespace Wim.Core.Engine.EngineOperations
             this.allMembers = allMembers;
         }
 
-        public string ShowMemberActivityToString(string memberName)
+        public string Execute(IList<string> inputParameters) 
         {
+            //Assign Values From List Of Parameters
+            string memberName = inputParameters[0];
+
             //Validations
             var inputTypeForChecking = "Member Name";
             inputValidator.IsNullOrEmpty(memberName, inputTypeForChecking);
