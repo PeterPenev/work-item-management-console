@@ -102,7 +102,7 @@ namespace Wim.CLI
                  .Named<IEngineOperations>("FilterFeedbacksByStatus");
 
             builder.RegisterType<FilterFeedbacksOperation>()
-                 .Named<IEngineOperations>("FilterFeedbacksOperation");
+                 .Named<IEngineOperations>("FilterFeedbacks");
 
             builder.RegisterType<FilterStoriesByAssigneeOperation>()
                  .Named<IEngineOperations>("FilterStoriesByAssignee");
@@ -135,10 +135,10 @@ namespace Wim.CLI
                .Named<IEngineOperations>("ShowBoardActivity");
 
             builder.RegisterType<ShowMemberActivityOperation>()
-               .Named<IEngineOperations>("ShowMemberActivity");
+               .Named<IEngineOperations>("ShowPersonsActivity");
 
             builder.RegisterType<ShowTeamActivityOperation>()
-               .Named<IEngineOperations>("ShowTeamActivity");
+               .Named<IEngineOperations>("ShowTeamsActivity");
 
             builder.RegisterType<SortBugsByOperation>()
                .Named<IEngineOperations>("SortBugsBy");
