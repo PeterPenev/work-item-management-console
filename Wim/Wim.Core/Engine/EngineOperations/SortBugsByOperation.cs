@@ -8,7 +8,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class SortBugsByOperation
+    public class SortBugsByOperation : IEngineOperations
     {
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
@@ -21,8 +21,11 @@ namespace Wim.Core.Engine.EngineOperations
             this.allTeams = allTeams;
         }
 
-        public string SortBugsBy(string factorToSortBy)
+        public string Execute(IList<string> inputParameters)
         {
+            //Assign Values From List Of Parameters
+            string factorToSortBy = inputParameters[0];
+
             //Validations
             var factorTypeForChecking = $"{factorToSortBy}";
             inputValidator.IsNullOrEmpty(factorToSortBy, factorTypeForChecking);
