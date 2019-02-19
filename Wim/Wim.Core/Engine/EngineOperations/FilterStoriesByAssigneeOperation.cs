@@ -8,7 +8,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class FilterStoriesByAssigneeOperation
+    public class FilterStoriesByAssigneeOperation : IEngineOperations
     {
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
@@ -24,8 +24,11 @@ namespace Wim.Core.Engine.EngineOperations
             this.enumParser = enumParser;
         }
 
-        public string FilterStoriesByAssignee(string assigneeToFilterStoryFor)
+        public string Execute(IList<string> inputParameters)
         {
+            //Assign Values From List Of Parameters
+            string assigneeToFilterStoryFor = inputParameters[0];
+            
             //Validations
             var assigneeTypeForChecking = "Assignee";
             inputValidator.IsNullOrEmpty(assigneeToFilterStoryFor, assigneeTypeForChecking);
