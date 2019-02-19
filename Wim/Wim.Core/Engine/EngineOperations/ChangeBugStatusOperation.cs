@@ -6,7 +6,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class ChangeBugStatusOperation
+    public class ChangeBugStatusOperation : IEngineOperations
     {
         private const string BugStatusChanged = "Bug {0} status is changed to {1}";
 
@@ -24,8 +24,14 @@ namespace Wim.Core.Engine.EngineOperations
             this.enumParser = enumParser;
         }
 
-        public string ChangeBugStatus(string teamToChangeBugStatusFor, string boardToChangeBugStatusFor, string bugToChangeStatusFor, string newStatus, string authorOfBugStatusChange)
+        public string Execute(IList<string> inputParameters)
         {
+            string teamToChangeBugStatusFor = inputParameters[0];
+            string boardToChangeBugStatusFor = inputParameters[1];
+            string bugToChangeStatusFor = inputParameters[2];
+            string newStatus = inputParameters[3];
+            string authorOfBugStatusChange = inputParameters[4];
+
             //Validations
             var bugTypeForChecking = "Bug Title";
             inputValidator.IsNullOrEmpty(bugToChangeStatusFor, bugTypeForChecking);
