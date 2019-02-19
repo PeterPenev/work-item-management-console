@@ -6,7 +6,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class ShowAllTeamsOperation
+    public class ShowAllTeamsOperation : IEngineOperations
     {
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
@@ -18,7 +18,7 @@ namespace Wim.Core.Engine.EngineOperations
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
         }
-        public string ShowAllTeams()
+        public string Execute(IList<string> inputParameters)
         {
             //Validations
             inputValidator.ValdateIfAnyTeamsExist(allTeams);

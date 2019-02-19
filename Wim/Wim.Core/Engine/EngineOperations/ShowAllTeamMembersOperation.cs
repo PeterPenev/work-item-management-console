@@ -6,7 +6,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class ShowAllTeamMembersOperation
+    public class ShowAllTeamMembersOperation : IEngineOperations
     {
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
@@ -19,8 +19,11 @@ namespace Wim.Core.Engine.EngineOperations
             this.allTeams = allTeams;
         }
 
-        public string ShowAllTeamMembers(string teamToShowMembersFor)
+        public string Execute(IList<string> inputParameters)
         {
+            //Assign Values From List Of Parameters
+            string teamToShowMembersFor = inputParameters[0];
+            
             var teamTypeForChecking = "Team Name";
             inputValidator.IsNullOrEmpty(teamToShowMembersFor, teamTypeForChecking);
 
