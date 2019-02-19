@@ -64,15 +64,13 @@ namespace Wim.Core.Engine.EngineOperations
 
             var itemType = "Bug";
 
-            var castedBugForPriorityChange = allTeams.FindBugAndCast(teamToChangeBugPriorityFor, boardToChangeBugPriorityFor, bugToChangePriorityFor);
+            var bugToAddActivityFor = allTeams.FindWorkItem(teamToChangeBugPriorityFor, itemType, boardToChangeBugPriorityFor, bugToChangePriorityFor);
 
-            bugOperations.ChangeBugPriority(castedBugForPriorityChange, newPriorityEnum);
+            bugOperations.ChangeBugPriority(bugToAddActivityFor, newPriorityEnum);
 
             var memberToAddActivityFor = allTeams.FindMemberInTeam(teamToChangeBugPriorityFor, authorOfBugPriorityChange);
 
             var teamToAddActivityFor = allTeams.AllTeamsList[teamToChangeBugPriorityFor];
-
-            var bugToAddActivityFor = allTeams.FindWorkItem(teamToChangeBugPriorityFor, itemType, boardToChangeBugPriorityFor, bugToChangePriorityFor);
 
             var teamToFindIn = allTeams.AllTeamsList[teamToChangeBugPriorityFor];
 
