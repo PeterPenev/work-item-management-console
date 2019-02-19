@@ -6,7 +6,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class CreatePersonOperation
+    public class CreatePersonOperation : IEngineOperations
     {
         private const string PersonCreated = "Person with name {0} was created!";
 
@@ -30,8 +30,9 @@ namespace Wim.Core.Engine.EngineOperations
             this.factory = factory;
         }
 
-        public string CreatePerson(string personName)
+        public string Execute(IList<string> inputParameters)
         {
+            string personName = inputParameters[0];
             //Validations          
             var personTypeForChecking = "Person Name";
             inputValidator.IsNullOrEmpty(personName, personTypeForChecking);

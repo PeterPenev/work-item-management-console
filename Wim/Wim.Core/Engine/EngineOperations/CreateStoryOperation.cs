@@ -8,7 +8,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class CreateStoryOperation
+    public class CreateStoryOperation : IEngineOperations
     {
         private const string StoryCreated = "Story {0} was created!";
 
@@ -32,8 +32,17 @@ namespace Wim.Core.Engine.EngineOperations
             this.factory = factory;
         }
 
-        public string CreateStory(string storyTitle, string teamToAddStoryFor, string boardToAddStoryFor, string storyPriority, string storySize, string storyStatus, string storyAssignee, string storyDescription)
+        public string Execute(IList<string> inputParameters)
         {
+            string storyTitle = inputParameters[0];
+            string teamToAddStoryFor = inputParameters[1];
+            string boardToAddStoryFor = inputParameters[2];
+            string storyPriority = inputParameters[3];
+            string storySize = inputParameters[4];
+            string storyStatus = inputParameters[5];
+            string storyAssignee = inputParameters[6];
+            string storyDescription = inputParameters[7];
+
             //Validations
             var storyTypeForChecking = "Story Title";
             inputValidator.IsNullOrEmpty(storyTitle, storyTypeForChecking);
