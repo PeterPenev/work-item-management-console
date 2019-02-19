@@ -6,7 +6,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class ChangeStoryStatusOperation
+    public class ChangeStoryStatusOperation : IEngineOperations
     {
         private const string StoryStatusChanged = "Story {0} status is changed to{1}";
 
@@ -24,8 +24,13 @@ namespace Wim.Core.Engine.EngineOperations
             this.enumParser = enumParser;
         }
 
-        public string ChangeStoryStatus(string teamToChangeStoryStatusFor, string boardToChangeStoryStatusFor, string storyToChangeStatusFor, string newStoryStatus, string authorOfStoryStatusChange)
+        public string Execute(IList<string> inputParameters)
         {
+            string teamToChangeStoryStatusFor = inputParameters[0];
+            string boardToChangeStoryStatusFor = inputParameters[1];
+            string storyToChangeStatusFor = inputParameters[2];
+            string newStoryStatus = inputParameters[3];
+            string authorOfStoryStatusChange = inputParameters[4];
             //Validations
             var storyTypeForChecking = "Story Title";
             inputValidator.IsNullOrEmpty(storyToChangeStatusFor, storyTypeForChecking);
