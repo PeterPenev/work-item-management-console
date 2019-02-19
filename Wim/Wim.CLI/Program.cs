@@ -40,10 +40,10 @@ namespace Wim.CLI
           .Named<IEngineOperations>("AddComment");
 
             builder.RegisterType<AddPersonToTeamOperation>()
-               .Named<ICommand>("AddPersonToTeam");
+               .Named<IEngineOperations>("AddPersonToTeam");
 
-            //containerBuilder.RegisterType<CreateLectureCommand>()
-            //   .Named<ICommand>("CreateLecture");
+            builder.RegisterType<CreatePersonOperation>()
+               .Named<IEngineOperations>("CreatePerson");
 
             //containerBuilder.RegisterType<CreateLectureResourceCommand>()
             //   .Named<ICommand>("CreateLectureResource");

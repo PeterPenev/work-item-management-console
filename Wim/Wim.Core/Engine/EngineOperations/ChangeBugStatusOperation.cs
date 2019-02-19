@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Wim.Core.Contracts;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
@@ -13,15 +14,18 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
         private readonly IEnumParser enumParser;
+        private readonly IBugOperations bugOperations;
 
         public ChangeBugStatusOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
-            IEnumParser enumParser)
+            IEnumParser enumParser,
+            IBugOperations bugOperations)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.enumParser = enumParser;
+            this.bugOperations = bugOperations;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -69,7 +73,7 @@ namespace Wim.Core.Engine.EngineOperations
 
             var memberToChangeActivityHistoryFor = allTeams.FindMemberInTeam(teamToChangeBugStatusFor, authorOfBugStatusChange);
 
-            castedBugToChangeStatusIn.ChangeBugStatus(newStatusEnum);
+            bugOperations.ChangeBugStatus(castedBugToChangeStatusIn, newStatusEnum);
 
             memberToChangeActivityHistoryFor
                 .AddActivityHistoryToMember(bugToChangeStatus, teamToChangeStatusOfBoardIn, boardToChangeStatusIn, newStatusEnum);

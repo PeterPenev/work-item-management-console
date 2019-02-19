@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Wim.Core.Contracts;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
@@ -13,15 +14,18 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
         private readonly IEnumParser enumParser;
+        private readonly IBugOperations bugOperations;
 
         public ChangeBugSeverityOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
-            IEnumParser enumParser)
+            IEnumParser enumParser,
+            IBugOperations bugOperations)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.enumParser = enumParser;
+            this.bugOperations = bugOperations;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -61,7 +65,7 @@ namespace Wim.Core.Engine.EngineOperations
 
             var castedBugForPriorityChange = allTeams.FindBugAndCast(teamToChangeBugSeverityFor, boardToChangeBugSeverityFor, bugToChangeSeverityFor);
 
-            castedBugForPriorityChange.ChangeBugSeverity(newSeverityEnum);
+            bugOperations.ChangeBugSeverity(castedBugForPriorityChange, newSeverityEnum);
 
             var memberToAddActivityFor = allTeams.FindMemberInTeam(teamToChangeBugSeverityFor, authorOfBugSeverityChange);
 

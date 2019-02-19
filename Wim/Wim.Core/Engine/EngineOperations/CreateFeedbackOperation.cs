@@ -16,19 +16,22 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IAllMembers allMembers;
         private readonly IEnumParser enumParser;
         private readonly IWimFactory factory;
+        private readonly IDescriptionBuilder descriptionBuilder;
 
         public CreateFeedbackOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IAllMembers allMembers,
             IEnumParser enumParser,
-            IWimFactory factory)
+            IWimFactory factory,
+            IDescriptionBuilder descriptionBuilder)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.allMembers = allMembers;
             this.enumParser = enumParser;
             this.factory = factory;
+            this.descriptionBuilder = descriptionBuilder;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -39,16 +42,7 @@ namespace Wim.Core.Engine.EngineOperations
             string boardToAddFeedbackFor = inputParameters[2];
             string feedbackRaiting = inputParameters[3];
             string feedbackStatus = inputParameters[4];
-
-            //Build Feedback Description -- EXTERNALIZE TO OUTER CLASS
-            var buildFeedbackDescription = new StringBuilder();
-
-            for (int i = 5; i < inputParameters.Count; i++)
-            {
-                buildFeedbackDescription.Append(inputParameters[i] + " ");
-            }
-
-            string feedbackDescription = buildFeedbackDescription.ToString().Trim();
+            var feedbackDescription = descriptionBuilder.BuildDescription(inputParameters, 5);            
 
             //Validations
             var feedbackTypeForChecking = "Feedback Title";

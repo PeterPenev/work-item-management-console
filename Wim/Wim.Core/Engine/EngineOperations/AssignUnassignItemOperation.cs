@@ -4,6 +4,7 @@ using System.Text;
 using Wim.Core.Contracts;
 using Wim.Models;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
@@ -15,15 +16,19 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IAllTeams allTeams;
         private readonly IAllMembers allMembers;
         private readonly IEnumParser enumParser;
+        private readonly IBugOperations bugOperations;
+
 
         public AssignUnassignItemOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
-            IAllMembers allMembers)
+            IAllMembers allMembers,
+            IBugOperations bugOperations)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.allMembers = allMembers;
+            this.bugOperations = bugOperations;
         }
 
         public string Execute(IList<string> inputParametes)
@@ -67,7 +72,7 @@ namespace Wim.Core.Engine.EngineOperations
 
                 itemMemberBeforeUnssign = typedItem.Assignee;
 
-                typedItem.AssignMemberToBug(itemMemberToAssign);
+                bugOperations.AssignMemberToBug(typedItem, itemMemberToAssign);
 
                 itemMemberBeforeUnssign.RemoveWorkItemIdToMember(typedItem.Id);
 

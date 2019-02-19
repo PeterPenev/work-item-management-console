@@ -31,6 +31,7 @@ namespace Wim.Core.Engine.EngineOperations
             string storyToChangeStatusFor = inputParameters[2];
             string newStoryStatus = inputParameters[3];
             string authorOfStoryStatusChange = inputParameters[4];
+
             //Validations
             var storyTypeForChecking = "Story Title";
             inputValidator.IsNullOrEmpty(storyToChangeStatusFor, storyTypeForChecking);

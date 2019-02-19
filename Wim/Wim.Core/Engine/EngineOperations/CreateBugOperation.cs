@@ -17,19 +17,25 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IAllMembers allMembers;
         private readonly IEnumParser enumParser;
         private readonly IWimFactory factory;
+        private readonly IDescriptionBuilder descriptionBuilder;
+        private readonly IStepsToReproduceBuilder stepsToReproduceBuilder;
 
         public CreateBugOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IAllMembers allMembers,
             IEnumParser enumParser,
-            IWimFactory factory)
+            IWimFactory factory,
+            IDescriptionBuilder descriptionBuilder,
+            IStepsToReproduceBuilder stepsToReproduceBuilder)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.allMembers = allMembers;
             this.enumParser = enumParser;
             this.factory = factory;
+            this.descriptionBuilder = descriptionBuilder;
+            this.stepsToReproduceBuilder = stepsToReproduceBuilder;
         }
         public string Execute(IList<string> inputParameters)
         {
@@ -38,9 +44,12 @@ namespace Wim.Core.Engine.EngineOperations
             string boardToAddBugFor = inputParameters[2];
             string bugPriority = inputParameters[3];
             string bugSeverity = inputParameters[4];
-            string bugAssignee = inputParameters[5]; 
-            IList< string > bugStepsToReproduce
-            string bugDescription
+            string bugAssignee = inputParameters[5];
+
+            IList<string> bugStepsToReproduce = stepsToReproduceBuilder.BuildStepsToReproduce(inputParameters, "!Steps");
+
+            var bugDescription = descriptionBuilder.BuildDescription(inputParameters, "!Steps");
+
             //Validations
             var bugTypeForChecking = "Bug Title";
             inputValidator.IsNullOrEmpty(bugTitle, bugTypeForChecking);
