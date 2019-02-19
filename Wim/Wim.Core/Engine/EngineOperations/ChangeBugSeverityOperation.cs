@@ -6,7 +6,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class ChangeBugSeverityOperation
+    public class ChangeBugSeverityOperation : IEngineOperations
     {
         private const string BugSeverityChanged = "Bug {0} severity is changed to {1}";
 
@@ -24,8 +24,14 @@ namespace Wim.Core.Engine.EngineOperations
             this.enumParser = enumParser;
         }
 
-        public string ChangeBugSeverity(string teamToChangeBugSeverityFor, string boardToChangeBugSeverityFor, string bugToChangeSeverityFor, string newSeverity, string authorOfBugSeverityChange)
+        public string Execute(IList<string> inputParameters)
         {
+            string teamToChangeBugSeverityFor = inputParameters[0];
+            string boardToChangeBugSeverityFor = inputParameters[1];
+            string bugToChangeSeverityFor = inputParameters[2];
+            string newSeverity = inputParameters[3];
+            string authorOfBugSeverityChange = inputParameters[4];
+
             //Validations
             var bugTypeForChecking = "Bug Title";
             inputValidator.IsNullOrEmpty(bugToChangeSeverityFor, bugTypeForChecking);
