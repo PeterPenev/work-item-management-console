@@ -6,11 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.9.0" />
+    <PackageReference Include="Autofac" Version="4.9.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Wim.Core\Wim.Core.csproj" />
+    <ProjectReference Include="..\Wim.Models.Operations\Wim.Models.Operations.csproj" />
   </ItemGroup>
 
 </Project>

@@ -20,8 +20,6 @@ namespace Wim.Core.Engine
 
             return result;
 
-
-
             //switch (command.Name)
             //{
             //    case "CreatePerson":
