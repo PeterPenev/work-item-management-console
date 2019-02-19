@@ -7,7 +7,7 @@ using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    class ChangeBugPriorityOperation
+    class ChangeBugPriorityOperation : IEngineOperations
     {
         private const string BugPriorityChanged = "Bug {0} priority is changed to {1}";
 
