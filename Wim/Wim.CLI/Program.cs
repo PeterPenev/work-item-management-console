@@ -15,7 +15,6 @@ namespace Wim.CLI
     {
         static void Main(string[] args)
         {
-            //AutoFac
             var builder = new ContainerBuilder();
 
             builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(WorkItem)))
@@ -36,8 +35,8 @@ namespace Wim.CLI
             builder.RegisterType<AllMembers>()
               .As<IAllMembers>().SingleInstance();
 
-          //  builder.RegisterType<AddCommentOperation>()
-          //.Named<IEngineOperations>("AddComment");
+            builder.RegisterType<AddCommentOperation>()
+          .Named<IEngineOperations>("AddComment");
 
             builder.RegisterType<AddPersonToTeamOperation>()
                .Named<IEngineOperations>("AddPersonToTeam");
@@ -58,25 +57,25 @@ namespace Wim.CLI
                .Named<IEngineOperations>("ChangeFeedbackRating");
 
             builder.RegisterType<ChangeFeedbackStatusOperation>()
-                 .Named<IEngineOperations>("ChangeFeedbackStatus");
+               .Named<IEngineOperations>("ChangeFeedbackStatus");
 
             builder.RegisterType<ChangeStoryPriorityOperation>()
-                 .Named<IEngineOperations>("ChangeStoryPriority");
+               .Named<IEngineOperations>("ChangeStoryPriority");
 
             builder.RegisterType<ChangeStorySizeOperation>()
-                 .Named<IEngineOperations>("ChangeStorySize");
+               .Named<IEngineOperations>("ChangeStorySize");
 
             builder.RegisterType<ChangeStoryStatusOperation>()
                .Named<IEngineOperations>("ChangeStoryStatus");
 
             builder.RegisterType<CreateBoardToTeamOperation>()
-              .Named<IEngineOperations>("CreateBoard");
+               .Named<IEngineOperations>("CreateBoard");
 
             builder.RegisterType<CreateBugOperation>()
-             .Named<IEngineOperations>("CreateBug");
+              .Named<IEngineOperations>("CreateBug");
 
             builder.RegisterType<CreateFeedbackOperation>()
-             .Named<IEngineOperations>("CreateFeedback");
+              .Named<IEngineOperations>("CreateFeedback");
 
             builder.RegisterType<CreatePersonOperation>()
               .Named<IEngineOperations>("CreatePerson");
@@ -153,7 +152,6 @@ namespace Wim.CLI
             var container = builder.Build();
 
             var engine = container.Resolve<IEngine>();
-
             engine.Start();
         }
     }

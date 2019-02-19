@@ -8,7 +8,7 @@ using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Models.Operations
 {
-    public abstract class WorkItemOperations : IWorkItemOperations
+    public class WorkItemOperations : IWorkItemOperations
     {
         public void AddActivityHistoryToWorkItem(IWorkItem trackedWorkItem, IMember trackedMember)
         {

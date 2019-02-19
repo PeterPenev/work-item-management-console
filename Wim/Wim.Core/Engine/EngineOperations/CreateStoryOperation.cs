@@ -17,19 +17,22 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IAllMembers allMembers;
         private readonly IEnumParser enumParser;
         private readonly IWimFactory factory;
+        private readonly IDescriptionBuilder descriptionBuilder;
 
         public CreateStoryOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IAllMembers allMembers,
             IEnumParser enumParser,
-            IWimFactory factory)
+            IWimFactory factory,
+            IDescriptionBuilder descriptionBuilder)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.allMembers = allMembers;
             this.enumParser = enumParser;
             this.factory = factory;
+            this.descriptionBuilder = descriptionBuilder;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -41,7 +44,7 @@ namespace Wim.Core.Engine.EngineOperations
             string storySize = inputParameters[4];
             string storyStatus = inputParameters[5];
             string storyAssignee = inputParameters[6];
-            string storyDescription = inputParameters[7];
+            var storyDescription = descriptionBuilder.BuildDescription(inputParameters, 7);
 
             //Validations
             var storyTypeForChecking = "Story Title";

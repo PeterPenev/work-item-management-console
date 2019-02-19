@@ -99,7 +99,7 @@ namespace Wim.Core.Engine
 
         public void ValdateItemTitleLength(string itemTitleToCheck)
         {
-            if (itemTitleToCheck.Length < 10 || itemTitleToCheck.Length > 500)
+            if (itemTitleToCheck.Length < 10 || itemTitleToCheck.Length > 50)
             {
                 throw new ImproperItemDecriptionLengthException(ImproperItemDescriptionLength);
             }
@@ -107,7 +107,7 @@ namespace Wim.Core.Engine
 
         public void ValdateItemDescriptionLength(string itemTitleToCheck)
         {
-            if (itemTitleToCheck.Length < 10 || itemTitleToCheck.Length > 50)
+            if (itemTitleToCheck.Length < 10 || itemTitleToCheck.Length > 500)
             {
                 throw new ImproperItemTitleLengthException(ImproperItemTitleLength);
             }
