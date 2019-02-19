@@ -7,7 +7,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class ShowBoardActivityOperation
+    public class ShowBoardActivityOperation : IEngineOperations
     {
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
@@ -20,8 +20,12 @@ namespace Wim.Core.Engine.EngineOperations
             this.allTeams = allTeams;
         }
 
-        public string ShowBoardActivity(string teamToShowBoardActivityFor, string boardActivityToShow)
+        public string Execute(IList<string> inputParameters) 
         {
+            //Assign Values From List Of Parameters
+            string teamToShowBoardActivityFor = inputParameters[0];
+            string boardActivityToShow = inputParameters[1];
+
             //Validations
             var teamTypeForChecking = "Team Name";
             inputValidator.IsNullOrEmpty(teamToShowBoardActivityFor, teamTypeForChecking);
