@@ -8,7 +8,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class FilterFeedbacksOperation
+    public class FilterFeedbacksOperation : IEngineOperations
     {
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
@@ -24,7 +24,7 @@ namespace Wim.Core.Engine.EngineOperations
             this.enumParser = enumParser;
         }
 
-        public string FilterFeedbacks()
+        public string Execute(IList<string> inputParameters)
         {
             //Validations
             inputValidator.ValidateIfAnyWorkItemsExist(allTeams);

@@ -8,7 +8,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class FilterFeedbacksByStatusOperation
+    public class FilterFeedbacksByStatusOperation : IEngineOperations
     {
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
@@ -25,8 +25,10 @@ namespace Wim.Core.Engine.EngineOperations
             this.enumParser = enumParser;
         }
 
-        public string FilterFeedbacksByStatus(string statusToFilterFeedbacksFor)
+        public string Execute(IList<string> inputParameters)
         {
+            string statusToFilterFeedbacksFor = inputParameters[0];
+
             //Validations
             var statusTypeForChecking = "Status";
             inputValidator.IsNullOrEmpty(statusToFilterFeedbacksFor, statusTypeForChecking);
