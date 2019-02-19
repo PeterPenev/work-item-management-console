@@ -6,7 +6,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class ChangeStoryPriorityOperation
+    public class ChangeStoryPriorityOperation : IEngineOperations
     {
         private const string StoryPriorityChanged = "Story {0} priority is changed to {1}";
 
@@ -24,8 +24,13 @@ namespace Wim.Core.Engine.EngineOperations
             this.enumParser = enumParser;
         }
 
-        public string ChangeStoryPriority(string teamToChangeStoryPriorityFor, string boardToChangeStoryPriorityFor, string storyToChangePriorityFor, string newStoryPriority, string authorOfStoryPriorityChange)
+        public string Execute(IList<string> inputParameters)
         {
+            string teamToChangeStoryPriorityFor = inputParameters[0];
+            string boardToChangeStoryPriorityFor = inputParameters[1];
+            string storyToChangePriorityFor = inputParameters[2];
+            string newStoryPriority = inputParameters[3];
+            string authorOfStoryPriorityChange = inputParameters[4];
             //Validations
             var storyTypeForChecking = "Story Title";
             inputValidator.IsNullOrEmpty(storyToChangePriorityFor, storyTypeForChecking);
