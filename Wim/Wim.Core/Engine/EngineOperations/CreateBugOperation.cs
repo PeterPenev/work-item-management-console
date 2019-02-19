@@ -8,7 +8,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class CreateBugOperation
+    public class CreateBugOperation : IEngineOperations
     {
         private const string BugCreated = "Bug {0} was created!";
 
@@ -31,8 +31,16 @@ namespace Wim.Core.Engine.EngineOperations
             this.enumParser = enumParser;
             this.factory = factory;
         }
-        public string CreateBug(string bugTitle, string teamToAddBugFor, string boardToAddBugFor, string bugPriority, string bugSeverity, string bugAssignee, IList<string> bugStepsToReproduce, string bugDescription)
+        public string Execute(IList<string> inputParameters)
         {
+            string bugTitle = inputParameters[0];
+            string teamToAddBugFor = inputParameters[1];
+            string boardToAddBugFor = inputParameters[2];
+            string bugPriority = inputParameters[3];
+            string bugSeverity = inputParameters[4];
+            string bugAssignee = inputParameters[5]; 
+            IList< string > bugStepsToReproduce
+            string bugDescription
             //Validations
             var bugTypeForChecking = "Bug Title";
             inputValidator.IsNullOrEmpty(bugTitle, bugTypeForChecking);
