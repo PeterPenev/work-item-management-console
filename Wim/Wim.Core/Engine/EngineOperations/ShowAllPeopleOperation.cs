@@ -6,7 +6,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class ShowAllPeopleOperation
+    public class ShowAllPeopleOperation : IEngineOperations
     {
         private readonly IInputValidator inputValidator;
         private readonly IAllMembers allMembers;
@@ -19,7 +19,7 @@ namespace Wim.Core.Engine.EngineOperations
             this.allMembers = allMembers;
         }
 
-        public string ShowAllPeople()
+        public string Execute(IList<string> inputParameters)
         {
             //Validations
             inputValidator.ValdateIfAnyMembersExist(allMembers);
