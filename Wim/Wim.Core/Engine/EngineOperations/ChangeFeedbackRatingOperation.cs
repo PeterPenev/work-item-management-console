@@ -6,7 +6,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class ChangeFeedbackRatingOperation
+    public class ChangeFeedbackRatingOperation : IEngineOperations
     {
         private const string FeedbackRatingChanged = "Feedback {0} rating is changed to {1}";
 
@@ -24,8 +24,14 @@ namespace Wim.Core.Engine.EngineOperations
             this.enumParser = enumParser;
         }
 
-        public string ChangeFeedbackRating(string teamToChangeFeedbackRatingFor, string boardToChangeFeedbackRatingFor, string feedbackToChangeRatingFor, string newFeedbackRating, string authorOfFeedbackRatingChange)
+        public string Execute(IList<string> inputParameters)
         {
+            string teamToChangeFeedbackRatingFor = inputParameters[0];
+            string boardToChangeFeedbackRatingFor = inputParameters[1];
+            string feedbackToChangeRatingFor = inputParameters[2];
+            string newFeedbackRating = inputParameters[3];
+            string authorOfFeedbackRatingChange = inputParameters[4];
+
             //Validations
             var feedbackTypeForChecking = "Feedback Title";
             inputValidator.IsNullOrEmpty(feedbackToChangeRatingFor, feedbackTypeForChecking);
