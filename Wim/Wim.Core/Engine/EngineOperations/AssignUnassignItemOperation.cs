@@ -7,7 +7,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class AssignUnassignItemOperation
+    public class AssignUnassignItemOperation : IEngineOperations
     {
         private const string AssignItemTo = "{0} with name: {1} on board {2} part of team {3} was assigned to member {4}!";
 
@@ -26,12 +26,15 @@ namespace Wim.Core.Engine.EngineOperations
             this.allMembers = allMembers;
         }
 
-        public string AssignUnassignItem(string teamToAssignUnsignItem,
-            string boardToAssignUnsignItem, 
-            string itemType, 
-            string itemToAssignUnsign, 
-            string memberToAssignItem)
+        public string Execute(IList<string> inputParametes)
         {
+            //Assign Values
+            string teamToAssignUnsignItem = inputParametes[0];
+            string boardToAssignUnsignItem = inputParametes[1];
+            string itemType = inputParametes[2];
+            string itemToAssignUnsign = inputParametes[3];
+            string memberToAssignItem = inputParametes[4];
+
             //Validations
             var itemTypeForChecking = "Item Title";
             inputValidator.IsNullOrEmpty(itemToAssignUnsign, itemTypeForChecking);
