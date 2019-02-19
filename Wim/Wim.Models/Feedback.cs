@@ -26,13 +26,13 @@ namespace Wim.Models
             {
                 return this.rating;
             }
-            private set
+            set
             {
                 this.rating = value;
             }
         }
 
-        public FeedbackStatus FeedbackStatus { get; private set; }
+        public FeedbackStatus FeedbackStatus { get; set; }
 
         //Methods
         public void ChangeFeedbackRating(int rating)

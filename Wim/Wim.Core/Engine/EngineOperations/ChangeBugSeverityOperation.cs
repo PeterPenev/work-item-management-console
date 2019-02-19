@@ -81,7 +81,7 @@ namespace Wim.Core.Engine.EngineOperations
 
             memberToAddActivityFor.AddActivityHistoryToMember(bugToAddActivityFor, teamToFindIn, boardToAddActivityFor, newSeverity);
 
-            bugToAddActivityFor.AddActivityHistoryToWorkItem(memberToAddActivityFor, bugToAddActivityFor, newSeverity);
+            bugOperations.AddActivityHistoryToWorkItem(bugToAddActivityFor, memberToAddActivityFor, newSeverity);
 
             return string.Format(BugSeverityChanged, bugToChangeSeverityFor, newSeverityEnum);
         }

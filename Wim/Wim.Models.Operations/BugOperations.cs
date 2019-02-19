@@ -1,28 +1,33 @@
 ﻿using System;
 using Wim.Models.Enums;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Models.Operations
 {
-    public class BugOperations
+    public class BugOperations : WorkItemOperations, IBugOperations
     {
-        public void ChangeBugPriority(IBug bug, Priority priority)
+        public void ChangeBugPriority(IWorkItem workItem, Priority priority)
         {
+            var bug = workItem as Bug;
             bug.Priority = priority;
         }
 
-        public void ChangeBugSeverity(IBug bug, Severity severity)
+        public void ChangeBugSeverity(IWorkItem workItem, Severity severity)
         {
+            var bug = workItem as Bug;
             bug.Severity = severity;
         }
 
-        public void ChangeBugStatus(IBug bug, BugStatus status)
+        public void ChangeBugStatus(IWorkItem workItem, BugStatus status)
         {
+            var bug = workItem as Bug;
             bug.BugStatus = status;
         }
 
-        public void AssignMemberToBug(IBug bug, IMember memberToAssignBug)
+        public void AssignMemberToBug(IWorkItem workItem, IMember memberToAssignBug)
         {
+            var bug = workItem as Bug;
             bug.Assignee = memberToAssignBug;
         }
     }

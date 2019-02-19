@@ -36,8 +36,8 @@ namespace Wim.CLI
             builder.RegisterType<AllMembers>()
               .As<IAllMembers>().SingleInstance();
 
-            builder.RegisterType<AddCommentOperation>()
-          .Named<IEngineOperations>("AddComment");
+          //  builder.RegisterType<AddCommentOperation>()
+          //.Named<IEngineOperations>("AddComment");
 
             builder.RegisterType<AddPersonToTeamOperation>()
                .Named<IEngineOperations>("AddPersonToTeam");
@@ -63,7 +63,6 @@ namespace Wim.CLI
             builder.RegisterType<ChangeStoryPriorityOperation>()
                  .Named<IEngineOperations>("ChangeStoryPriority");
 
-
             builder.RegisterType<ChangeStorySizeOperation>()
                  .Named<IEngineOperations>("ChangeStorySize");
 
@@ -71,7 +70,7 @@ namespace Wim.CLI
                .Named<IEngineOperations>("ChangeStoryStatus");
 
             builder.RegisterType<CreateBoardToTeamOperation>()
-              .Named<IEngineOperations>("CreateBoardToTeam");
+              .Named<IEngineOperations>("CreateBoard");
 
             builder.RegisterType<CreateBugOperation>()
              .Named<IEngineOperations>("CreateBug");

@@ -81,8 +81,7 @@ namespace Wim.Core.Engine.EngineOperations
             boardToChangeStatusIn
                 .AddActivityHistoryToBoard(memberToChangeActivityHistoryFor, bugToChangeStatus, newStatusEnum);
 
-            bugToChangeStatus
-                .AddActivityHistoryToWorkItem(memberToChangeActivityHistoryFor, bugToChangeStatus, newStatusEnum);
+            bugOperations.AddActivityHistoryToWorkItem(bugToChangeStatus, memberToChangeActivityHistoryFor, newStatusEnum);
 
             return string.Format(BugStatusChanged, bugToChangeStatusFor, newStatus);
         }

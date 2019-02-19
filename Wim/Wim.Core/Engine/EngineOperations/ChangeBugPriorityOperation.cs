@@ -25,16 +25,17 @@ namespace Wim.Core.Engine.EngineOperations
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.enumParser = enumParser;
+            this.bugOperations = bugOperations;
         }
 
         public string Execute(IList<string> inputParameters)
         {
+            //Assign Values
             string teamToChangeBugPriorityFor = inputParameters[0];
             string boardToChangeBugPriorityFor = inputParameters[1];
             string bugToChangePriorityFor = inputParameters[2];
             string priority = inputParameters[3];
-            string authorOfBugPriorityChange = inputParameters[4];
-        
+            string authorOfBugPriorityChange = inputParameters[4];        
         
             //Validations
             var bugTypeForChecking = "Bug Title";
@@ -81,7 +82,7 @@ namespace Wim.Core.Engine.EngineOperations
 
             memberToAddActivityFor.AddActivityHistoryToMember(bugToAddActivityFor, teamToFindIn, boardToAddActivityFor, priority);
 
-            bugToAddActivityFor.AddActivityHistoryToWorkItem(memberToAddActivityFor, bugToAddActivityFor, priority);
+            bugOperations.AddActivityHistoryToWorkItem(bugToAddActivityFor, memberToAddActivityFor, priority);
 
             return string.Format(BugPriorityChanged, bugToChangePriorityFor, newPriorityEnum);
         }

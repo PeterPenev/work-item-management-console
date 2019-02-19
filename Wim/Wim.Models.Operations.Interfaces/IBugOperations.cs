@@ -4,14 +4,14 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Models.Operations.Interfaces
 {
-    public interface IBugOperations
+    public interface IBugOperations : IWorkItemOperations
     {
-        void ChangeBugPriority(IBug bug, Priority priority);
+        void ChangeBugPriority(IWorkItem workItem, Priority priority);
 
-        void ChangeBugSeverity(IBug bug, Severity severity);
+        void ChangeBugSeverity(IWorkItem workItem, Severity severity);
 
-        void ChangeBugStatus(IBug bug, BugStatus status);
+        void ChangeBugStatus(IWorkItem workItem, BugStatus status);
 
-        void AssignMemberToBug(IBug bug, IMember memberToAssignBug);
+        void AssignMemberToBug(IWorkItem workItem, IMember memberToAssignBug);
     }
 }

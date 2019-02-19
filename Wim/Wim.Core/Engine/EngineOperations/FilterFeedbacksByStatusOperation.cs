@@ -12,7 +12,6 @@ namespace Wim.Core.Engine.EngineOperations
     {
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
-        private readonly IAllMembers allMembers;
         private readonly IEnumParser enumParser;
 
         public FilterFeedbacksByStatusOperation(

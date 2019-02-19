@@ -6,15 +6,15 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Models.Operations.Interfaces
 {
-    public interface IStoryOperations
+    public interface IStoryOperations : IWorkItemOperations
     {
-        void ChangeStoryPriority(IStory story, Priority priority);
+        void ChangeStoryPriority(IWorkItem workItem, Priority priority);
 
-        void ChangeStorySize(IStory story, Size size);
+        void ChangeStorySize(IWorkItem workItem, Size size);
 
-        void ChangeStoryStatus(IStory story, StoryStatus status);
+        void ChangeStoryStatus(IWorkItem workItem, StoryStatus status);
 
-        void AssignMemberToStory(IStory story, IMember memberToAssignBug);
+        void AssignMemberToStory(IWorkItem workItem, IMember memberToAssignBug);
        
     }
 }

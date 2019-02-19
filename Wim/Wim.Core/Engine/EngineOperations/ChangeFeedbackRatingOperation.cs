@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Wim.Core.Contracts;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
@@ -13,15 +14,18 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
         private readonly IEnumParser enumParser;
+        private readonly IFeedbackOperations feedbackOperations;
 
         public ChangeFeedbackRatingOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
-            IEnumParser enumParser)
+            IEnumParser enumParser,
+            IFeedbackOperations feedbackOperations)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.enumParser = enumParser;
+            this.feedbackOperations = feedbackOperations;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -77,7 +81,7 @@ namespace Wim.Core.Engine.EngineOperations
 
             memberToAddActivityFor.AddActivityHistoryToMember(feedbackToAddActivityFor, teamToFindIn, boardToAddActivityFor, newFeedbackRating);
 
-            feedbackToAddActivityFor.AddActivityHistoryToWorkItem(memberToAddActivityFor, feedbackToAddActivityFor, newFeedbackRating);
+            feedbackOperations.AddActivityHistoryToWorkItem(feedbackToAddActivityFor, memberToAddActivityFor, newFeedbackRating);
 
             return string.Format(FeedbackRatingChanged, feedbackToChangeRatingFor, integerRating);
         }

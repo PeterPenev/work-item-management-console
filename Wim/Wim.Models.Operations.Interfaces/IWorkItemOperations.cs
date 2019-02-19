@@ -8,9 +8,9 @@ namespace Wim.Models.Operations.Interfaces
 {
     public interface IWorkItemOperations
     {
-        void AddActivityHistoryToWorkItem(IWorkItem itemToAddActivityHistoryFor, IMember trackedMember, IWorkItem trackedWorkItem);
+        void AddActivityHistoryToWorkItem(IWorkItem trackedWorkItem, IMember trackedMember);
 
-        void AddActivityHistoryToWorkItem<T>(IWorkItem itemToAddActivityHistoryFor, IMember trackedMember, IWorkItem trackedWorkItem, T changedEnum);
+        void AddActivityHistoryToWorkItem<T>(IWorkItem trackedWorkItem, IMember trackedMember, T changedEnum);
 
         void AddComment(IWorkItem itemToAddActivityHistoryFor, string commentToAdd, string authorOfComment);
     }

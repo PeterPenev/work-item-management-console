@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Wim.Core.Contracts;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
@@ -13,15 +14,18 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
         private readonly IEnumParser enumParser;
+        private readonly IStoryOperations storyOperations;
 
         public ChangeStoryPriorityOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
-            IEnumParser enumParser)
+            IEnumParser enumParser,
+            IStoryOperations storyOperations)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.enumParser = enumParser;
+            this.storyOperations = storyOperations;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -76,7 +80,7 @@ namespace Wim.Core.Engine.EngineOperations
 
             memberToAddActivityFor.AddActivityHistoryToMember(storyToAddActivityFor, teamToFindIn, boardToAddActivityFor, newStoryPriority);
 
-            storyToAddActivityFor.AddActivityHistoryToWorkItem(memberToAddActivityFor, storyToAddActivityFor, newStoryPriority);
+            storyOperations.AddActivityHistoryToWorkItem(storyToAddActivityFor, memberToAddActivityFor, newStoryPriority);
 
             return string.Format(StoryPriorityChanged, storyToChangePriorityFor, newPriorityEnum);
 

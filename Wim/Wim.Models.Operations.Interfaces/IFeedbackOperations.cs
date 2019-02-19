@@ -6,10 +6,10 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Models.Operations.Interfaces
 {
-    public interface IFeedbackOperations
+    public interface IFeedbackOperations : IWorkItemOperations
     {
-        void ChangeFeedbackRating(IFeedback feedback, int rating);
+        void ChangeFeedbackRating(IWorkItem workItem, int rating);
 
-        void ChangeFeedbackStatus(IFeedback feedback, FeedbackStatus status);
+        void ChangeFeedbackStatus(IWorkItem workItem, FeedbackStatus status);
     }
 }

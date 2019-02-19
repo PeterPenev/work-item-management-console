@@ -30,7 +30,7 @@ namespace Wim.Models
             {
                 return this.priority;
             }
-            private set
+            set
             {
                 this.priority = value;
             }
@@ -42,7 +42,7 @@ namespace Wim.Models
             {
                 return this.size;
             }
-            private set
+            set
             {
                 this.size = value;
             }
@@ -54,7 +54,7 @@ namespace Wim.Models
             {
                 return this.storyStatus;
             }
-            private set
+            set
             {
                 this.storyStatus = value;
             }
@@ -66,7 +66,7 @@ namespace Wim.Models
             {
                 return this.assignee;
             }
-            private set
+            set
             {
                 this.assignee = value;
             }
