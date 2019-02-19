@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Wim.Models.Interfaces;
 
+
 namespace Wim.Models
 {
     public abstract class WorkItem : IWorkItem
