@@ -6,7 +6,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class ChangeStorySizeOperation
+    public class ChangeStorySizeOperation : IEngineOperations
     {
         private const string StorySizeChanged = "Story {0} size is changed to {1}";
 
@@ -24,8 +24,14 @@ namespace Wim.Core.Engine.EngineOperations
             this.enumParser = enumParser;
         }
 
-        public string ChangeStorySize(string teamToChangeStorySizeFor, string boardToChangeStorySizeFor, string storyToChangeSizeFor, string newStorySize, string authorOfStorySizeChange)
+        public string Execute(IList<string> inputParameters)
         {
+            string teamToChangeStorySizeFor = inputParameters[0];
+            string boardToChangeStorySizeFor = inputParameters[1];
+            string storyToChangeSizeFor = inputParameters[2];
+            string newStorySize = inputParameters[3];
+            string authorOfStorySizeChange = inputParameters[4];
+
             //Validations
             var storyTypeForChecking = "Story Title";
             inputValidator.IsNullOrEmpty(storyToChangeSizeFor, storyTypeForChecking);
