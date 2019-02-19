@@ -8,7 +8,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class FilterBugsByAssigneeOperation
+    public class FilterBugsByAssigneeOperation : IEngineOperations
     {
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
@@ -21,8 +21,11 @@ namespace Wim.Core.Engine.EngineOperations
             this.allTeams = allTeams;
         }
 
-        public string FilterBugsByAssignee(string assigneeToFilterBugFor)
+        public string Execute(IList<string> inputParameters)
         {
+            //Assign Values From List Of Parameters
+            string assigneeToFilterBugFor = inputParameters[0];
+            
             //Validations
             var assigneeTypeForChecking = "Assignee";
             inputValidator.IsNullOrEmpty(assigneeToFilterBugFor, assigneeTypeForChecking);
