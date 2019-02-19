@@ -6,7 +6,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class AddCommentOperation
+    public class AddCommentOperation : IEngineOperations
     {
         private const string AddedCommentFor = "Comment {0} with author {1} is added to {2} with name: {3}.";
 
@@ -21,8 +21,16 @@ namespace Wim.Core.Engine.EngineOperations
             this.allTeams = allTeams;
         }
 
-        public string AddComment(string teamToAddCommentToWorkItemFor, string boardToAddCommentToWorkItemFor, string itemTypeToAddWorkItemFor, string workitemToAddCommentFor, string authorOfComment, string commentToAdd)
+        public string Execute(IList<string> inputParameters)
         {
+            //Assign Values From List Of Parameters
+            string teamToAddCommentToWorkItemFor = inputParameters[0];
+            string boardToAddCommentToWorkItemFor = inputParameters[1];
+            string itemTypeToAddWorkItemFor = inputParameters[2];
+            string workitemToAddCommentFor = inputParameters[3];
+            string authorOfComment = inputParameters[4];
+            string commentToAdd = inputParameters[5];
+
             //Validations
             var itemTypeForChecking = "Item Title";
             inputValidator.IsNullOrEmpty(workitemToAddCommentFor, itemTypeForChecking);

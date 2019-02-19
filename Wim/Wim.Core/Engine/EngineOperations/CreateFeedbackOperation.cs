@@ -7,7 +7,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class CreateFeedbackOperation
+    public class CreateFeedbackOperation : IEngineOperations
     {
         private const string FeedbackCreated = "Feedback {0} was created!";
 
@@ -31,8 +31,25 @@ namespace Wim.Core.Engine.EngineOperations
             this.factory = factory;
         }
 
-        public string CreateFeedback(string feedbackTitle, string teamToAddFeedbackFor, string boardToAddFeedbackFor, string feedbackRaiting, string feedbackStatus, string feedbackDescription)
+        public string Execute(IList<string> inputParameters)
         {
+            //Assign Values
+            string feedbackTitle = inputParameters[0];
+            string teamToAddFeedbackFor = inputParameters[1];
+            string boardToAddFeedbackFor = inputParameters[2];
+            string feedbackRaiting = inputParameters[3];
+            string feedbackStatus = inputParameters[4];
+
+            //Build Feedback Description -- EXTERNALIZE TO OUTER CLASS
+            var buildFeedbackDescription = new StringBuilder();
+
+            for (int i = 5; i < inputParameters.Count; i++)
+            {
+                buildFeedbackDescription.Append(inputParameters[i] + " ");
+            }
+
+            string feedbackDescription = buildFeedbackDescription.ToString().Trim();
+
             //Validations
             var feedbackTypeForChecking = "Feedback Title";
             inputValidator.IsNullOrEmpty(feedbackTitle, feedbackTypeForChecking);

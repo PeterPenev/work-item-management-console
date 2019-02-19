@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Autofac;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Wim.Core.Contracts;
@@ -7,7 +8,10 @@ namespace Wim.Core.Engine
 {
     public class WimCommandProcessor : IWimCommandProcessor
     {
-        public IList<string> ProcessCommands(IList<ICommand> commands, IWimProcessSingleCommander processSingleCommander)
+        public IList<string> ProcessCommands(
+            IList<ICommand> commands,
+            IWimProcessSingleCommander processSingleCommander, 
+            IComponentContext componentContext)
         {
             var reports = new List<string>();
 
@@ -15,7 +19,7 @@ namespace Wim.Core.Engine
             {
                 try
                 {
-                    var report = processSingleCommander.ProcessSingleCommand(command);
+                    var report = processSingleCommander.ProcessSingleCommand(command, componentContext);
                     reports.Add(report);
                 }
                 catch (Exception ex)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Autofac;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,45 +12,36 @@ namespace Wim.Core.Engine
 {
     public sealed class WimEngine : IEngine
     {    
-        private readonly IWimFactory factory;
-        private readonly IAllMembers allMembers;
-        private readonly IAllTeams allTeams;
-        private readonly IEnumParser enumParser;
         private readonly IInputValidator inputValidator;
         private readonly ICommandHelper commandHelper;
         private readonly IWimCommandReader commandReader;
         private readonly IWimCommandProcessor commandProcessor;
         private readonly IWimProcessSingleCommander processSingleCommander;
         private readonly IWimReportsPrinter reportsPrinter;
+        private IComponentContext componentContext;
 
-        public WimEngine(IWimFactory factory, 
-            IAllMembers allMembers, 
-            IAllTeams allTeams, 
-            EnumParser enumParser, 
-            IInputValidator inputValidator, 
+        public WimEngine(
             ICommandHelper commandHelper,
             IWimCommandReader commandReader,
             IWimCommandProcessor commandProcessor,
             IWimProcessSingleCommander processSingleCommander,
-            IWimReportsPrinter reportsPrinter)
+            IWimReportsPrinter reportsPrinter,
+            IComponentContext componentContext)
         {
-            this.factory = factory;
-            this.allMembers = allMembers;
-            this.allTeams = allTeams;
-            this.enumParser = enumParser;
-            this.inputValidator = inputValidator;
             this.commandHelper = commandHelper;
             this.commandReader = commandReader;
             this.commandProcessor = commandProcessor;
             this.processSingleCommander = processSingleCommander;
             this.reportsPrinter = reportsPrinter;
+            this.componentContext = componentContext;
         }
 
         public void Start()
         {
+            //ToDo WriterClass
             Console.WriteLine(commandHelper.Help);
             var commands = this.commandReader.ReadCommands();
-            var commandResult = this.commandProcessor.ProcessCommands(commands, processSingleCommander);
+            var commandResult = this.commandProcessor.ProcessCommands(commands, processSingleCommander, componentContext);
             this.reportsPrinter.PrintReports(commandResult);
         }                             
     }

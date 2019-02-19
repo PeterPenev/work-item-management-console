@@ -1,46 +1,62 @@
-﻿using System;
+﻿using Autofac;
+using System;
+using System.Reflection;
+using Wim.Core.Contracts;
 using Wim.Core.Engine;
 using Wim.Core.Engine.EngineOperations;
 using Wim.Models;
+using Wim.Models.Enums;
+using Wim.Models.Interfaces;
+using Wim.Models.Operations;
 
 namespace Wim.CLI
 {
     class Program
     {
         static void Main(string[] args)
-        {    
-            //Refactor with AutoFac
-            var factory = new WimFactory();
-            var allMembers = new AllMembers();
-            var allTeams = new AllTeams();
-            var enumParser = new EnumParser();
-            var validator = new InputValidator();
-            var commandHelper = new CommandHelper();
-            var commandReader = new WimCommandReader();
-            var commandProcessor = new WimCommandProcessor();            
-            var reportsPrinter = new WimReportsPrinter();
-            var inputValidator = new InputValidator();
+        {
+            //AutoFac
+            var builder = new ContainerBuilder();
 
-            
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(WorkItem)))
+                .AsImplementedInterfaces();
 
-            var processSingleCommander = new WimProcessSingleCommander (
-                changeOperations,
-                createOperations, 
-                filterOperations,
-                showOperations, 
-                sortOperations);
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(BugOperations)))
+              .AsImplementedInterfaces();
 
-            var engine = new WimEngine(
-                factory, 
-                allMembers, 
-                allTeams, 
-                enumParser,
-                validator, 
-                commandHelper, 
-                commandReader, 
-                commandProcessor,
-                processSingleCommander,
-                reportsPrinter);
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(Priority)))
+              .AsImplementedInterfaces();
+
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(CreateBugOperation)))
+              .AsImplementedInterfaces();
+
+            builder.RegisterType<AllTeams>()
+                .As<IAllTeams>().SingleInstance();
+
+            builder.RegisterType<AllMembers>()
+              .As<IAllMembers>().SingleInstance();
+
+            builder.RegisterType<AddCommentOperation>()
+          .Named<IEngineOperations>("AddComment");
+
+            builder.RegisterType<AddPersonToTeamOperation>()
+               .Named<ICommand>("AddPersonToTeam");
+
+            //containerBuilder.RegisterType<CreateLectureCommand>()
+            //   .Named<ICommand>("CreateLecture");
+
+            //containerBuilder.RegisterType<CreateLectureResourceCommand>()
+            //   .Named<ICommand>("CreateLectureResource");
+
+            //containerBuilder.RegisterType<CreateTrainerCommand>()
+            //   .Named<ICommand>("CreateTrainerResource");
+
+            //containerBuilder.RegisterType<CreateTrainerCommand>()
+            //   .Named<ICommand>("CreateTrainerResource");
+
+            var container = builder.Build();
+
+            var engine = container.Resolve<IEngine>();       
 
             engine.Start();
         }

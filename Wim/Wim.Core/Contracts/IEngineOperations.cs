@@ -6,6 +6,6 @@ namespace Wim.Core.Contracts
 {
     public interface IEngineOperations
     {
-        void Execute();
+        string Execute(IList<string> inputParameters);
     }
 }

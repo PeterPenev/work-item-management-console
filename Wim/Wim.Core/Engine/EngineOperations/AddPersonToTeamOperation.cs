@@ -6,7 +6,7 @@ using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class AddPersonToTeamOperation
+    public class AddPersonToTeamOperation : IEngineOperations
     {
         private const string PersonAddedToTeam = "Person {0} was added to team {1}!";
 
@@ -24,8 +24,12 @@ namespace Wim.Core.Engine.EngineOperations
             this.allMembers = allMembers;;
         }
 
-        public string AddPersonToTeam(string personToAddToTeam, string teamToAddPersonTo)
+        public string Execute(IList<string> inputParameters)
         {
+            //Assign Values From List Of Parameters
+            string personToAddToTeam = inputParameters[0];
+            string teamToAddPersonTo = inputParameters[1];
+
             //Validations
             var personTypeForChecking = "Person Name";
             inputValidator.IsNullOrEmpty(personToAddToTeam, personTypeForChecking);

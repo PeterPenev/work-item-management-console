@@ -26,7 +26,11 @@ namespace Wim.Core.Engine.EngineOperations
             this.allMembers = allMembers;
         }
 
-        public string AssignUnassignItem(string teamToAssignUnsignItem, string boardToAssignUnsignItem, string itemType, string itemToAssignUnsign, string memberToAssignItem)
+        public string AssignUnassignItem(string teamToAssignUnsignItem,
+            string boardToAssignUnsignItem, 
+            string itemType, 
+            string itemToAssignUnsign, 
+            string memberToAssignItem)
         {
             //Validations
             var itemTypeForChecking = "Item Title";
