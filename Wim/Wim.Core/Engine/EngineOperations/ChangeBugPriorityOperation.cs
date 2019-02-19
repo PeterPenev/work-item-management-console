@@ -27,8 +27,15 @@ namespace Wim.Core.Engine.EngineOperations
             this.enumParser = enumParser;
         }
 
-        public string ChangeBugPriority(string teamToChangeBugPriorityFor, string boardToChangeBugPriorityFor, string bugToChangePriorityFor, string priority, string authorOfBugPriorityChange)
+        public string Execute(IList<string> inputParameters)
         {
+            string teamToChangeBugPriorityFor = inputParameters[0];
+            string boardToChangeBugPriorityFor = inputParameters[1];
+            string bugToChangePriorityFor = inputParameters[2];
+            string priority = inputParameters[3];
+            string authorOfBugPriorityChange = inputParameters[4];
+        
+        
             //Validations
             var bugTypeForChecking = "Bug Title";
             inputValidator.IsNullOrEmpty(bugToChangePriorityFor, bugTypeForChecking);
