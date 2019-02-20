@@ -10,13 +10,15 @@ namespace Wim.Core.Engine.EngineOperations
 {
     public class SortFeedbacksByOperation : IEngineOperations
     {
+        private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
 
-        public SortFeedbacksByOperation(
+        public SortFeedbacksByOperation(IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams)
         {
+            this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
         }
@@ -30,9 +32,9 @@ namespace Wim.Core.Engine.EngineOperations
             var factorTypeForChecking = $"{factorToSortBy}";
             inputValidator.IsNullOrEmpty(factorToSortBy, factorTypeForChecking);
 
-            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+            businessLogicValidator.ValidateIfAnyWorkItemsExist(allTeams);
 
-            inputValidator.ValidateIfAnyFeedbacksExist(allTeams);
+            businessLogicValidator.ValidateIfAnyFeedbacksExist(allTeams);
 
             //Operations
             var filteredFeedbacks = new List<Feedback>();
