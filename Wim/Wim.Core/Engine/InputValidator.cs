@@ -19,34 +19,18 @@ namespace Wim.Core.Engine
         private const string ImproperItemTitleLength = "Item title should be between 10 and 50 symbols!";
         private const string ImproperItemDescriptionLength = "Item description should be between 10 and 500 symbols!";
         private const string ImproperEnumInputted = "The {1} is not valid!";
+        private const string NoTeamsInApplication = "There are no Teams in the Application yet!";
 
 
         private const string PersonExists = "Person with name {0} already exists!";
         private const string PersonCreated = "Person with name {0} was created!";
         private const string NullOrEmptyInput = "{0} cannot be null or empty!";
         
-        
-       
-
         private const string TeamAlreadyExists = "Team with name {0} already exists!";
         
         private const string BugNotInBoard = "There is no bug with name {0} in board {1} part of team {2}!";
-       
-        
-
-       
-       
-        
-        
-       
-
-        
-        
-        
-        private const string RatingCannotBeConverted = "The Rating: {0} from the input cannot be converted to Number!";
-        
-       
-        
+                  
+        private const string RatingCannotBeConverted = "The Rating: {0} from the input cannot be converted to Number!";        
 
         private const string NoPeopleInApplication = "There are no people!";
         private const string MemberDoesNotExist = "The member does not exist!";
@@ -58,9 +42,7 @@ namespace Wim.Core.Engine
         private const string PersonAddedToTeam = "Person {0} was added to team {1}!";
         private const string NullOrEmptyBoardName = "Board Name cannot be null or empty!!";
         private const string BoardAddedToTeam = "Board {0} was added to team {1}!";
-        private const string BoardAlreadyExists = "Board with name {0} already exists!";
-      
-        
+        private const string BoardAlreadyExists = "Board with name {0} already exists!";    
 
         private const string BugCreated = "Bug {0} was created!";
 
