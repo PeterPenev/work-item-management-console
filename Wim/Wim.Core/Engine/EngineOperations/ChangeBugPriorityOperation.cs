@@ -57,11 +57,11 @@ namespace Wim.Core.Engine.EngineOperations
             var authorTypeForChecking = "Author";
             inputValidator.IsNullOrEmpty(authorOfBugPriorityChange, authorTypeForChecking);
 
-            inputValidator.ValidateTeamExistance(allTeams, teamToChangeBugPriorityFor);
+            businessLogicValidator.ValidateTeamExistance(allTeams, teamToChangeBugPriorityFor);
 
-            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeBugPriorityFor, teamToChangeBugPriorityFor);
+            businessLogicValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeBugPriorityFor, teamToChangeBugPriorityFor);
 
-            inputValidator.ValidateNoSuchBugInBoard(allTeams, boardToChangeBugPriorityFor, teamToChangeBugPriorityFor, bugToChangePriorityFor);
+            businessLogicValidator.ValidateNoSuchBugInBoard(allTeams, boardToChangeBugPriorityFor, teamToChangeBugPriorityFor, bugToChangePriorityFor);
 
             //Operations
 
