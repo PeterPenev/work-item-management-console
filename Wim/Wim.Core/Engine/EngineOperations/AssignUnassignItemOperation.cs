@@ -17,18 +17,21 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IAllMembers allMembers;
         private readonly IEnumParser enumParser;
         private readonly IBugOperations bugOperations;
+        private readonly IBusinessLogicValidator businessLogicValidator;
 
 
         public AssignUnassignItemOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IAllMembers allMembers,
-            IBugOperations bugOperations)
+            IBugOperations bugOperations,
+            IBusinessLogicValidator businessLogicValidator)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.allMembers = allMembers;
             this.bugOperations = bugOperations;
+            this.businessLogicValidator = businessLogicValidator;
         }
 
         public string Execute(IList<string> inputParametes)
@@ -53,11 +56,11 @@ namespace Wim.Core.Engine.EngineOperations
             var authorTypeForChecking = "Author";
             inputValidator.IsNullOrEmpty(memberToAssignItem, authorTypeForChecking);
 
-            inputValidator.ValidateTeamExistance(allTeams, teamToAssignUnsignItem);
+            businessLogicValidator.ValidateTeamExistance(allTeams, teamToAssignUnsignItem);
 
-            inputValidator.ValidateMemberExistance(allMembers, memberToAssignItem);
+            businessLogicValidator.ValidateMemberExistance(allMembers, memberToAssignItem);
 
-            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToAssignUnsignItem, teamToAssignUnsignItem);
+            businessLogicValidator.ValidateBoardExistanceInTeam(allTeams, boardToAssignUnsignItem, teamToAssignUnsignItem);
 
             //Operations
             var itemMemberToAssign = allTeams.FindMemberInTeam(teamToAssignUnsignItem, memberToAssignItem);

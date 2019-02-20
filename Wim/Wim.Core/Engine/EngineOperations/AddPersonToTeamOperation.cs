@@ -13,15 +13,18 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
         private readonly IAllMembers allMembers;
+        private readonly IBusinessLogicValidator businessLogicValidator;
 
         public AddPersonToTeamOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
-            IAllMembers allMembers)
+            IAllMembers allMembers,
+            IBusinessLogicValidator businessLogicValidator)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
-            this.allMembers = allMembers;;
+            this.allMembers = allMembers;
+            this.businessLogicValidator = businessLogicValidator;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -37,11 +40,11 @@ namespace Wim.Core.Engine.EngineOperations
             var teamTypeForChecking = "Team Name";
             inputValidator.IsNullOrEmpty(teamToAddPersonTo, teamTypeForChecking);
 
-            inputValidator.ValidateTeamExistance(allTeams, teamToAddPersonTo);
+            businessLogicValidator.ValidateTeamExistance(allTeams, teamToAddPersonTo);
 
-            inputValidator.ValidateMemberExistance(allMembers, personToAddToTeam);
+            businessLogicValidator.ValidateMemberExistance(allMembers, personToAddToTeam);
 
-            inputValidator.ValidateIfMemberAlreadyInTeam(allTeams, teamToAddPersonTo, personToAddToTeam);
+            businessLogicValidator.ValidateIfMemberAlreadyInTeam(allTeams, teamToAddPersonTo, personToAddToTeam);
 
             //Operations
             allTeams.AllTeamsList[teamToAddPersonTo].AddMember(allMembers.AllMembersList[personToAddToTeam]);
