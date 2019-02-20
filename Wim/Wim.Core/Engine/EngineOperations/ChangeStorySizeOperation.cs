@@ -15,17 +15,20 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IAllTeams allTeams;
         private readonly IEnumParser enumParser;
         private readonly IStoryOperations storyOperations;
+        private readonly IBusinessLogicValidator businessLogicValidator;
 
         public ChangeStorySizeOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IEnumParser enumParser,
-            IStoryOperations storyOperations)
+            IStoryOperations storyOperations,
+            IBusinessLogicValidator businessLogicValidator)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.enumParser = enumParser;
             this.storyOperations = storyOperations;
+            this.businessLogicValidator = businessLogicValidator;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -52,11 +55,11 @@ namespace Wim.Core.Engine.EngineOperations
             var authorTypeForChecking = "Author";
             inputValidator.IsNullOrEmpty(authorOfStorySizeChange, authorTypeForChecking);
 
-            inputValidator.ValidateTeamExistance(allTeams, teamToChangeStorySizeFor);
+            businessLogicValidator.ValidateTeamExistance(allTeams, teamToChangeStorySizeFor);
 
-            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeStorySizeFor, teamToChangeStorySizeFor);
+            businessLogicValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeStorySizeFor, teamToChangeStorySizeFor);
 
-            inputValidator.ValidateNoSuchStoryInBoard(allTeams, boardToChangeStorySizeFor, teamToChangeStorySizeFor, storyToChangeSizeFor);
+            businessLogicValidator.ValidateNoSuchStoryInBoard(allTeams, boardToChangeStorySizeFor, teamToChangeStorySizeFor, storyToChangeSizeFor);
 
             //Operations
             var itemType = "Story";

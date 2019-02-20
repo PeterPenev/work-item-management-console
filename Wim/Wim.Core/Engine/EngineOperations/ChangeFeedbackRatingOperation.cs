@@ -15,17 +15,20 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IAllTeams allTeams;
         private readonly IEnumParser enumParser;
         private readonly IFeedbackOperations feedbackOperations;
+        private readonly IBusinessLogicValidator businessLogicValidator;
 
         public ChangeFeedbackRatingOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IEnumParser enumParser,
-            IFeedbackOperations feedbackOperations)
+            IFeedbackOperations feedbackOperations,
+            IBusinessLogicValidator businessLogicValidator)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.enumParser = enumParser;
             this.feedbackOperations = feedbackOperations;
+            this.businessLogicValidator = businessLogicValidator;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -52,11 +55,11 @@ namespace Wim.Core.Engine.EngineOperations
             var authorTypeForChecking = "Author";
             inputValidator.IsNullOrEmpty(authorOfFeedbackRatingChange, authorTypeForChecking);
 
-            inputValidator.ValidateTeamExistance(allTeams, teamToChangeFeedbackRatingFor);
+            businessLogicValidator.ValidateTeamExistance(allTeams, teamToChangeFeedbackRatingFor);
 
-            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeFeedbackRatingFor, teamToChangeFeedbackRatingFor);
+            businessLogicValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeFeedbackRatingFor, teamToChangeFeedbackRatingFor);
 
-            inputValidator.ValidateNoSuchFeedbackInBoard(allTeams, boardToChangeFeedbackRatingFor, teamToChangeFeedbackRatingFor, feedbackToChangeRatingFor);
+            businessLogicValidator.ValidateNoSuchFeedbackInBoard(allTeams, boardToChangeFeedbackRatingFor, teamToChangeFeedbackRatingFor, feedbackToChangeRatingFor);
 
             var integerRating = inputValidator.ValidateRatingConversion(newFeedbackRating);
 

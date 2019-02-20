@@ -13,15 +13,18 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
         private readonly IWimFactory factory;
+        private readonly IBusinessLogicValidator businessLogicValidator;
 
         public CreateBoardToTeamOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
-            IWimFactory factory)
+            IWimFactory factory,
+            IBusinessLogicValidator businessLogicValidator)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.factory = factory;
+            this.businessLogicValidator = businessLogicValidator;
         }
         public string Execute(IList<string> inputParameters)
         {
@@ -37,9 +40,9 @@ namespace Wim.Core.Engine.EngineOperations
 
             inputValidator.ValdateBoardNameLength(boardToAddToTeam);
 
-            inputValidator.ValidateTeamExistance(allTeams, teamForAddingBoardTo);
+            businessLogicValidator.ValidateTeamExistance(allTeams, teamForAddingBoardTo);
 
-            inputValidator.ValidateBoardAlreadyInTeam(allTeams, boardToAddToTeam, teamForAddingBoardTo);
+            businessLogicValidator.ValidateBoardAlreadyInTeam(allTeams, boardToAddToTeam, teamForAddingBoardTo);
 
             //Operations
             var board = this.factory.CreateBoard(boardToAddToTeam);

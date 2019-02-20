@@ -15,17 +15,20 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IAllTeams allTeams;
         private readonly IEnumParser enumParser;
         private readonly IFeedbackOperations feedbackOperations;
+        private readonly IBusinessLogicValidator businessLogicValidator;
 
         public ChangeFeedbackStatusOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IEnumParser enumParser,
-            IFeedbackOperations feedbackOperations)
+            IFeedbackOperations feedbackOperations,
+            IBusinessLogicValidator businessLogicValidator)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.enumParser = enumParser;
             this.feedbackOperations = feedbackOperations;
+            this.businessLogicValidator = businessLogicValidator;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -51,11 +54,11 @@ namespace Wim.Core.Engine.EngineOperations
             var authorTypeForChecking = "Author";
             inputValidator.IsNullOrEmpty(authorOfFeedbackStatusChange, authorTypeForChecking);
 
-            inputValidator.ValidateTeamExistance(allTeams, teamToChangeFeedbackStatusFor);
+            businessLogicValidator.ValidateTeamExistance(allTeams, teamToChangeFeedbackStatusFor);
 
-            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeFeedbackStatusFor, teamToChangeFeedbackStatusFor);
+            businessLogicValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeFeedbackStatusFor, teamToChangeFeedbackStatusFor);
 
-            inputValidator.ValidateNoSuchFeedbackInBoard(allTeams, boardToChangeFeedbackStatusFor, teamToChangeFeedbackStatusFor, feedbackToChangeStatusFor);
+            businessLogicValidator.ValidateNoSuchFeedbackInBoard(allTeams, boardToChangeFeedbackStatusFor, teamToChangeFeedbackStatusFor, feedbackToChangeStatusFor);
 
             //Operations
             var itemType = "Feedback";

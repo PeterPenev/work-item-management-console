@@ -19,6 +19,7 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IWimFactory factory;
         private readonly IDescriptionBuilder descriptionBuilder;
         private readonly IStepsToReproduceBuilder stepsToReproduceBuilder;
+        private readonly IBusinessLogicValidator businessLogicValidator;
 
         public CreateBugOperation(
             IInputValidator inputValidator,
@@ -27,7 +28,8 @@ namespace Wim.Core.Engine.EngineOperations
             IEnumParser enumParser,
             IWimFactory factory,
             IDescriptionBuilder descriptionBuilder,
-            IStepsToReproduceBuilder stepsToReproduceBuilder)
+            IStepsToReproduceBuilder stepsToReproduceBuilder,
+            IBusinessLogicValidator businessLogicValidator)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
@@ -36,6 +38,7 @@ namespace Wim.Core.Engine.EngineOperations
             this.factory = factory;
             this.descriptionBuilder = descriptionBuilder;
             this.stepsToReproduceBuilder = stepsToReproduceBuilder;
+            this.businessLogicValidator = businessLogicValidator;
         }
         public string Execute(IList<string> inputParameters)
         {
@@ -64,13 +67,13 @@ namespace Wim.Core.Engine.EngineOperations
 
             inputValidator.ValdateItemDescriptionLength(bugDescription);
 
-            inputValidator.ValidateTeamExistance(allTeams, teamToAddBugFor);
+            businessLogicValidator.ValidateTeamExistance(allTeams, teamToAddBugFor);
 
-            inputValidator.ValidateMemberExistance(allMembers, bugAssignee);
+            businessLogicValidator.ValidateMemberExistance(allMembers, bugAssignee);
 
-            inputValidator.ValidateIfMemberNotInTeam(allTeams, teamToAddBugFor, bugAssignee);
+            businessLogicValidator.ValidateIfMemberNotInTeam(allTeams, teamToAddBugFor, bugAssignee);
 
-            inputValidator.ValidateBugExistanceInBoard(allTeams, boardToAddBugFor, teamToAddBugFor, bugTitle);
+            businessLogicValidator.ValidateBugExistanceInBoard(allTeams, boardToAddBugFor, teamToAddBugFor, bugTitle);
 
             //Operations
             Priority bugPriorityEnum = this.enumParser.GetPriority(bugPriority);
