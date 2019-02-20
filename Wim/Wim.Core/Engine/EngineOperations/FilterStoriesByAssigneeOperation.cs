@@ -10,15 +10,17 @@ namespace Wim.Core.Engine.EngineOperations
 {
     public class FilterStoriesByAssigneeOperation : IEngineOperations
     {
+        private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
         private readonly IEnumParser enumParser;
 
-        public FilterStoriesByAssigneeOperation(
+        public FilterStoriesByAssigneeOperation(IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IEnumParser enumParser)
         {
+            this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.enumParser = enumParser;
@@ -33,9 +35,9 @@ namespace Wim.Core.Engine.EngineOperations
             var assigneeTypeForChecking = "Assignee";
             inputValidator.IsNullOrEmpty(assigneeToFilterStoryFor, assigneeTypeForChecking);
 
-            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+            businessLogicValidator.ValidateIfAnyWorkItemsExist(allTeams);
 
-            inputValidator.ValidateIfAnyStoriesExist(allTeams);
+            businessLogicValidator.ValidateIfAnyStoriesExist(allTeams);
 
             //Operations
             var filteredStoriesByAssignee = allTeams.AllTeamsList.Values

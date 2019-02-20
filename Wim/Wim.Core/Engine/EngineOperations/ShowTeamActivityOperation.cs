@@ -8,13 +8,15 @@ namespace Wim.Core.Engine.EngineOperations
 {
     public class ShowTeamActivityOperation : IEngineOperations
     {
+        private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
 
-        public ShowTeamActivityOperation(
+        public ShowTeamActivityOperation(IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams)
         {
+            this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
         }
@@ -28,9 +30,9 @@ namespace Wim.Core.Engine.EngineOperations
             var inputTypeForChecking = "Team Name";
             inputValidator.IsNullOrEmpty(teamName, inputTypeForChecking);
 
-            inputValidator.ValdateIfAnyTeamsExist(allTeams);
+            businessLogicValidator.ValdateIfAnyTeamsExist(allTeams);
 
-            inputValidator.ValidateTeamExistance(allTeams, teamName);
+            businessLogicValidator.ValidateTeamExistance(allTeams, teamName);
 
             //Operations
             var teamToCheckHistoryFor = allTeams.AllTeamsList[teamName];

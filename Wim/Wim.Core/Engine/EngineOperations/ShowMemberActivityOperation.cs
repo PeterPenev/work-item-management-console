@@ -8,18 +8,20 @@ namespace Wim.Core.Engine.EngineOperations
 {
     public class ShowMemberActivityOperation : IEngineOperations
     {
+        private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllMembers allMembers;
 
-        public ShowMemberActivityOperation(
+        public ShowMemberActivityOperation(IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllMembers allMembers)
         {
+            this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allMembers = allMembers;
         }
 
-        public string Execute(IList<string> inputParameters) 
+        public string Execute(IList<string> inputParameters)
         {
             //Assign Values From List Of Parameters
             string memberName = inputParameters[0];
@@ -28,7 +30,7 @@ namespace Wim.Core.Engine.EngineOperations
             var inputTypeForChecking = "Member Name";
             inputValidator.IsNullOrEmpty(memberName, inputTypeForChecking);
 
-            inputValidator.ValidateMemberExistance(allMembers, memberName);
+            businessLogicValidator.ValidateMemberExistance(allMembers, memberName);
 
             //Operations
             var selectedMember = this.allMembers.AllMembersList[memberName];

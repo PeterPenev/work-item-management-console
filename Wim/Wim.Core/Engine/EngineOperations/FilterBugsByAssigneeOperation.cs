@@ -10,13 +10,15 @@ namespace Wim.Core.Engine.EngineOperations
 {
     public class FilterBugsByAssigneeOperation : IEngineOperations
     {
+        private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
 
-        public FilterBugsByAssigneeOperation(
+        public FilterBugsByAssigneeOperation(IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams)
         {
+            this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
         }
@@ -30,9 +32,9 @@ namespace Wim.Core.Engine.EngineOperations
             var assigneeTypeForChecking = "Assignee";
             inputValidator.IsNullOrEmpty(assigneeToFilterBugFor, assigneeTypeForChecking);
 
-            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+            businessLogicValidator.ValidateIfAnyWorkItemsExist(allTeams);
 
-            inputValidator.ValidateIfAnyBugsExist(allTeams);
+            businessLogicValidator.ValidateIfAnyBugsExist(allTeams);
 
             //Operations
             var filteredBugsByAssignee = allTeams.AllTeamsList.Values
