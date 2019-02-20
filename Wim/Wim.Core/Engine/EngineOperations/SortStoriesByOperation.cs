@@ -12,20 +12,22 @@ namespace Wim.Core.Engine.EngineOperations
     {
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
+        private readonly IBusinessLogicValidator businessLogicValidator;
 
         public SortStoriesByOperation()
         {
         }
 
-        public SortStoriesByOperation(
+        public SortStoriesByOperation(IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams)
         {
+            this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
         }
 
-        public string Execute(IList<string> inputParameters) 
+        public string Execute(IList<string> inputParameters)
         {
             //Assign Values From List Of Parameters
             string factorToSortBy = inputParameters[0];
@@ -34,9 +36,9 @@ namespace Wim.Core.Engine.EngineOperations
             var factorTypeForChecking = $"{factorToSortBy}";
             inputValidator.IsNullOrEmpty(factorToSortBy, factorTypeForChecking);
 
-            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+            businessLogicValidator.ValidateIfAnyWorkItemsExist(allTeams);
 
-            inputValidator.ValidateIfAnyStoriesExist(allTeams);
+            businessLogicValidator.ValidateIfAnyStoriesExist(allTeams);
 
             //Operations
             var filteredStories = new List<Story>();
