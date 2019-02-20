@@ -76,5 +76,33 @@ namespace Wim.UnitTests.Wim.Core.Tests
             //Assert
             Assert.IsInstanceOfType(sut, typeof(Board));
         }
+
+        [TestMethod]
+        public void CreateMember_Should_ReturnCorrectInstance()
+        {
+            //Arrange
+            var factory = new WimFactory();
+            var title = "ExampleMember";
+
+            //Act
+            var sut = factory.CreateMember(title);
+
+            //Assert
+            Assert.IsInstanceOfType(sut, typeof(Member));
+        }
+
+        [TestMethod]
+        public void CreateTeam_Should_ReturnCorrectInstance()
+        {
+            //Arrange
+            var factory = new WimFactory();
+            var title = "ExampleMember";
+
+            //Act
+            var sut = factory.CreateTeam(title);
+
+            //Assert
+            Assert.IsInstanceOfType(sut, typeof(Team));
+        }
     }
 }
