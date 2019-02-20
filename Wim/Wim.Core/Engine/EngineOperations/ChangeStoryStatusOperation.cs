@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Wim.Core.Contracts;
+using Wim.Models.Enums;
 using Wim.Models.Interfaces;
 using Wim.Models.Operations.Interfaces;
 
@@ -65,7 +66,11 @@ namespace Wim.Core.Engine.EngineOperations
             //Operations
             var itemType = "Story";
 
-            var newStatusEnum = enumParser.GetStoryStatus(newStoryStatus);
+            var isEnumConvertable = Enum.TryParse(newStoryStatus, out StoryStatus newStatusEnum);
+
+            inputValidator.IsEnumConvertable(isEnumConvertable, "Status");
+
+            //var newStatusEnum = enumParser.GetStoryStatus(newStoryStatus);
 
             var castedStoryForStatusChange = allTeams.FindStoryAndCast(teamToChangeStoryStatusFor, boardToChangeStoryStatusFor, storyToChangeStatusFor);
 

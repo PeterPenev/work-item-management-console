@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Wim.Core.Contracts;
+using Wim.Models.Enums;
 using Wim.Models.Interfaces;
 using Wim.Models.Operations.Interfaces;
 
@@ -63,7 +64,9 @@ namespace Wim.Core.Engine.EngineOperations
             //Operations
             var itemType = "Feedback";
 
-            var newStatusEnum = enumParser.GetFeedbackStatus(newFeedbackStatus);
+            var isEnumConvertable = Enum.TryParse(newFeedbackStatus, out FeedbackStatus newStatusEnum);
+
+            inputValidator.IsEnumConvertable(isEnumConvertable, "Status");
 
             var castedFeedbackForStatusChange = allTeams.FindFeedbackAndCast(teamToChangeFeedbackStatusFor, boardToChangeFeedbackStatusFor, feedbackToChangeStatusFor);
 

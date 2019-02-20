@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Wim.Core.Contracts;
+using Wim.Models.Enums;
 using Wim.Models.Interfaces;
 using Wim.Models.Operations.Interfaces;
 
@@ -64,8 +65,10 @@ namespace Wim.Core.Engine.EngineOperations
             //Operations
             var itemType = "Story";
 
-            var newSizeEnum = enumParser.GetStorySize(newStorySize);
+            var isEnumConvertable = Enum.TryParse(newStorySize, out Size newSizeEnum);
 
+            inputValidator.IsEnumConvertable(isEnumConvertable, "Size");
+            
             var castedStoryForSizeChange = allTeams.FindStoryAndCast(teamToChangeStorySizeFor, boardToChangeStorySizeFor, storyToChangeSizeFor);
 
             castedStoryForSizeChange.ChangeStorySize(newSizeEnum);
