@@ -2,6 +2,7 @@
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Wim.Core.Engine;
 using Wim.Models.Enums;
@@ -98,7 +99,7 @@ namespace Wim.UnitTests.Wim.Models.Tests
             var sut = factory.CreateBug(title, Priority.Low, severityToAssign, mockPerson.Object, stepsToReproduce, descritpion);
 
             //Assert
-            Assert.AreEqual(sut.StepsToReproduce, stepsToReproduce);
+            Assert.IsTrue(sut.StepsToReproduce.SequenceEqual(stepsToReproduce));
         }
 
         [TestMethod]
