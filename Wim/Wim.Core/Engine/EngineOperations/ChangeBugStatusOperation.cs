@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Wim.Core.Contracts;
+using Wim.Models.Enums;
 using Wim.Models.Interfaces;
 using Wim.Models.Operations.Interfaces;
 
@@ -64,7 +65,9 @@ namespace Wim.Core.Engine.EngineOperations
             //Operations
             var itemType = "Bug";
 
-            var newStatusEnum = enumParser.GetBugStatus(newStatus);
+            var isEnumConvertable = Enum.TryParse(newStatus, out BugStatus newStatusEnum);
+
+            inputValidator.IsEnumConvertable(isEnumConvertable, "Status");
 
             var castedBugToChangeStatusIn = allTeams.FindBugAndCast(teamToChangeBugStatusFor, boardToChangeBugStatusFor, bugToChangeStatusFor);
 
