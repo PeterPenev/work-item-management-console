@@ -8,13 +8,15 @@ namespace Wim.Core.Engine.EngineOperations
 {
     public class ShowAllPeopleOperation : IEngineOperations
     {
+        private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllMembers allMembers;
 
-        public ShowAllPeopleOperation(
+        public ShowAllPeopleOperation(IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllMembers allMembers)
         {
+            this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allMembers = allMembers;
         }
@@ -22,7 +24,7 @@ namespace Wim.Core.Engine.EngineOperations
         public string Execute(IList<string> inputParameters)
         {
             //Validations
-            inputValidator.ValdateIfAnyMembersExist(allMembers);
+            businessLogicValidator.ValdateIfAnyMembersExist(allMembers);
 
             //Operations
             var peopleToDisplay = allMembers.ShowAllMembersToString();

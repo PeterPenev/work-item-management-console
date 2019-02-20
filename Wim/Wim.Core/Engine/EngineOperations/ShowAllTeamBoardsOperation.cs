@@ -8,13 +8,15 @@ namespace Wim.Core.Engine.EngineOperations
 {
     public class ShowAllTeamBoardsOperation : IEngineOperations
     {
+        private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
 
-        public ShowAllTeamBoardsOperation(
+        public ShowAllTeamBoardsOperation(IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams)
         {
+            this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
         }
@@ -28,9 +30,9 @@ namespace Wim.Core.Engine.EngineOperations
             var teamTypeForChecking = "Team Name";
             inputValidator.IsNullOrEmpty(teamToShowBoardsFor, teamTypeForChecking);
 
-            inputValidator.ValidateTeamExistance(allTeams, teamToShowBoardsFor);
+            businessLogicValidator.ValidateTeamExistance(allTeams, teamToShowBoardsFor);
 
-            inputValidator.ValdateIfBoardsExistInTeam(allTeams, teamToShowBoardsFor);
+            businessLogicValidator.ValdateIfBoardsExistInTeam(allTeams, teamToShowBoardsFor);
 
             //Operations
             var allTeamBoardsResult = allTeams.AllTeamsList[teamToShowBoardsFor].ShowAllTeamBoards();

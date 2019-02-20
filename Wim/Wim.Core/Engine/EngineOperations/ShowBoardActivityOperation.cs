@@ -9,13 +9,15 @@ namespace Wim.Core.Engine.EngineOperations
 {
     public class ShowBoardActivityOperation : IEngineOperations
     {
+        private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
 
-        public ShowBoardActivityOperation(
+        public ShowBoardActivityOperation(IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams)
         {
+            this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
         }
@@ -33,9 +35,9 @@ namespace Wim.Core.Engine.EngineOperations
             var boardTypeForChecking = "Board Name";
             inputValidator.IsNullOrEmpty(boardActivityToShow, boardTypeForChecking);
 
-            inputValidator.ValidateTeamExistance(allTeams, teamToShowBoardActivityFor);
+            businessLogicValidator.ValidateTeamExistance(allTeams, teamToShowBoardActivityFor);
 
-            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardActivityToShow, teamToShowBoardActivityFor);
+            businessLogicValidator.ValidateBoardExistanceInTeam(allTeams, boardActivityToShow, teamToShowBoardActivityFor);
 
             //Operations
             var boardToDisplayActivityFor = allTeams.AllTeamsList[teamToShowBoardActivityFor].Boards
