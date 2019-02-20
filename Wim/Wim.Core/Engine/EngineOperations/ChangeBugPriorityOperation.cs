@@ -64,9 +64,8 @@ namespace Wim.Core.Engine.EngineOperations
             inputValidator.ValidateNoSuchBugInBoard(allTeams, boardToChangeBugPriorityFor, teamToChangeBugPriorityFor, bugToChangePriorityFor);
 
             //Operations
-            var newPriorityEnum = enumParser.GetPriority(priority);
 
-            var isEnumConvertable = Enum.TryParse(priority, out Priority newPriorityEnum2);
+            var isEnumConvertable = Enum.TryParse(priority, out Priority newPriorityEnum);
 
             inputValidator.IsEnumConvertable(isEnumConvertable, "Priority");
 

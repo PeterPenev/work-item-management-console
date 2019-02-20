@@ -15,17 +15,20 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IAllTeams allTeams;
         private readonly IEnumParser enumParser;
         private readonly IBugOperations bugOperations;
+        private readonly IBusinessLogicValidator businessLogicValidator;
 
         public ChangeBugStatusOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IEnumParser enumParser,
-            IBugOperations bugOperations)
+            IBugOperations bugOperations,
+            IBusinessLogicValidator businessLogicValidator)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.enumParser = enumParser;
             this.bugOperations = bugOperations;
+            this.businessLogicValidator = businessLogicValidator;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -52,11 +55,11 @@ namespace Wim.Core.Engine.EngineOperations
             var authorTypeForChecking = "Author";
             inputValidator.IsNullOrEmpty(authorOfBugStatusChange, authorTypeForChecking);
 
-            inputValidator.ValidateTeamExistance(allTeams, teamToChangeBugStatusFor);
+            businessLogicValidator.ValidateTeamExistance(allTeams, teamToChangeBugStatusFor);
 
-            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeBugStatusFor, teamToChangeBugStatusFor);
+            businessLogicValidator.ValidateBoardExistanceInTeam(allTeams, boardToChangeBugStatusFor, teamToChangeBugStatusFor);
 
-            inputValidator.ValidateNoSuchBugInBoard(allTeams, boardToChangeBugStatusFor, teamToChangeBugStatusFor, bugToChangeStatusFor);
+            businessLogicValidator.ValidateNoSuchBugInBoard(allTeams, boardToChangeBugStatusFor, teamToChangeBugStatusFor, bugToChangeStatusFor);
 
             //Operations
             var itemType = "Bug";
