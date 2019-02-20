@@ -82,6 +82,42 @@ namespace Wim.UnitTests.Wim.Models.Tests
             //Assert
             Assert.AreEqual(sut.Assignee, mockPerson.Object);
         }
+
+        [TestMethod]
+        public void Constructor_Should_AssignsCorrectStepsToReproduce()
+        {
+            //Arrange
+            var factory = new WimFactory();
+            var title = "ExampleBug";
+            var severityToAssign = Severity.Minor;
+            var mockPerson = new Mock<IMember>();
+            IList<string> stepsToReproduce = new List<string>() { "1. ExampleStepOne", "2.ExampleStepTwo" };
+            var descritpion = "Example Description";
+
+            //Act
+            var sut = factory.CreateBug(title, Priority.Low, severityToAssign, mockPerson.Object, stepsToReproduce, descritpion);
+
+            //Assert
+            Assert.AreEqual(sut.StepsToReproduce, stepsToReproduce);
+        }
+
+        [TestMethod]
+        public void Constructor_Should_AssignsCorrectDescription()
+        {
+            //Arrange
+            var factory = new WimFactory();
+            var title = "ExampleBug";
+            var severityToAssign = Severity.Minor;
+            var mockPerson = new Mock<IMember>();
+            IList<string> stepsToReproduce = new List<string>() { "1. ExampleStepOne", "2.ExampleStepTwo" };
+            var descritpion = "Example Description";
+
+            //Act
+            var sut = factory.CreateBug(title, Priority.Low, severityToAssign, mockPerson.Object, stepsToReproduce, descritpion);
+
+            //Assert
+            Assert.AreEqual(sut.Description, descritpion);
+        }
     }
 
 
