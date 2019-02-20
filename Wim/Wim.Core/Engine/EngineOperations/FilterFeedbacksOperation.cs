@@ -10,15 +10,17 @@ namespace Wim.Core.Engine.EngineOperations
 {
     public class FilterFeedbacksOperation : IEngineOperations
     {
+        private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
         private readonly IEnumParser enumParser;
 
-        public FilterFeedbacksOperation(
+        public FilterFeedbacksOperation(IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IEnumParser enumParser)
         {
+            this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.enumParser = enumParser;
@@ -27,9 +29,9 @@ namespace Wim.Core.Engine.EngineOperations
         public string Execute(IList<string> inputParameters)
         {
             //Validations
-            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+            businessLogicValidator.ValidateIfAnyWorkItemsExist(allTeams);
 
-            inputValidator.ValidateIfAnyFeedbacksExist(allTeams);
+            businessLogicValidator.ValidateIfAnyFeedbacksExist(allTeams);
 
             //Operations
             var AllWorkItems = allTeams.AllTeamsList.Values

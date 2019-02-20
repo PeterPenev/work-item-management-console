@@ -10,13 +10,15 @@ namespace Wim.Core.Engine.EngineOperations
 {
     public class FilterStoriesOperation : IEngineOperations
     {
+        private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
 
-        public FilterStoriesOperation(
+        public FilterStoriesOperation(IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams)
         {
+            this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
         }
@@ -24,9 +26,9 @@ namespace Wim.Core.Engine.EngineOperations
         public string Execute(IList<string> inputParameters)
         {
             //Validations
-            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+            businessLogicValidator.ValidateIfAnyWorkItemsExist(allTeams);
 
-            inputValidator.ValidateIfAnyStoriesExist(allTeams);
+            businessLogicValidator.ValidateIfAnyStoriesExist(allTeams);
 
             //Operations
             var AllWorkItems = allTeams.AllTeamsList.Values

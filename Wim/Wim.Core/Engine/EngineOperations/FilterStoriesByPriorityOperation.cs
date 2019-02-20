@@ -10,15 +10,17 @@ namespace Wim.Core.Engine.EngineOperations
 {
     public class FilterStoriesByPriorityOperation : IEngineOperations
     {
+        private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
         private readonly IEnumParser enumParser;
 
-        public FilterStoriesByPriorityOperation(
+        public FilterStoriesByPriorityOperation(IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IEnumParser enumParser)
         {
+            this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.enumParser = enumParser;
@@ -33,9 +35,9 @@ namespace Wim.Core.Engine.EngineOperations
             var priorityTypeForChecking = "Priority";
             inputValidator.IsNullOrEmpty(priorityToFilterStoryFor, priorityTypeForChecking);
 
-            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+            businessLogicValidator.ValidateIfAnyWorkItemsExist(allTeams);
 
-            inputValidator.ValidateIfAnyStoriesExist(allTeams);
+            businessLogicValidator.ValidateIfAnyStoriesExist(allTeams);
 
             //Operations
             var priorityToCheckFor = this.enumParser.GetPriority(priorityToFilterStoryFor);

@@ -10,15 +10,17 @@ namespace Wim.Core.Engine.EngineOperations
 {
     public class FilterBugsByStatusOperation : IEngineOperations
     {
+        private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
         private readonly IEnumParser enumParser;
 
-        public FilterBugsByStatusOperation(
+        public FilterBugsByStatusOperation(IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IEnumParser enumParser)
         {
+            this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.enumParser = enumParser;
@@ -33,9 +35,9 @@ namespace Wim.Core.Engine.EngineOperations
             var statusTypeForChecking = "Status";
             inputValidator.IsNullOrEmpty(statusToFilterBugFor, statusTypeForChecking);
 
-            inputValidator.ValidateIfAnyWorkItemsExist(allTeams);
+            businessLogicValidator.ValidateIfAnyWorkItemsExist(allTeams);
 
-            inputValidator.ValidateIfAnyBugsExist(allTeams);
+            businessLogicValidator.ValidateIfAnyBugsExist(allTeams);
 
             //Operations
             var bugStatusToCheckFor = this.enumParser.GetBugStatus(statusToFilterBugFor);
