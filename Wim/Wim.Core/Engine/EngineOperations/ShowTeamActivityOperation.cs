@@ -12,7 +12,8 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
 
-        public ShowTeamActivityOperation(IBusinessLogicValidator businessLogicValidator,
+        public ShowTeamActivityOperation(
+            IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams)
         {

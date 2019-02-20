@@ -14,7 +14,8 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
 
-        public SortFeedbacksByOperation(IBusinessLogicValidator businessLogicValidator,
+        public SortFeedbacksByOperation(
+            IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams)
         {

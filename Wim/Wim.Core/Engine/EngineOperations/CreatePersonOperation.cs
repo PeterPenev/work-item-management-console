@@ -10,6 +10,7 @@ namespace Wim.Core.Engine.EngineOperations
     {
         private const string PersonCreated = "Person with name {0} was created!";
 
+        private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
         private readonly IAllMembers allMembers;
@@ -17,12 +18,14 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IWimFactory factory;
 
         public CreatePersonOperation(
+            IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IAllMembers allMembers,
             IEnumParser enumParser,
             IWimFactory factory)
         {
+            this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.allMembers = allMembers;
@@ -39,7 +42,7 @@ namespace Wim.Core.Engine.EngineOperations
 
             inputValidator.ValdateMemberNameLength(personName);
 
-            inputValidator.ValidateIfPersonExists(allMembers, personName);
+            businessLogicValidator.ValidateIfPersonExists(allMembers, personName);
 
             //Operations
             var person = this.factory.CreateMember(personName);

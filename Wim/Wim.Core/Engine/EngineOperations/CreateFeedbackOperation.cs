@@ -11,6 +11,7 @@ namespace Wim.Core.Engine.EngineOperations
     {
         private const string FeedbackCreated = "Feedback {0} was created!";
 
+        private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
         private readonly IAllMembers allMembers;
@@ -19,6 +20,7 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IDescriptionBuilder descriptionBuilder;
 
         public CreateFeedbackOperation(
+            IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IAllMembers allMembers,
@@ -26,6 +28,7 @@ namespace Wim.Core.Engine.EngineOperations
             IWimFactory factory,
             IDescriptionBuilder descriptionBuilder)
         {
+            this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.allMembers = allMembers;
@@ -58,11 +61,11 @@ namespace Wim.Core.Engine.EngineOperations
 
             inputValidator.ValdateItemDescriptionLength(feedbackDescription);
 
-            inputValidator.ValidateTeamExistance(allTeams, teamToAddFeedbackFor);
+            businessLogicValidator.ValidateTeamExistance(allTeams, teamToAddFeedbackFor);
 
-            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToAddFeedbackFor, teamToAddFeedbackFor);
+            businessLogicValidator.ValidateBoardExistanceInTeam(allTeams, boardToAddFeedbackFor, teamToAddFeedbackFor);
 
-            inputValidator.ValidateFeedbackExistanceInBoard(allTeams, boardToAddFeedbackFor, teamToAddFeedbackFor, feedbackTitle);
+            businessLogicValidator.ValidateFeedbackExistanceInBoard(allTeams, boardToAddFeedbackFor, teamToAddFeedbackFor, feedbackTitle);
 
             var intFeedbackRating = inputValidator.ValidateRatingConversion(feedbackRaiting);
 

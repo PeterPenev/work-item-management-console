@@ -12,6 +12,7 @@ namespace Wim.Core.Engine.EngineOperations
     {
         private const string StoryCreated = "Story {0} was created!";
 
+        private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
         private readonly IAllMembers allMembers;
@@ -20,6 +21,7 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IDescriptionBuilder descriptionBuilder;
 
         public CreateStoryOperation(
+            IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IAllMembers allMembers,
@@ -27,6 +29,7 @@ namespace Wim.Core.Engine.EngineOperations
             IWimFactory factory,
             IDescriptionBuilder descriptionBuilder)
         {
+            this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.allMembers = allMembers;
@@ -60,15 +63,15 @@ namespace Wim.Core.Engine.EngineOperations
 
             inputValidator.ValdateItemDescriptionLength(storyDescription);
 
-            inputValidator.ValidateTeamExistance(allTeams, teamToAddStoryFor);
+            businessLogicValidator.ValidateTeamExistance(allTeams, teamToAddStoryFor);
 
-            inputValidator.ValidateMemberExistance(allMembers, storyAssignee);
+            businessLogicValidator.ValidateMemberExistance(allMembers, storyAssignee);
 
-            inputValidator.ValidateIfMemberNotInTeam(allTeams, teamToAddStoryFor, storyAssignee);
+            businessLogicValidator.ValidateIfMemberNotInTeam(allTeams, teamToAddStoryFor, storyAssignee);
 
-            inputValidator.ValidateBoardExistanceInTeam(allTeams, boardToAddStoryFor, teamToAddStoryFor);
+            businessLogicValidator.ValidateBoardExistanceInTeam(allTeams, boardToAddStoryFor, teamToAddStoryFor);
 
-            inputValidator.ValidateStoryExistanceInBoard(allTeams, boardToAddStoryFor, teamToAddStoryFor, storyTitle);
+            businessLogicValidator.ValidateStoryExistanceInBoard(allTeams, boardToAddStoryFor, teamToAddStoryFor, storyTitle);
 
             //Operations
             Priority storyPriorityEnum = this.enumParser.GetPriority(storyPriority);

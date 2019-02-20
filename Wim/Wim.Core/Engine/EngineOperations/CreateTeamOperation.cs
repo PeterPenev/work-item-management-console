@@ -10,17 +10,20 @@ namespace Wim.Core.Engine.EngineOperations
     {
         private const string TeamCreated = "Team with name {0} was created!";
 
+        private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
         private readonly IEnumParser enumParser;
         private readonly IWimFactory factory;
 
         public CreateTeamOperation(
+            IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IEnumParser enumParser,
             IWimFactory factory)
         {
+            this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.enumParser = enumParser;
@@ -34,7 +37,7 @@ namespace Wim.Core.Engine.EngineOperations
             var inputTypeForChecking = "Team Name";
             inputValidator.IsNullOrEmpty(teamName, inputTypeForChecking);
 
-            inputValidator.ValidateIfTeamExists(allTeams, teamName);
+            businessLogicValidator.ValidateIfTeamExists(allTeams, teamName);
 
             //Operations
             var team = this.factory.CreateTeam(teamName);
