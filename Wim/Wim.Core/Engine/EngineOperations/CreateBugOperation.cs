@@ -76,8 +76,12 @@ namespace Wim.Core.Engine.EngineOperations
             businessLogicValidator.ValidateBugExistanceInBoard(allTeams, boardToAddBugFor, teamToAddBugFor, bugTitle);
 
             //Operations
-            Priority bugPriorityEnum = this.enumParser.GetPriority(bugPriority);
-            Severity bugSeverityEnum = this.enumParser.GetSeverity(bugSeverity);
+            var isPriorityEnumConvertable = Enum.TryParse(bugPriority, out Priority bugPriorityEnum);
+            inputValidator.IsEnumConvertable(isPriorityEnumConvertable, "Priority");
+
+            var isSeverityEnumConvertable = Enum.TryParse(bugSeverity, out Severity bugSeverityEnum);
+            inputValidator.IsEnumConvertable(isSeverityEnumConvertable, "Severity");
+
             IBug bugToAddToCollection = this.factory.CreateBug(bugTitle, bugPriorityEnum, bugSeverityEnum, allMembers.AllMembersList[bugAssignee], bugStepsToReproduce, bugDescription);
 
             var indexOfBoardInSelectedTeam = allTeams.AllTeamsList[teamToAddBugFor].Boards.FindIndex(boardIndex => boardIndex.Name == boardToAddBugFor);
