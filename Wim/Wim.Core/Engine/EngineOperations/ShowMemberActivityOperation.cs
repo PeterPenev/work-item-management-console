@@ -12,7 +12,8 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IInputValidator inputValidator;
         private readonly IAllMembers allMembers;
 
-        public ShowMemberActivityOperation(IBusinessLogicValidator businessLogicValidator,
+        public ShowMemberActivityOperation(
+            IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllMembers allMembers)
         {

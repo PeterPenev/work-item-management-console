@@ -18,7 +18,8 @@ namespace Wim.Core.Engine.EngineOperations
         {
         }
 
-        public SortStoriesByOperation(IBusinessLogicValidator businessLogicValidator,
+        public SortStoriesByOperation(
+            IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams)
         {

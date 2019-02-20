@@ -14,7 +14,8 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
 
-        public FilterBugsByAssigneeOperation(IBusinessLogicValidator businessLogicValidator,
+        public FilterBugsByAssigneeOperation(
+            IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams)
         {

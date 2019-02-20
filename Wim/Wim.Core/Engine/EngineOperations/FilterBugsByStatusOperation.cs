@@ -15,7 +15,8 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IAllTeams allTeams;
         private readonly IEnumParser enumParser;
 
-        public FilterBugsByStatusOperation(IBusinessLogicValidator businessLogicValidator,
+        public FilterBugsByStatusOperation(
+            IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IEnumParser enumParser)
