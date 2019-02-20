@@ -4,12 +4,37 @@ using System.Linq;
 using System.Text;
 using Wim.Core.Contracts;
 using Wim.Core.CustomExceptions;
+using Wim.Models;
 using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine
 {
+
     public class BusinessLogicValidator : IBusinessLogicValidator
     {
+        private const string NoTeamsInApplication = "There are no Teams in the Application yet!";
+        private const string NoMembersInApplication = "There are no Members in the Application yet!";
+        private const string NoBoardsInTeam = "There are no boards in this team!";
+        private const string NoSuchBoardInTeam = "There is no board with name {0} in team {1}!";
+        private const string BoardAlreadyExistsInTeam = "Board with name {0} already exists in team {1}!";
+        private const string NoSuchItemInBoard = "No item with name: {0} in board {1} part of team {2}!";
+        private const string NoSuchMemberInApplication = "There is no member with {0} name in the Application!";
+        private const string NoSuchTeamInApplication = "There is no team with {0} name in the Application!";
+        private const string BugAlreadyExists = "Bug with name {0} in Board: {1} part of Team {2} already exists!";
+        private const string StoryAlreadyExists = "Story with name {0} in Board: {1} part of Team {2} already exists!";
+        private const string FeedbackAlreadyExists = "Feedback with name {0} in Board: {1} part of Team {2} already exists!";
+        private const string NoSuchFeedbackInBoard = "There is no Feedback with name: {0} in board: {1} part of team: {2}!";
+        private const string NoSuchStoryInBoard = "Story with name {0}  from board {1} part of team {2} does not exist!";
+        private const string NoSuchBugInBoard = "Bug with name {0}  from board {1} part of team {2} does not exist!";
+        private const string PersonAlreadyExists = "Person with name {0} already exists!";
+        private const string PersonAlreadyInTeam = "Person with name {0} is already in team {1}!";
+        private const string MemberNotInTeam = "Member: {0} is not part of team {1}!";
+        private const string TeamAlreadyExists = "Team with name {0} already exists!";
+        private const string NoWorkItemsInApp = "There are no work items in the whole app yet!";
+        private const string NoBugsInApp = "There are no Bugs in the whole app yet!";
+        private const string NoStoriesInApp = "There are no Stories in the whole app yet!";
+        private const string NoFeedbacksInApp = "There are no Feedbacks in the whole app yet!";
+
         public void ValdateIfAnyTeamsExist(IAllTeams allTeams)
         {
             if (allTeams.AllTeamsList.Count == 0)
