@@ -18,6 +18,8 @@ namespace Wim.Core.Engine
         private const string ImproperBoardNameLength = "Board name should be between 5 and 10 symbols!";
         private const string ImproperItemTitleLength = "Item title should be between 10 and 50 symbols!";
         private const string ImproperItemDescriptionLength = "Item description should be between 10 and 500 symbols!";
+        private const string ImproperEnumInputted = "The {1} is not valid!";
+
 
         private const string PersonExists = "Person with name {0} already exists!";
         private const string PersonCreated = "Person with name {0} was created!";
@@ -78,6 +80,15 @@ namespace Wim.Core.Engine
             if (string.IsNullOrEmpty(inputToCheck))
             {
                 throw new ArgumentNullException(NoTeamsInApplication);
+            }
+        }
+
+        public void IsEnumConvertable<T>(bool isEnumConvertableBool, T enumTypeForConverting)
+        {
+            if (isEnumConvertableBool)
+            {
+                var ImproperEnumInputtedMessage = string.Format(ImproperEnumInputted, enumTypeForConverting.GetType().Name);
+                throw new ArgumentException(ImproperEnumInputtedMessage);
             }
         }
 

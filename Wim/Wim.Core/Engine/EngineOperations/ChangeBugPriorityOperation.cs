@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Wim.Core.Contracts;
+using Wim.Models.Enums;
 using Wim.Models.Interfaces;
 using Wim.Models.Operations.Interfaces;
 
@@ -61,6 +62,10 @@ namespace Wim.Core.Engine.EngineOperations
 
             //Operations
             var newPriorityEnum = enumParser.GetPriority(priority);
+
+            var isEnumConvertable = Enum.TryParse(priority, out Priority newPriorityEnum2);
+
+            inputValidator.IsEnumConvertable(isEnumConvertable, "Priority");
 
             var itemType = "Bug";
 

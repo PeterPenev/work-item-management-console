@@ -14,6 +14,8 @@ namespace Wim.Core.Contracts
 
         void ValdateItemDescriptionLength(string itemTitleToCheck);
 
+        void IsEnumConvertable<T>(bool isEnumConvertableBool, T enumTypeForConverting);
+
         int ValidateRatingConversion(string ratingForCheck);
     }
 }
