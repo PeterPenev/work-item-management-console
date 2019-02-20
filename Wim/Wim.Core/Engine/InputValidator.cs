@@ -11,8 +11,6 @@ namespace Wim.Core.Engine
 {
     public class InputValidator : IInputValidator
     {
-        
-
         private const string InvalidCommand = "Invalid command name: {0}!";
         private const string ImproperMemberNameLength = "Member name should be between 5 and 15 symbols!";
         private const string ImproperBoardNameLength = "Board name should be between 5 and 10 symbols!";
@@ -25,12 +23,12 @@ namespace Wim.Core.Engine
         private const string PersonExists = "Person with name {0} already exists!";
         private const string PersonCreated = "Person with name {0} was created!";
         private const string NullOrEmptyInput = "{0} cannot be null or empty!";
-        
+              
         private const string TeamAlreadyExists = "Team with name {0} already exists!";
         
-        private const string BugNotInBoard = "There is no bug with name {0} in board {1} part of team {2}!";
-                  
-        private const string RatingCannotBeConverted = "The Rating: {0} from the input cannot be converted to Number!";        
+        private const string BugNotInBoard = "There is no bug with name {0} in board {1} part of team {2}!";   
+
+        private const string RatingCannotBeConverted = "The Rating: {0} from the input cannot be converted to Number!";
 
         private const string NoPeopleInApplication = "There are no people!";
         private const string MemberDoesNotExist = "The member does not exist!";

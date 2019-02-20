@@ -45,7 +45,7 @@ namespace Wim.Core.Engine.EngineOperations
             string boardToAddFeedbackFor = inputParameters[2];
             string feedbackRaiting = inputParameters[3];
             string feedbackStatus = inputParameters[4];
-            var feedbackDescription = descriptionBuilder.BuildDescription(inputParameters, 5);            
+            var feedbackDescription = descriptionBuilder.BuildDescription(inputParameters, 5);
 
             //Validations
             var feedbackTypeForChecking = "Feedback Title";
@@ -70,7 +70,9 @@ namespace Wim.Core.Engine.EngineOperations
             var intFeedbackRating = inputValidator.ValidateRatingConversion(feedbackRaiting);
 
             //Operations
-            FeedbackStatus feedbackStatusEnum = this.enumParser.GetFeedbackStatus(feedbackStatus);
+            var isEnumConvertable = Enum.TryParse(feedbackStatus, out FeedbackStatus feedbackStatusEnum);
+
+            inputValidator.IsEnumConvertable(isEnumConvertable, "FeedbackStatus");
 
             IFeedback feedbackToAddToCollection = this.factory.CreateFeedback(feedbackTitle, feedbackDescription, intFeedbackRating, feedbackStatusEnum);
 
