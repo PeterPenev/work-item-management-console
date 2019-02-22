@@ -24,8 +24,6 @@ namespace Wim.UnitTests.Wim.Operations.Tests
 
             //Assert
             Assert.AreEqual(mockFeedback.Object.Rating, 6);
-
-
         }
 
     }
