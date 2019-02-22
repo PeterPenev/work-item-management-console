@@ -57,6 +57,23 @@ namespace Wim.UnitTests.Wim.Models.Tests
 
             //Assert
             Assert.AreEqual(sut.Rating, rating);
+        }
+
+        [TestMethod]
+        public void Constructor_Should_AssignCorrectStatus()
+        {
+            //Arange
+            var factory = new WimFactory();
+            var title = "ExampleStory";
+            var descritpion = "Example Description";
+            var rating = 5;
+            var status = FeedbackStatus.New;
+
+            //Act
+            var sut = factory.CreateFeedback(title, descritpion, rating, status);
+
+            //Assert
+            Assert.AreEqual(sut.FeedbackStatus, status);
 
 
         }
