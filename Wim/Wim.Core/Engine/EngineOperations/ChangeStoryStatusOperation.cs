@@ -70,11 +70,9 @@ namespace Wim.Core.Engine.EngineOperations
 
             inputValidator.IsEnumConvertable(isEnumConvertable, "Status");
 
-            //var newStatusEnum = enumParser.GetStoryStatus(newStoryStatus);
-
             var castedStoryForStatusChange = allTeams.FindStoryAndCast(teamToChangeStoryStatusFor, boardToChangeStoryStatusFor, storyToChangeStatusFor);
 
-            castedStoryForStatusChange.ChangeStoryStatus(newStatusEnum);
+            storyOperations.ChangeStoryStatus(castedStoryForStatusChange, newStatusEnum);
 
             var memberToAddActivityFor = allTeams.FindMemberInTeam(teamToChangeStoryStatusFor, authorOfStoryStatusChange);
 

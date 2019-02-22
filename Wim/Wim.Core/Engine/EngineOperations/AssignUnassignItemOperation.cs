@@ -15,7 +15,7 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
         private readonly IAllMembers allMembers;
-        private readonly IEnumParser enumParser;
+        private readonly IStoryOperations storyOperations;
         private readonly IBugOperations bugOperations;
         private readonly IBusinessLogicValidator businessLogicValidator;
 
@@ -24,6 +24,7 @@ namespace Wim.Core.Engine.EngineOperations
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IAllMembers allMembers,
+            IStoryOperations storyOperations,
             IBugOperations bugOperations,
             IBusinessLogicValidator businessLogicValidator)
         {
@@ -31,6 +32,7 @@ namespace Wim.Core.Engine.EngineOperations
             this.allTeams = allTeams;
             this.allMembers = allMembers;
             this.bugOperations = bugOperations;
+            this.storyOperations = storyOperations;
             this.businessLogicValidator = businessLogicValidator;
         }
 
@@ -87,7 +89,7 @@ namespace Wim.Core.Engine.EngineOperations
 
                 itemMemberBeforeUnssign = typedItem.Assignee;
 
-                typedItem.AssignMemberToStory(itemMemberToAssign);
+                storyOperations.AssignMemberToStory(typedItem, itemMemberToAssign);
 
                 itemMemberBeforeUnssign.RemoveWorkItemIdToMember(typedItem.Id);
 

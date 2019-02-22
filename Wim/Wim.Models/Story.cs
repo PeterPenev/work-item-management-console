@@ -71,26 +71,5 @@ namespace Wim.Models
                 this.assignee = value;
             }
         }
-
-        ////Methods
-        //public void ChangeStoryPriority(Priority priority)
-        //{
-        //    this.Priority = priority;
-        //}
-
-        //public void ChangeStorySize(Size size)
-        //{
-        //    this.Size = size;
-        //}
-
-        //public void ChangeStoryStatus(StoryStatus status)
-        //{
-        //    this.StoryStatus = status;
-        //}
-
-        //public void AssignMemberToStory(IMember memberToAssignStory)
-        //{
-        //    this.Assignee = memberToAssignStory;
-        //}
     }
 }

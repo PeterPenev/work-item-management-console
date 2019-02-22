@@ -6,12 +6,12 @@ namespace Wim.Models.Operations.Interfaces
 {
     public interface IBugOperations : IWorkItemOperations
     {
-        void ChangeBugPriority(IWorkItem workItem, Priority priority);
+        void ChangeBugPriority(IBug bug, Priority priority);
 
-        void ChangeBugSeverity(IWorkItem workItem, Severity severity);
+        void ChangeBugSeverity(IBug bug, Severity severity);
 
-        void ChangeBugStatus(IWorkItem workItem, BugStatus status);
+        void ChangeBugStatus(IBug bug, BugStatus status);
 
-        void AssignMemberToBug(IWorkItem workItem, IMember memberToAssignBug);
+        void AssignMemberToBug(IBug bug, IMember memberToAssignBug);
     }
 }

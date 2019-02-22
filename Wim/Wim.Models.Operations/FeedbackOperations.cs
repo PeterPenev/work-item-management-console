@@ -9,15 +9,13 @@ namespace Wim.Models.Operations
 {
     public class FeedbackOperations : WorkItemOperations, IFeedbackOperations
     {
-        public void ChangeFeedbackRating(IWorkItem workItem, int rating )
+        public void ChangeFeedbackRating(IFeedback feedback, int rating )
         {
-            var feedback = workItem as Feedback;
             feedback.Rating = rating;
         }
 
-        public void ChangeFeedbackStatus(IWorkItem workItem, FeedbackStatus status)
+        public void ChangeFeedbackStatus(IFeedback feedback, FeedbackStatus status)
         {
-            var feedback = workItem as Feedback;
             feedback.FeedbackStatus = status;
         }
 

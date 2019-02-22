@@ -68,7 +68,7 @@ namespace Wim.Core.Engine.EngineOperations
 
             inputValidator.IsEnumConvertable(isEnumConvertable, "Status");
 
-            var feedbackForStatusChange = allTeams.FindWorkItem(teamToChangeFeedbackStatusFor, itemType, boardToChangeFeedbackStatusFor, feedbackToChangeStatusFor);
+            var feedbackForStatusChange = allTeams.FindFeedbackAndCast(teamToChangeFeedbackStatusFor, boardToChangeFeedbackStatusFor, feedbackToChangeStatusFor);
 
             feedbackOperations.ChangeFeedbackStatus(feedbackForStatusChange, newStatusEnum);
 

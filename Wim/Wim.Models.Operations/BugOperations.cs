@@ -7,35 +7,23 @@ namespace Wim.Models.Operations
 {
     public class BugOperations : WorkItemOperations, IBugOperations
     {
-        public void ChangeBugPriority(IWorkItem workItem, Priority priority)
+        public void ChangeBugPriority(IBug bug, Priority priority)
         {
-            var bug = (Bug)workItem;
             bug.Priority = priority;
         }
 
-        //public void ChangeBugPriority2(IWorkItem workItem, Priority priority)
-        //{
-        //    //var bug = (Bug)workItem;
-        //    workItem.GetType().GetProperty("Priority").SetValue(workItem, "High");
-        //    workItem.GetType().GetProperty("Title").SetValue(workItem, "NewTitle");
-        //    //bug.Priority = priority;
-        //}
-
-        public void ChangeBugSeverity(IWorkItem workItem, Severity severity)
+        public void ChangeBugSeverity(IBug bug, Severity severity)
         {
-            var bug = workItem as Bug;
             bug.Severity = severity;
         }
 
-        public void ChangeBugStatus(IWorkItem workItem, BugStatus status)
+        public void ChangeBugStatus(IBug bug, BugStatus status)
         {
-            var bug = workItem as Bug;
             bug.BugStatus = status;
         }
 
-        public void AssignMemberToBug(IWorkItem workItem, IMember memberToAssignBug)
+        public void AssignMemberToBug(IBug bug, IMember memberToAssignBug)
         {
-            var bug = workItem as Bug;
             bug.Assignee = memberToAssignBug;
         }
     }

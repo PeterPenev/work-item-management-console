@@ -9,27 +9,24 @@ namespace Wim.Models.Operations
 {
     public class StoryOperations : WorkItemOperations, IStoryOperations
     {
-        public void ChangeStoryPriority(IWorkItem workItem, Priority priority)
+        public void ChangeStoryPriority(IStory story, Priority priority)
         {
-            var story = workItem as Story;
             story.Priority = priority;
         }
 
-        public void ChangeStorySize(IWorkItem workItem, Size size)
+        public void ChangeStorySize(IStory story, Size size)
         {
-            var story = workItem as Story;
             story.Size = size;
         }
 
-        public void ChangeStoryStatus(IWorkItem workItem, StoryStatus status)
+        public void ChangeStoryStatus(IStory story, StoryStatus status)
         {
-            var story = workItem as Story;
+
             story.StoryStatus = status;
         }
 
-        public void AssignMemberToStory(IWorkItem workItem, IMember memberToAssignBug)
+        public void AssignMemberToStory(IStory story, IMember memberToAssignBug)
         {
-            var story = workItem as Story;
             story.Assignee = memberToAssignBug;
         }
     }

@@ -66,9 +66,9 @@ namespace Wim.Core.Engine.EngineOperations
             //Operations  
             var itemType = "Feedback";
 
-            var feedbackForRatingChange = allTeams.FindWorkItem(teamToChangeFeedbackRatingFor, itemType, boardToChangeFeedbackRatingFor, feedbackToChangeRatingFor);
+            var castedFeedbackForRatingChange = allTeams.FindFeedbackAndCast(teamToChangeFeedbackRatingFor, boardToChangeFeedbackRatingFor, feedbackToChangeRatingFor);
 
-            feedbackOperations.ChangeFeedbackRating(feedbackForRatingChange, integerRating);
+            feedbackOperations.ChangeFeedbackRating(castedFeedbackForRatingChange, integerRating);
 
             var memberToAddActivityFor = allTeams.FindMemberInTeam(teamToChangeFeedbackRatingFor, authorOfFeedbackRatingChange);
 

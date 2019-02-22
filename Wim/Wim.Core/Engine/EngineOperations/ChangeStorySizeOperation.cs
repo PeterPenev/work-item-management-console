@@ -71,7 +71,7 @@ namespace Wim.Core.Engine.EngineOperations
             
             var castedStoryForSizeChange = allTeams.FindStoryAndCast(teamToChangeStorySizeFor, boardToChangeStorySizeFor, storyToChangeSizeFor);
 
-            castedStoryForSizeChange.ChangeStorySize(newSizeEnum);
+            storyOperations.ChangeStorySize(castedStoryForSizeChange, newSizeEnum);
 
             var memberToAddActivityFor = allTeams.FindMemberInTeam(teamToChangeStorySizeFor, authorOfStorySizeChange);
 

@@ -70,7 +70,7 @@ namespace Wim.Core.Engine.EngineOperations
 
             var castedStoryForPriorityChange = allTeams.FindStoryAndCast(teamToChangeStoryPriorityFor, boardToChangeStoryPriorityFor, storyToChangePriorityFor);
 
-            castedStoryForPriorityChange.ChangeStoryPriority(newPriorityEnum);
+            storyOperations.ChangeStoryPriority(castedStoryForPriorityChange, newPriorityEnum);
 
             var memberToAddActivityFor = allTeams.FindMemberInTeam(teamToChangeStoryPriorityFor, authorOfStoryPriorityChange);
 

@@ -8,13 +8,12 @@ namespace Wim.Models.Operations.Interfaces
 {
     public interface IStoryOperations : IWorkItemOperations
     {
-        void ChangeStoryPriority(IWorkItem workItem, Priority priority);
+        void ChangeStoryPriority(IStory story, Priority priority);
 
-        void ChangeStorySize(IWorkItem workItem, Size size);
+        void ChangeStorySize(IStory story, Size size);
 
-        void ChangeStoryStatus(IWorkItem workItem, StoryStatus status);
+        void ChangeStoryStatus(IStory story, StoryStatus status);
 
-        void AssignMemberToStory(IWorkItem workItem, IMember memberToAssignBug);
-       
+        void AssignMemberToStory(IStory story, IMember memberToAssignBug);       
     }
 }
