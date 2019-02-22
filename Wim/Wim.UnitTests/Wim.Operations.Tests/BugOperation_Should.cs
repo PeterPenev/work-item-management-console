@@ -17,14 +17,15 @@ namespace Wim.UnitTests.Wim.Operations.Tests
         {
             //Arange
             var mockBug = new Mock<IBug>();
-            mockBug.Setup(x => x.Priority).Returns(Priority.Low);
+            mockBug.Setup(x => x.Priority).Returns(new Priority());
             var bugOperations = new BugOperations();
+            var newPriority = Priority.High;
 
             //Act
-            bugOperations.ChangeBugPriority(mockBug.Object, Priority.High);
+            bugOperations.ChangeBugPriority(mockBug.Object, newPriority);
 
             //Assert
-            Assert.AreEqual(mockBug.Object.Priority, Priority.High);
+            Assert.AreEqual(mockBug.Object.Priority, newPriority);
         }
     }
 }
