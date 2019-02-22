@@ -49,5 +49,25 @@ namespace Wim.UnitTests.Wim.Models.Tests
             Assert.AreEqual(sut.Priority, storyPriority);
         }
 
+        [TestMethod]
+        public void Constructor_Should_AssignsCorrectSize()
+        {
+            //Arrange
+            var factory = new WimFactory();
+
+            var storyTitle = "StoryTitleToCheck";
+            var storyDescription = "This is the first story description";
+            var storyPriority = Priority.High;
+            var storySize = Size.Large;
+            var storyStatus = StoryStatus.NotDone;
+            var MockStoryAssignee = new Mock<IMember>();
+
+            //Act
+            var sut = factory.CreateStory(storyTitle, storyDescription, storyPriority, storySize, storyStatus, MockStoryAssignee.Object);
+
+            //Assert
+            Assert.AreEqual(sut.Size, storySize);
+        }
+
     }
 }
