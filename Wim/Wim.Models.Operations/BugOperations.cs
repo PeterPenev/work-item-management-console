@@ -9,9 +9,17 @@ namespace Wim.Models.Operations
     {
         public void ChangeBugPriority(IWorkItem workItem, Priority priority)
         {
-            var bug = workItem as Bug;
+            var bug = (Bug)workItem;
             bug.Priority = priority;
         }
+
+        //public void ChangeBugPriority2(IWorkItem workItem, Priority priority)
+        //{
+        //    //var bug = (Bug)workItem;
+        //    workItem.GetType().GetProperty("Priority").SetValue(workItem, "High");
+        //    workItem.GetType().GetProperty("Title").SetValue(workItem, "NewTitle");
+        //    //bug.Priority = priority;
+        //}
 
         public void ChangeBugSeverity(IWorkItem workItem, Severity severity)
         {

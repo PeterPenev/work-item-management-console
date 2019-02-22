@@ -72,25 +72,25 @@ namespace Wim.Models
             }
         }
 
-        //Methods
-        public void ChangeStoryPriority(Priority priority)
-        {
-            this.Priority = priority;
-        }
+        ////Methods
+        //public void ChangeStoryPriority(Priority priority)
+        //{
+        //    this.Priority = priority;
+        //}
 
-        public void ChangeStorySize(Size size)
-        {
-            this.Size = size;
-        }
+        //public void ChangeStorySize(Size size)
+        //{
+        //    this.Size = size;
+        //}
 
-        public void ChangeStoryStatus(StoryStatus status)
-        {
-            this.StoryStatus = status;
-        }
+        //public void ChangeStoryStatus(StoryStatus status)
+        //{
+        //    this.StoryStatus = status;
+        //}
 
-        public void AssignMemberToStory(IMember memberToAssignStory)
-        {
-            this.Assignee = memberToAssignStory;
-        }
+        //public void AssignMemberToStory(IMember memberToAssignStory)
+        //{
+        //    this.Assignee = memberToAssignStory;
+        //}
     }
 }

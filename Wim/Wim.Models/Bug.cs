@@ -35,6 +35,8 @@ namespace Wim.Models
             }
         }
 
+        public string Test { get; set; }
+
         public Priority Priority
         {
             get

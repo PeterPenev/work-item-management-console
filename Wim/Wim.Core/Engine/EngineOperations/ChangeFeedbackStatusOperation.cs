@@ -68,9 +68,9 @@ namespace Wim.Core.Engine.EngineOperations
 
             inputValidator.IsEnumConvertable(isEnumConvertable, "Status");
 
-            var castedFeedbackForStatusChange = allTeams.FindFeedbackAndCast(teamToChangeFeedbackStatusFor, boardToChangeFeedbackStatusFor, feedbackToChangeStatusFor);
+            var feedbackForStatusChange = allTeams.FindWorkItem(teamToChangeFeedbackStatusFor, itemType, boardToChangeFeedbackStatusFor, feedbackToChangeStatusFor);
 
-            castedFeedbackForStatusChange.ChangeFeedbackStatus(newStatusEnum);
+            feedbackOperations.ChangeFeedbackStatus(feedbackForStatusChange, newStatusEnum);
 
             var memberToAddActivityFor = allTeams.FindMemberInTeam(teamToChangeFeedbackStatusFor, authorOfFeedbackStatusChange);
 

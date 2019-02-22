@@ -42,7 +42,5 @@ namespace Wim.Models
                 this.loggingDate = value;
             }
         }
-
-        //Methods
     }
 }

@@ -64,30 +64,6 @@ namespace Wim.Models
             {
                 return new List<IActivityHistory>(this.activityHistory);
             }
-        }
-
-        //Methods
-        //public void AddActivityHistoryToWorkItem(IMember trackedMember, IWorkItem trackedWorkItem)
-        //{
-        //    StringBuilder sb = new StringBuilder();
-        //    sb.AppendLine($"A {trackedWorkItem.GetType().Name} with Title: {trackedWorkItem.Title} was created by Member: {trackedMember.Name}");
-        //    string resultToAddAssMessage = sb.ToString().Trim();
-        //    var activityHistoryToAddToBoard = new ActivityHistory(resultToAddAssMessage);
-        //    this.activityHistory.Add(activityHistoryToAddToBoard);
-        //}
-
-        //public void AddActivityHistoryToWorkItem<T>(IMember trackedMember, IWorkItem trackedWorkItem, T changedEnum)
-        //{
-        //    StringBuilder sb = new StringBuilder();
-        //    sb.AppendLine($"A {trackedWorkItem.GetType().Name} with Title: {trackedWorkItem.Title}'s {changedEnum.GetType().Name} was changed by Member: {trackedMember.Name} to {changedEnum}");
-        //    string resultToAddAssMessage = sb.ToString().Trim();
-        //    var activityHistoryToAddToBoard = new ActivityHistory(resultToAddAssMessage);
-        //    this.activityHistory.Add(activityHistoryToAddToBoard);
-        //}
-
-        //public void AddComment(string commentToAdd, string authorOfComment)
-        //{
-        //    this.Comments.Add($"{commentToAdd} with author{authorOfComment}");
-        //}
+        }        
     }
 }

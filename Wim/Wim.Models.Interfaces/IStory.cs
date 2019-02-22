@@ -14,13 +14,5 @@ namespace Wim.Models.Interfaces
         Size Size { get; set; }
 
         StoryStatus StoryStatus { get; set; }
-
-        void ChangeStoryPriority(Priority priority);
-
-        void ChangeStorySize(Size size);
-
-        void ChangeStoryStatus(StoryStatus status);
-
-        void AssignMemberToStory(IMember memberToAssignStory);
     }
 }

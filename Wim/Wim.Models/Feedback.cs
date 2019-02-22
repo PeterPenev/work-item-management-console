@@ -34,16 +34,16 @@ namespace Wim.Models
 
         public FeedbackStatus FeedbackStatus { get; set; }
 
-        //Methods
-        public void ChangeFeedbackRating(int rating)
-        {
-            this.Rating = rating;
-        }
+        ////Methods
+        //public void ChangeFeedbackRating(int rating)
+        //{
+        //    this.Rating = rating;
+        //}
 
-        public void ChangeFeedbackStatus(FeedbackStatus status)
-        {
-            this.FeedbackStatus = status;
-        }
+        //public void ChangeFeedbackStatus(FeedbackStatus status)
+        //{
+        //    this.FeedbackStatus = status;
+        //}
 
        
     }
