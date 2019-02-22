@@ -120,6 +120,4 @@ namespace Wim.UnitTests.Wim.Models.Tests
             Assert.AreEqual(sut.Description, descritpion);
         }
     }
-
-
 }

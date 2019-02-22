@@ -74,8 +74,6 @@ namespace Wim.UnitTests.Wim.Models.Tests
 
             //Assert
             Assert.AreEqual(sut.FeedbackStatus, status);
-
-
         }
 
     }
