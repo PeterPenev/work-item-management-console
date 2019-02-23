@@ -11,17 +11,5 @@ namespace Wim.Models.Interfaces
         List<IWorkItem> WorkItems { get; }
 
         List<IActivityHistory> ActivityHistory { get; }
-
-        void AddActivityHistoryToBoard(IMember trackedMember, IWorkItem trackedWorkItem);
-
-        void AddActivityHistoryToBoard(IWorkItem trackedWorkItem);
-
-        void AddActivityHistoryToBoard<T>(IMember trackedMember, IWorkItem trackedWorkItem, T changedEnum);
-
-        string ShowBoardActivityToString();
-
-        void AddWorkitemToBoard(IWorkItem workItemToAdd);
-
-        void AddActivityHistoryAfterAssignUnsignToBoard(string itemType, string workItemTitle, IMember memberToAssign, IMember memberFromUnsign);
     }
 }
