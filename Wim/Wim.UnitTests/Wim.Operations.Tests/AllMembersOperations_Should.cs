@@ -3,6 +3,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Wim.Models;
 using Wim.Models.Interfaces;
 using Wim.Models.Operations;
 
@@ -26,6 +27,16 @@ namespace Wim.UnitTests.Wim.Operations.Tests
 
             //Assert
             Assert.AreSame(mockAllMembers.Object.AllMembersList["Edward"], mockMember.Object);
+        }
+
+        [TestMethod]
+        public void Constructor_ShouldReturnCorrectDictionaryOfMembers()
+        {
+            //Arrange, Act
+            var allMembers = new AllMembers();
+
+            //Assert
+            Assert.IsInstanceOfType(allMembers.AllMembersList, new Dictionary<string, IMember>().GetType());
         }
     }
 }
