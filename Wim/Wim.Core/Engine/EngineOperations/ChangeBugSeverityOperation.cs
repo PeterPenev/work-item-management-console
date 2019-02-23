@@ -14,7 +14,6 @@ namespace Wim.Core.Engine.EngineOperations
 
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
-        private readonly IEnumParser enumParser;
         private readonly IBugOperations bugOperations;
         private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IMemberOpertaions memberOpertaions;
@@ -24,7 +23,6 @@ namespace Wim.Core.Engine.EngineOperations
         public ChangeBugSeverityOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
-            IEnumParser enumParser,
             IBugOperations bugOperations,
             IBusinessLogicValidator businessLogicValidator,
             IMemberOpertaions memberOpertaions,
@@ -32,7 +30,6 @@ namespace Wim.Core.Engine.EngineOperations
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
-            this.enumParser = enumParser;
             this.bugOperations = bugOperations;
             this.businessLogicValidator = businessLogicValidator;
             this.memberOpertaions = memberOpertaions;

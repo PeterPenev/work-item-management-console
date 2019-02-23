@@ -32,5 +32,26 @@ namespace Wim.UnitTests.Wim.Operations.Tests
             //Assert
             Assert.AreSame(mockTeam.Object.Members.First(x => x.Name == "Gosho"), mockMember.Object);
         }
+        
+        [TestMethod]
+        public void AddBoard_ShouldReturnCorrectlyAddedBoard()
+        {
+            //Arrange
+            var mockMemberOperations = new Mock<IMemberOpertaions>();
+
+            var teamOperations = new TeamOperations(mockMemberOperations.Object);
+
+            var mockBoard = new Mock<IBoard>();
+            mockBoard.Setup(x => x.Name).Returns("TestBoard");
+
+            var mockTeam = new Mock<ITeam>();
+            mockTeam.Setup(x => x.Boards).Returns(new List<IBoard>());
+
+            //Act
+            teamOperations.AddBoard(mockTeam.Object, mockBoard.Object);
+
+            //Assert
+            Assert.AreSame(mockTeam.Object.Boards.First(x => x.Name == "TestBoard"), mockBoard.Object);
+        }
     }
 }

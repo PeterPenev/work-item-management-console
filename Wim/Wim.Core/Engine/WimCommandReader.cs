@@ -7,18 +7,25 @@ namespace Wim.Core.Engine
 {
     public class WimCommandReader : IWimCommandReader
     {
+        private readonly IConsoleReader consoleReader;
+
+        public WimCommandReader(IConsoleReader consoleReader)
+        {
+            this.consoleReader = consoleReader;
+        }
+
         public IList<ICommand> ReadCommands()
         {
             var commands = new List<ICommand>();
 
-            var currentLine = Console.ReadLine();
+            var currentLine = consoleReader.ReadLine();
 
             while (!string.IsNullOrEmpty(currentLine))
             {
                 var currentCommand = Command.Parse(currentLine);
                 commands.Add(currentCommand);
 
-                currentLine = Console.ReadLine();
+                currentLine = consoleReader.ReadLine();
             }
 
             return commands;

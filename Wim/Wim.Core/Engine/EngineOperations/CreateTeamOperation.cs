@@ -14,7 +14,6 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
-        private readonly IEnumParser enumParser;
         private readonly IWimFactory factory;
         private readonly IAllTeamsOperations allTeamsOperations;
         private readonly IMemberOpertaions memberOpertaions;
@@ -23,7 +22,6 @@ namespace Wim.Core.Engine.EngineOperations
             IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams,
-            IEnumParser enumParser,
             IWimFactory factory,
             IAllTeamsOperations allTeamsOperations,
             IMemberOpertaions memberOpertaions)
@@ -31,7 +29,6 @@ namespace Wim.Core.Engine.EngineOperations
             this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
-            this.enumParser = enumParser;
             this.factory = factory;
             this.allTeamsOperations = allTeamsOperations;
             this.memberOpertaions = memberOpertaions;

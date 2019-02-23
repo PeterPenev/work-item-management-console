@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Wim.Core.Contracts;
 using Wim.Models;
+using Wim.Models.Enums;
 using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
@@ -13,18 +14,16 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
-        private readonly IEnumParser enumParser;
 
         public FilterStoriesByStatusOperation(
             IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
-            IAllTeams allTeams,
-            IEnumParser enumParser)
+            IAllTeams allTeams)
         {
             this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
-            this.enumParser = enumParser;
+
         }
 
         public string Execute(IList<string> inputParameters)
@@ -41,7 +40,9 @@ namespace Wim.Core.Engine.EngineOperations
             businessLogicValidator.ValidateIfAnyStoriesExist(allTeams);
 
             //Operations
-            var storyStatusToCheckFor = this.enumParser.GetStoryStatus(statusToFilterStoryFor);
+            var isStatusEnumConvertable = Enum.TryParse(statusToFilterStoryFor, out StoryStatus storyStatusToCheckFor);
+
+            inputValidator.IsEnumConvertable(isStatusEnumConvertable, "Status");
 
             var filteredStoriesbyStatus = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)

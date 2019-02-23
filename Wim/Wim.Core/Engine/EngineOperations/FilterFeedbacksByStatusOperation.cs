@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Wim.Core.Contracts;
 using Wim.Models;
+using Wim.Models.Enums;
 using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
@@ -13,18 +14,15 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
-        private readonly IEnumParser enumParser;
 
         public FilterFeedbacksByStatusOperation(
             IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
-            IAllTeams allTeams,
-            IEnumParser enumParser)
+            IAllTeams allTeams)
         {
             this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
-            this.enumParser = enumParser;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -41,7 +39,9 @@ namespace Wim.Core.Engine.EngineOperations
             businessLogicValidator.ValidateIfAnyFeedbacksExist(allTeams);
 
             //Operations
-            var feedbacksStatusToCheckFor = this.enumParser.GetFeedbackStatus(statusToFilterFeedbacksFor);
+            var isStatusEnumConvertable = Enum.TryParse(statusToFilterFeedbacksFor, out FeedbackStatus feedbacksStatusToCheckFor);
+
+            inputValidator.IsEnumConvertable(isStatusEnumConvertable, "Status");
 
             var filteredFeedbacksbyStatus = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)

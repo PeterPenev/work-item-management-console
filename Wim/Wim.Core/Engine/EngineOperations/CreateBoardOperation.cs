@@ -7,7 +7,7 @@ using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class CreateBoardToTeamOperation : IEngineOperations
+    public class CreateBoardOperation : IEngineOperations
     {
         private const string BoardAddedToTeam = "Board {0} was added to team {1}!";
 
@@ -17,7 +17,7 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly ITeamOperations teamOperations;
 
-        public CreateBoardToTeamOperation(
+        public CreateBoardOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IWimFactory factory,

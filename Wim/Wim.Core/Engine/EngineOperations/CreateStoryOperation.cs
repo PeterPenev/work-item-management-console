@@ -17,7 +17,6 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
         private readonly IAllMembers allMembers;
-        private readonly IEnumParser enumParser;
         private readonly IWimFactory factory;
         private readonly IDescriptionBuilder descriptionBuilder;
         private readonly IMemberOpertaions memberOpertaions;
@@ -28,7 +27,6 @@ namespace Wim.Core.Engine.EngineOperations
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IAllMembers allMembers,
-            IEnumParser enumParser,
             IWimFactory factory,
             IDescriptionBuilder descriptionBuilder,
             IMemberOpertaions memberOpertaions,
@@ -38,7 +36,6 @@ namespace Wim.Core.Engine.EngineOperations
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.allMembers = allMembers;
-            this.enumParser = enumParser;
             this.factory = factory;
             this.descriptionBuilder = descriptionBuilder;
             this.memberOpertaions = memberOpertaions;
@@ -81,9 +78,18 @@ namespace Wim.Core.Engine.EngineOperations
             businessLogicValidator.ValidateStoryExistanceInBoard(allTeams, boardToAddStoryFor, teamToAddStoryFor, storyTitle);
 
             //Operations
-            Priority storyPriorityEnum = this.enumParser.GetPriority(storyPriority);
-            Size storySizeEnum = this.enumParser.GetStorySize(storySize);
-            StoryStatus storyStatusEnum = this.enumParser.GetStoryStatus(storyStatus);
+
+            var isPriorityEnumConvertable = Enum.TryParse(storyPriority, out Priority storyPriorityEnum);
+
+            inputValidator.IsEnumConvertable(isPriorityEnumConvertable, "Priority");
+
+            var isSizeEnumConvertable = Enum.TryParse(storySize, out Size storySizeEnum);
+
+            inputValidator.IsEnumConvertable(isSizeEnumConvertable, "Size");
+
+            var isStatusEnumConvertable = Enum.TryParse(storyStatus, out StoryStatus storyStatusEnum);
+
+            inputValidator.IsEnumConvertable(isStatusEnumConvertable, "Status");
 
             IStory storyToAddToCollection = this.factory.CreateStory(storyTitle, storyDescription, storyPriorityEnum, storySizeEnum, storyStatusEnum, allMembers.AllMembersList[storyAssignee]);
 
