@@ -4,6 +4,7 @@ using System.Text;
 using Wim.Core.Contracts;
 using Wim.Models.Enums;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
@@ -18,6 +19,7 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IEnumParser enumParser;
         private readonly IWimFactory factory;
         private readonly IDescriptionBuilder descriptionBuilder;
+        private readonly IBoardOperations boardOperations;
 
         public CreateFeedbackOperation(
             IBusinessLogicValidator businessLogicValidator,
@@ -26,7 +28,8 @@ namespace Wim.Core.Engine.EngineOperations
             IAllMembers allMembers,
             IEnumParser enumParser,
             IWimFactory factory,
-            IDescriptionBuilder descriptionBuilder)
+            IDescriptionBuilder descriptionBuilder,
+            IBoardOperations boardOperations)
         {
             this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
@@ -35,6 +38,7 @@ namespace Wim.Core.Engine.EngineOperations
             this.enumParser = enumParser;
             this.factory = factory;
             this.descriptionBuilder = descriptionBuilder;
+            this.boardOperations = boardOperations;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -78,8 +82,8 @@ namespace Wim.Core.Engine.EngineOperations
 
             var indexOfBoardInSelectedTeam = allTeams.AllTeamsList[teamToAddFeedbackFor].Boards.FindIndex(boardIndex => boardIndex.Name == boardToAddFeedbackFor);
 
-            allTeams.AllTeamsList[teamToAddFeedbackFor].Boards[indexOfBoardInSelectedTeam].AddWorkitemToBoard(feedbackToAddToCollection);
-            allTeams.AllTeamsList[teamToAddFeedbackFor].Boards[indexOfBoardInSelectedTeam].AddActivityHistoryToBoard(feedbackToAddToCollection);
+            boardOperations.AddWorkitemToBoard(allTeams.AllTeamsList[teamToAddFeedbackFor].Boards[indexOfBoardInSelectedTeam], feedbackToAddToCollection);
+            boardOperations.AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToAddFeedbackFor].Boards[indexOfBoardInSelectedTeam], feedbackToAddToCollection);
 
             return string.Format(FeedbackCreated, feedbackTitle);
         }

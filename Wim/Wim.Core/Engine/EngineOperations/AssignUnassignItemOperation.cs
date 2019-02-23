@@ -19,6 +19,7 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IBugOperations bugOperations;
         private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IMemberOpertaions memberOpertaions;
+        private readonly IBoardOperations boardOperations;
 
 
         public AssignUnassignItemOperation(
@@ -28,7 +29,8 @@ namespace Wim.Core.Engine.EngineOperations
             IStoryOperations storyOperations,
             IBugOperations bugOperations,
             IBusinessLogicValidator businessLogicValidator,
-            IMemberOpertaions memberOpertaions)
+            IMemberOpertaions memberOpertaions,
+            IBoardOperations boardOperations)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
@@ -37,6 +39,7 @@ namespace Wim.Core.Engine.EngineOperations
             this.storyOperations = storyOperations;
             this.businessLogicValidator = businessLogicValidator;
             this.memberOpertaions = memberOpertaions;
+            this.boardOperations = boardOperations;
         }
 
         public string Execute(IList<string> inputParametes)
@@ -103,7 +106,7 @@ namespace Wim.Core.Engine.EngineOperations
             var indexOfBoardInSelectedTeam = allTeams.AllTeamsList[teamToAssignUnsignItem].Boards.FindIndex(boardIndex => boardIndex.Name == boardToAssignUnsignItem);
 
             //add history to board
-            allTeams.AllTeamsList[teamToAssignUnsignItem].Boards[indexOfBoardInSelectedTeam].AddActivityHistoryAfterAssignUnsignToBoard(itemType, itemToAssignUnsign, itemMemberToAssign, itemMemberBeforeUnssign);
+            boardOperations.AddActivityHistoryAfterAssignUnsignToBoard(allTeams.AllTeamsList[teamToAssignUnsignItem].Boards[indexOfBoardInSelectedTeam], itemType, itemToAssignUnsign, itemMemberToAssign, itemMemberBeforeUnssign);
 
             //add history to member before unssign
 

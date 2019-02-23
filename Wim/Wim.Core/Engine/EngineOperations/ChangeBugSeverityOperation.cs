@@ -18,6 +18,7 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IBugOperations bugOperations;
         private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IMemberOpertaions memberOpertaions;
+        private readonly IBoardOperations boardOperations;
 
 
         public ChangeBugSeverityOperation(
@@ -26,7 +27,8 @@ namespace Wim.Core.Engine.EngineOperations
             IEnumParser enumParser,
             IBugOperations bugOperations,
             IBusinessLogicValidator businessLogicValidator,
-            IMemberOpertaions memberOpertaions)
+            IMemberOpertaions memberOpertaions,
+            IBoardOperations boardOperations)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
@@ -34,6 +36,7 @@ namespace Wim.Core.Engine.EngineOperations
             this.bugOperations = bugOperations;
             this.businessLogicValidator = businessLogicValidator;
             this.memberOpertaions = memberOpertaions;
+            this.boardOperations = boardOperations;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -87,7 +90,7 @@ namespace Wim.Core.Engine.EngineOperations
 
             var boardToAddActivityFor = allTeams.FindBoardInTeam(teamToChangeBugSeverityFor, boardToChangeBugSeverityFor);
 
-            boardToAddActivityFor.AddActivityHistoryToBoard(memberToAddActivityFor, bugToAddActivityFor, newSeverity);
+            boardOperations.AddActivityHistoryToBoard(boardToAddActivityFor, memberToAddActivityFor, bugToAddActivityFor, newSeverity);
 
             memberOpertaions.AddActivityHistoryToMember(memberToAddActivityFor, bugToAddActivityFor, teamToFindIn, boardToAddActivityFor, newSeverity);
 

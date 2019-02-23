@@ -22,6 +22,7 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IStepsToReproduceBuilder stepsToReproduceBuilder;
         private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IMemberOpertaions memberOpertaions;
+        private readonly IBoardOperations boardOperations;
 
         public CreateBugOperation(
             IInputValidator inputValidator,
@@ -32,7 +33,8 @@ namespace Wim.Core.Engine.EngineOperations
             IDescriptionBuilder descriptionBuilder,
             IStepsToReproduceBuilder stepsToReproduceBuilder,
             IBusinessLogicValidator businessLogicValidator,
-            IMemberOpertaions memberOpertaions)
+            IMemberOpertaions memberOpertaions,
+            IBoardOperations boardOperations)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
@@ -43,6 +45,7 @@ namespace Wim.Core.Engine.EngineOperations
             this.stepsToReproduceBuilder = stepsToReproduceBuilder;
             this.businessLogicValidator = businessLogicValidator;
             this.memberOpertaions = memberOpertaions;
+            this.boardOperations = boardOperations;
         }
         public string Execute(IList<string> inputParameters)
         {
@@ -90,7 +93,7 @@ namespace Wim.Core.Engine.EngineOperations
 
             var indexOfBoardInSelectedTeam = allTeams.AllTeamsList[teamToAddBugFor].Boards.FindIndex(boardIndex => boardIndex.Name == boardToAddBugFor);
 
-            allTeams.AllTeamsList[teamToAddBugFor].Boards[indexOfBoardInSelectedTeam].AddWorkitemToBoard(bugToAddToCollection);
+            boardOperations.AddWorkitemToBoard(allTeams.AllTeamsList[teamToAddBugFor].Boards[indexOfBoardInSelectedTeam], bugToAddToCollection);
 
             var memberToTrackActivityFor = allTeams.AllTeamsList[teamToAddBugFor].Members.First(member => member.Name == bugAssignee);
 
@@ -99,7 +102,7 @@ namespace Wim.Core.Engine.EngineOperations
             var boardToPutHistoryFor = allTeams.AllTeamsList[teamToAddBugFor].Boards[indexOfBoardInSelectedTeam];
             var teamToPutHistoryFor = allTeams.AllTeamsList[teamToAddBugFor];
 
-            allTeams.AllTeamsList[teamToAddBugFor].Boards[indexOfBoardInSelectedTeam].AddActivityHistoryToBoard(memberToTrackActivityFor, bugToAddToCollection);
+            boardOperations.AddActivityHistoryToBoard(allTeams.AllTeamsList[teamToAddBugFor].Boards[indexOfBoardInSelectedTeam], memberToTrackActivityFor, bugToAddToCollection);
             memberOpertaions.AddActivityHistoryToMember(memberToTrackActivityFor, bugToAddToCollection, teamToPutHistoryFor, boardToPutHistoryFor);
 
             return string.Format(BugCreated, bugTitle);
