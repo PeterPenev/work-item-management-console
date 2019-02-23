@@ -4,15 +4,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Wim.Core.Contracts;
-using Wim.Core.Engine.EngineOperationsContracts;
 
 namespace Wim.Core.Engine
 {
     public class WimProcessSingleCommander : IWimProcessSingleCommander
     {
-        public string ProcessSingleCommand(ICommand command, IComponentContext componentContext)
+        private IWimCommandFinder wimCommandFinder;
+
+        public WimProcessSingleCommander(IWimCommandFinder wimCommandFinder)
         {
-            var commandClassToExecuteFor = componentContext.ResolveNamed<IEngineOperations>(command.Name);
+            this.wimCommandFinder = wimCommandFinder;
+        }
+
+        public string ProcessSingleCommand(ICommand command)
+        {
+            var commandClassToExecuteFor = wimCommandFinder.FindSingleCommand(command);
 
             var result = commandClassToExecuteFor.Execute(command.Parameters);
 

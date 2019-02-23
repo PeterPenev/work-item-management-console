@@ -8,8 +8,6 @@ namespace Wim.Models.Operations
 {
     public class AllTeamsOperations : IAllTeamsOperations
     {
-        //Methods
-
         public void AddTeam(IAllTeams allTeams, ITeam team)
         {
             allTeams.AllTeamsList.Add(team.Name, team);

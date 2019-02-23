@@ -8,10 +8,14 @@ namespace Wim.Core.Engine
 {
     public class WimCommandProcessor : IWimCommandProcessor
     {
-        public IList<string> ProcessCommands(
-            IList<ICommand> commands,
-            IWimProcessSingleCommander processSingleCommander, 
-            IComponentContext componentContext)
+        private readonly IWimProcessSingleCommander processSingleCommander;
+
+        public WimCommandProcessor(IWimProcessSingleCommander processSingleCommander)
+        {
+            this.processSingleCommander = processSingleCommander;
+        }
+
+        public IList<string> ProcessCommands(IList<ICommand> commands)
         {
             var reports = new List<string>();
 
@@ -19,7 +23,7 @@ namespace Wim.Core.Engine
             {
                 try
                 {
-                    var report = processSingleCommander.ProcessSingleCommand(command, componentContext);
+                    var report = this.processSingleCommander.ProcessSingleCommand(command);
                     reports.Add(report);
                 }
                 catch (Exception ex)

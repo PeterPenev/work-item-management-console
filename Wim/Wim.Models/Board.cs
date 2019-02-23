@@ -47,8 +47,6 @@ namespace Wim.Models
             {
                 return this.activityHistory;
             }
-        }
-
-        
+        }        
     }
 }

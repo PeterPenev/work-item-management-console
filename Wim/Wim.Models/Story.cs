@@ -14,8 +14,12 @@ namespace Wim.Models
         private IMember assignee;
 
         //Constructors
-        public Story(string title, string description, Priority priority, Size size, StoryStatus storyStatus, IMember assignee)
-            : base(title, description)
+        public Story(string title, string description, 
+            Priority priority, 
+            Size size, 
+            StoryStatus storyStatus, 
+            IMember assignee)
+                : base(title, description)
         {
             this.Priority = priority;
             this.Size = size;

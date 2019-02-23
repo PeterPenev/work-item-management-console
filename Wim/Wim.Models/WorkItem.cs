@@ -51,6 +51,7 @@ namespace Wim.Models
             }
            
         }
+
         public List<string> Comments
         {
             get
@@ -58,6 +59,7 @@ namespace Wim.Models
                 return new List<string>(this.comments);
             }
         }
+
         public List<IActivityHistory> ActivityHistory
         {
             get

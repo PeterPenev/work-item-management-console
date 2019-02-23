@@ -15,9 +15,7 @@ namespace Wim.Core.Engine
         private readonly ICommandHelper commandHelper;
         private readonly IWimCommandReader commandReader;
         private readonly IWimCommandProcessor commandProcessor;
-        private readonly IWimProcessSingleCommander processSingleCommander;
         private readonly IWimReportsPrinter reportsPrinter;
-        private IComponentContext componentContext;
         private IConsoleWriter consoleWriter;
 
         public WimEngine(
@@ -26,15 +24,12 @@ namespace Wim.Core.Engine
             IWimCommandProcessor commandProcessor,
             IWimProcessSingleCommander processSingleCommander,
             IWimReportsPrinter reportsPrinter,
-            IComponentContext componentContext,
             IConsoleWriter consoleWriter)
         {
             this.commandHelper = commandHelper;
             this.commandReader = commandReader;
             this.commandProcessor = commandProcessor;
-            this.processSingleCommander = processSingleCommander;
             this.reportsPrinter = reportsPrinter;
-            this.componentContext = componentContext;
             this.consoleWriter = consoleWriter;
         }
 
@@ -42,7 +37,7 @@ namespace Wim.Core.Engine
         {
             consoleWriter.WriteLine(commandHelper.Help);
             var commands = this.commandReader.ReadCommands();
-            var commandResult = this.commandProcessor.ProcessCommands(commands, processSingleCommander, componentContext);
+            var commandResult = this.commandProcessor.ProcessCommands(commands);
             this.reportsPrinter.PrintReports(commandResult);
         }                             
     }

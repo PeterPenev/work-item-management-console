@@ -8,7 +8,6 @@ namespace Wim.Models.Operations
 {
     public class BoardOperations : IBoardOperations
     {
-        //Methods
         public string ShowBoardActivityToString(IBoard board)
         {
             int activityCounter = 1;

@@ -7,9 +7,6 @@ namespace Wim.Core.Contracts
 {
     public interface IWimCommandProcessor
     {
-        IList<string> ProcessCommands(
-            IList<ICommand> commands, 
-            IWimProcessSingleCommander processSingleCommander, 
-            IComponentContext componentContext);
+        IList<string> ProcessCommands(IList<ICommand> commands);
     }
 }

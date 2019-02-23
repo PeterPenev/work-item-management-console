@@ -17,6 +17,7 @@ namespace Wim.Models
             this.LoggingDate = DateTime.Now;
         }
 
+        //Properties
         public Guid Id { get; private set; }      
 
         public string Message
