@@ -6,9 +6,9 @@ namespace Wim.Models.Operations
 {
     public class TeamOperations : ITeamOperations
     {
-        private readonly MemberOperations memberOperations;
+        private readonly IMemberOpertaions memberOperations;
 
-        public TeamOperations(MemberOperations memberOperations)
+        public TeamOperations(IMemberOpertaions memberOperations)
         {
             this.memberOperations = memberOperations;
         }

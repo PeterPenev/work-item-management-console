@@ -47,7 +47,7 @@ namespace Wim.Core.Engine.EngineOperations
             businessLogicValidator.ValidateIfTeamExists(allTeams, teamName);
 
             //Operations
-            var team = this.factory.CreateTeam(teamName, memberOpertaions);
+            var team = this.factory.CreateTeam(teamName);
 
             allTeamsOperations.AddTeam(allTeams, team);
 
