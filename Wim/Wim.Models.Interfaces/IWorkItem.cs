@@ -12,8 +12,8 @@ namespace Wim.Models.Interfaces
 
         string Description { get; }
 
-        List<string> Comments { get; }
+        IList<string> Comments { get; }
 
-        List<IActivityHistory> ActivityHistory { get; }
+        IList<IActivityHistory> ActivityHistory { get; }
     }
 }

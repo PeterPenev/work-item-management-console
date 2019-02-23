@@ -6,22 +6,13 @@ namespace Wim.Models
 {
     public class AllMembers : IAllMembers
     {
-        //Fields
-        private Dictionary<string, IMember> allMembersList;
-
         //Constructor
         public AllMembers()
         {
-            this.allMembersList = new Dictionary<string, IMember>();
+            this.AllMembersList = new Dictionary<string, IMember>();
         }
 
         //Properties
-        public IDictionary<string, IMember> AllMembersList
-        {
-            get
-            {
-                return this.allMembersList;
-            }
-        }     
+        public IDictionary<string, IMember> AllMembersList { get; }             
     }
 }

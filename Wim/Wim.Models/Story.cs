@@ -7,12 +7,6 @@ namespace Wim.Models
 {
     public class Story : WorkItem, IStory
     {
-        //Fields
-        private Priority priority;
-        private Size size;
-        private StoryStatus storyStatus;
-        private IMember assignee;
-
         //Constructors
         public Story(string title, string description, 
             Priority priority, 
@@ -28,52 +22,12 @@ namespace Wim.Models
         }
 
         //Properties
-        public Priority Priority
-        {
-            get
-            {
-                return this.priority;
-            }
-            set
-            {
-                this.priority = value;
-            }
-        }
+        public Priority Priority { get; set; }
 
-        public Size Size
-        {
-            get
-            {
-                return this.size;
-            }
-            set
-            {
-                this.size = value;
-            }
-        }
+        public Size Size { get; set; }
 
-        public StoryStatus StoryStatus
-        {
-            get
-            {
-                return this.storyStatus;
-            }
-            set
-            {
-                this.storyStatus = value;
-            }
-        }
+        public StoryStatus StoryStatus { get; set; }
 
-        public IMember Assignee
-        {
-            get
-            {
-                return this.assignee;
-            }
-            set
-            {
-                this.assignee = value;
-            }
-        }
+        public IMember Assignee { get; set; }
     }
 }

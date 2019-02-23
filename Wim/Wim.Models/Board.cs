@@ -7,46 +7,19 @@ namespace Wim.Models
 {
     public class Board : IBoard
     {
-        //Fields
-        private string name;
-        private List<IWorkItem> workItems;
-        private List<IActivityHistory> activityHistory;
-
         //Constructors
         public Board(string name)
         {
             this.Name = name;
-            this.workItems = new List<IWorkItem>();
-            this.activityHistory = new List<IActivityHistory>();
+            this.WorkItems = new List<IWorkItem>();
+            this.ActivityHistory = new List<IActivityHistory>();
         }
 
         //Properties
-        public string Name
-        {
-            get
-            {
-                return this.name;
-            }
-            private set
-            {               
-                this.name = value;
-            }
-        }
+        public string Name { get; set; }
 
-        public List<IWorkItem> WorkItems
-        {
-            get
-            {
-                return this.workItems;
-            }
-        }
+        public List<IWorkItem> WorkItems { get; }
 
-        public List<IActivityHistory> ActivityHistory
-        {
-            get
-            {
-                return this.activityHistory;
-            }
-        }        
+        public List<IActivityHistory> ActivityHistory { get; }        
     }
 }

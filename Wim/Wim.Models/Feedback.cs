@@ -8,9 +8,6 @@ namespace Wim.Models
 {
     public class Feedback : WorkItem, IFeedback
     {
-        //Fields
-        private int rating;
-
         //Constructors
         public Feedback(string title, string description, int rating, FeedbackStatus feedbackStatus)
             :base(title, description)
@@ -20,17 +17,7 @@ namespace Wim.Models
         }
 
         //Properties
-        public int Rating
-        {
-            get
-            {
-                return this.rating;
-            }
-            set
-            {
-                this.rating = value;
-            }
-        }
+        public int Rating { get; set; }
 
         public FeedbackStatus FeedbackStatus { get; set; }       
     }

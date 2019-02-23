@@ -9,10 +9,7 @@ namespace Wim.Models
     public class Member : IMember
     {
         //Fields
-        private string name;
         private bool isAssigned = false;
-        private List<IActivityHistory> activityHistory;
-        private List<Guid> workItemsId;
         private IAllTeams allTeams;
 
         //Constructors
@@ -20,39 +17,16 @@ namespace Wim.Models
         {
             this.Name = name;
             this.allTeams = allTeams;
-            this.activityHistory = new List<IActivityHistory>();
-            this.workItemsId = new List<Guid>();
+            this.ActivityHistory = new List<IActivityHistory>();
+            this.WorkItemsId = new List<Guid>();
         }
 
         //Properties
-        public string Name
-        {
-            get
-            {
-                return this.name;
-            }
+        public string Name { get; set; }       
 
-            private set
-            {              
-                this.name = value;
-            }
-        }        
+        public List<Guid> WorkItemsId { get; }
 
-        public List<Guid> WorkItemsId
-        {
-            get
-            {
-                return this.workItemsId;
-            }
-        }
-
-        public List<IActivityHistory> ActivityHistory
-        {
-            get
-            {
-                return this.activityHistory;
-            }
-        }
+        public List<IActivityHistory> ActivityHistory { get; }
 
         public bool IsAssigned
         {
