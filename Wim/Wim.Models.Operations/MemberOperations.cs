@@ -31,22 +31,22 @@ namespace Wim.Models.Operations
             member.ActivityHistory.Add(activityHistoryToAddToBoard);
         }
 
-        public void AddActivityHistoryAfterAssignToMember(IMember member, string itemType, string workItemTitle, IMember memberToAssign)
+        public void AddActivityHistoryAfterAssignToMember(IMember memberToAssign, string itemType, string workItemTitle)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"{itemType} with Title: {workItemTitle} was assigned to member {memberToAssign.Name}!");
             string resultToAddAssMessage = sb.ToString().Trim();
             var activityHistoryToAddToMember = new ActivityHistory(resultToAddAssMessage);
-            member.ActivityHistory.Add(activityHistoryToAddToMember);
+            memberToAssign.ActivityHistory.Add(activityHistoryToAddToMember);
         }
 
-        public void AddActivityHistoryAfterUnsignToMember(IMember member, string itemType, string workItemTitle, IMember memberFromUnsign)
+        public void AddActivityHistoryAfterUnsignToMember(IMember memberFromUnsign, string itemType, string workItemTitle)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"{itemType} with Title: {workItemTitle} was unssigned from member {memberFromUnsign.Name}!"); ;
+            sb.AppendLine($"{itemType} with Title: {workItemTitle} was unssigned from member {memberFromUnsign.Name}!"); 
             string resultToAddAssMessage = sb.ToString().Trim();
             var activityHistoryToAddToMember = new ActivityHistory(resultToAddAssMessage);
-            member.ActivityHistory.Add(activityHistoryToAddToMember);
+            memberFromUnsign.ActivityHistory.Add(activityHistoryToAddToMember);
         }
 
         public void RemoveWorkItemIdToMember(IMember member, Guid workItemIdInput)
