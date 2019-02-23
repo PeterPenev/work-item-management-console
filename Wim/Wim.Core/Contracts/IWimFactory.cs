@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Text;
 using Wim.Models.Enums;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Contracts
 {
     public interface IWimFactory
     {
-        ITeam CreateTeam(string name);
+        ITeam CreateTeam(string name, IMemberOpertaions memberOpertaions);
 
-        IMember CreateMember(string name);
+        IMember CreateMember(string name, IAllTeams allTeams);
 
         IBoard CreateBoard(string name);
 

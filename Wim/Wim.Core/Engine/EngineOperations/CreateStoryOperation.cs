@@ -5,6 +5,7 @@ using System.Text;
 using Wim.Core.Contracts;
 using Wim.Models.Enums;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
@@ -19,6 +20,7 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IEnumParser enumParser;
         private readonly IWimFactory factory;
         private readonly IDescriptionBuilder descriptionBuilder;
+        private readonly IMemberOpertaions memberOpertaions;
 
         public CreateStoryOperation(
             IBusinessLogicValidator businessLogicValidator,
@@ -27,7 +29,8 @@ namespace Wim.Core.Engine.EngineOperations
             IAllMembers allMembers,
             IEnumParser enumParser,
             IWimFactory factory,
-            IDescriptionBuilder descriptionBuilder)
+            IDescriptionBuilder descriptionBuilder,
+            IMemberOpertaions memberOpertaions)
         {
             this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
@@ -36,6 +39,7 @@ namespace Wim.Core.Engine.EngineOperations
             this.enumParser = enumParser;
             this.factory = factory;
             this.descriptionBuilder = descriptionBuilder;
+            this.memberOpertaions = memberOpertaions;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -84,14 +88,16 @@ namespace Wim.Core.Engine.EngineOperations
 
             allTeams.AllTeamsList[teamToAddStoryFor].Boards[indexOfBoardInSelectedTeam].AddWorkitemToBoard(storyToAddToCollection);
 
-            allTeams.AllTeamsList[teamToAddStoryFor].Members.First(member => member.Name == storyAssignee).AddWorkItemIdToMember(storyToAddToCollection.Id);
+            var memberToPutHistoryFor = allTeams.AllTeamsList[teamToAddStoryFor].Members.First(member => member.Name == storyAssignee);
+
+            memberOpertaions.AddWorkItemIdToMember(memberToPutHistoryFor, storyToAddToCollection.Id);
 
             var boardToPutHistoryFor = allTeams.AllTeamsList[teamToAddStoryFor].Boards[indexOfBoardInSelectedTeam];
-            var memberToPutHistoryFor = allTeams.AllTeamsList[teamToAddStoryFor].Members.First(member => member.Name == storyAssignee);
             var teamToPutHistoryFor = allTeams.AllTeamsList[teamToAddStoryFor];
 
             allTeams.AllTeamsList[teamToAddStoryFor].Boards[indexOfBoardInSelectedTeam].AddActivityHistoryToBoard(memberToPutHistoryFor, storyToAddToCollection);
-            allTeams.AllTeamsList[teamToAddStoryFor].Members.First(member => member.Name == storyAssignee).AddActivityHistoryToMember(storyToAddToCollection, teamToPutHistoryFor, boardToPutHistoryFor);
+
+            memberOpertaions.AddActivityHistoryToMember(memberToPutHistoryFor, storyToAddToCollection, teamToPutHistoryFor, boardToPutHistoryFor);
 
             return string.Format(StoryCreated, storyTitle);
         }

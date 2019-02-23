@@ -17,19 +17,23 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IEnumParser enumParser;
         private readonly IBugOperations bugOperations;
         private readonly IBusinessLogicValidator businessLogicValidator;
+        private readonly IMemberOpertaions memberOpertaions;
+
 
         public ChangeBugSeverityOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IEnumParser enumParser,
             IBugOperations bugOperations,
-            IBusinessLogicValidator businessLogicValidator)
+            IBusinessLogicValidator businessLogicValidator,
+            IMemberOpertaions memberOpertaions)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.enumParser = enumParser;
             this.bugOperations = bugOperations;
             this.businessLogicValidator = businessLogicValidator;
+            this.memberOpertaions = memberOpertaions;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -85,7 +89,7 @@ namespace Wim.Core.Engine.EngineOperations
 
             boardToAddActivityFor.AddActivityHistoryToBoard(memberToAddActivityFor, bugToAddActivityFor, newSeverity);
 
-            memberToAddActivityFor.AddActivityHistoryToMember(bugToAddActivityFor, teamToFindIn, boardToAddActivityFor, newSeverity);
+            memberOpertaions.AddActivityHistoryToMember(memberToAddActivityFor, bugToAddActivityFor, teamToFindIn, boardToAddActivityFor, newSeverity);
 
             bugOperations.AddActivityHistoryToWorkItem(bugToAddActivityFor, memberToAddActivityFor, newSeverity);
 

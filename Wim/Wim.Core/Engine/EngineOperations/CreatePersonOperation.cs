@@ -46,7 +46,7 @@ namespace Wim.Core.Engine.EngineOperations
             businessLogicValidator.ValidateIfPersonExists(allMembers, personName);
 
             //Operations
-            var person = this.factory.CreateMember(personName);
+            var person = this.factory.CreateMember(personName, allTeams);
             allMembersOperations.AddMember(allMembers, person);
 
             return string.Format(PersonCreated, personName);

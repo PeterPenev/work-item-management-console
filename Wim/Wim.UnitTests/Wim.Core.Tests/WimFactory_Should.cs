@@ -7,6 +7,7 @@ using Wim.Core.Engine;
 using Wim.Models;
 using Wim.Models.Enums;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.UnitTests.Wim.Core.Tests
 {
@@ -83,9 +84,10 @@ namespace Wim.UnitTests.Wim.Core.Tests
             //Arrange
             var factory = new WimFactory();
             var title = "ExampleMember";
+            var allTeamsMock = new Mock<IAllTeams>();
 
             //Act
-            var sut = factory.CreateMember(title);
+            var sut = factory.CreateMember(title, allTeamsMock.Object);
 
             //Assert
             Assert.IsInstanceOfType(sut, typeof(Member));
@@ -97,9 +99,10 @@ namespace Wim.UnitTests.Wim.Core.Tests
             //Arrange
             var factory = new WimFactory();
             var title = "ExampleMember";
+            var memberOperations = new Mock<IMemberOpertaions>();
 
             //Act
-            var sut = factory.CreateTeam(title);
+            var sut = factory.CreateTeam(title, memberOperations.Object);
 
             //Assert
             Assert.IsInstanceOfType(sut, typeof(Team));
