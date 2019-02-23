@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Wim.Core.Contracts;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
@@ -11,15 +12,18 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
+        private readonly ITeamOperations teamOperations;
 
         public ShowTeamActivityOperation(
             IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
-            IAllTeams allTeams)
+            IAllTeams allTeams,
+            ITeamOperations teamOperations)
         {
             this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
+            this.teamOperations = teamOperations;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -37,8 +41,9 @@ namespace Wim.Core.Engine.EngineOperations
 
             //Operations
             var teamToCheckHistoryFor = allTeams.AllTeamsList[teamName];
-            var teamActivityHistory = teamToCheckHistoryFor.ShowTeamActivityToString();
 
+            var teamActivityHistory = teamOperations.ShowTeamActivityToString(teamToCheckHistoryFor);
+            
             return string.Format(teamActivityHistory);
         }
     }

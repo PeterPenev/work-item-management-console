@@ -10,6 +10,7 @@ using Wim.Models;
 using Wim.Models.Enums;
 using Wim.Models.Interfaces;
 using Wim.Models.Operations;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.CLI
 {
@@ -43,6 +44,10 @@ namespace Wim.CLI
 
             builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(CreateBugOperation)))
               .AsImplementedInterfaces();
+
+            //builder.RegisterAssemblyTypes.AsImplementedInterfaces();
+
+            builder.RegisterType<TeamOperations>().As<ITeamOperations>();
 
             builder.RegisterType<AllTeams>()
               .As<IAllTeams>()

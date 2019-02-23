@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Wim.Core.Contracts;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
@@ -14,17 +15,20 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IAllTeams allTeams;
         private readonly IWimFactory factory;
         private readonly IBusinessLogicValidator businessLogicValidator;
+        private readonly ITeamOperations teamOperations;
 
         public CreateBoardToTeamOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IWimFactory factory,
-            IBusinessLogicValidator businessLogicValidator)
+            IBusinessLogicValidator businessLogicValidator,
+            ITeamOperations teamOperations)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.factory = factory;
             this.businessLogicValidator = businessLogicValidator;
+            this.teamOperations = teamOperations;
         }
         public string Execute(IList<string> inputParameters)
         {
@@ -45,8 +49,10 @@ namespace Wim.Core.Engine.EngineOperations
             businessLogicValidator.ValidateBoardAlreadyInTeam(allTeams, boardToAddToTeam, teamForAddingBoardTo);
 
             //Operations
+            var team = allTeams.AllTeamsList[teamForAddingBoardTo];
             var board = this.factory.CreateBoard(boardToAddToTeam);
-            allTeams.AllTeamsList[teamForAddingBoardTo].AddBoard(board);
+
+            teamOperations.AddBoard(team, board);
 
             return string.Format(BoardAddedToTeam, boardToAddToTeam, teamForAddingBoardTo);
         }

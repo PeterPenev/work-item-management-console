@@ -102,7 +102,7 @@ namespace Wim.UnitTests.Wim.Core.Tests
             var memberOperations = new Mock<IMemberOpertaions>();
 
             //Act
-            var sut = factory.CreateTeam(title, memberOperations.Object);
+            var sut = factory.CreateTeam(title);
 
             //Assert
             Assert.IsInstanceOfType(sut, typeof(Team));

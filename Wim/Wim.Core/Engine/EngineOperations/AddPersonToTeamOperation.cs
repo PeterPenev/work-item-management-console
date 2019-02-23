@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Wim.Core.Contracts;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
@@ -14,17 +15,20 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IAllTeams allTeams;
         private readonly IAllMembers allMembers;
         private readonly IBusinessLogicValidator businessLogicValidator;
+        private readonly ITeamOperations teamOperations;
 
         public AddPersonToTeamOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IAllMembers allMembers,
-            IBusinessLogicValidator businessLogicValidator)
+            IBusinessLogicValidator businessLogicValidator,
+            ITeamOperations teamOperations)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.allMembers = allMembers;
             this.businessLogicValidator = businessLogicValidator;
+            this.teamOperations = teamOperations;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -47,7 +51,9 @@ namespace Wim.Core.Engine.EngineOperations
             businessLogicValidator.ValidateIfMemberAlreadyInTeam(allTeams, teamToAddPersonTo, personToAddToTeam);
 
             //Operations
-            allTeams.AllTeamsList[teamToAddPersonTo].AddMember(allMembers.AllMembersList[personToAddToTeam]);
+            var teamToAddMember = allTeams.AllTeamsList[teamToAddPersonTo];
+
+            this.teamOperations.AddMember(teamToAddMember, allMembers.AllMembersList[personToAddToTeam]);
             return string.Format(PersonAddedToTeam, personToAddToTeam, teamToAddPersonTo);
         }
     }
