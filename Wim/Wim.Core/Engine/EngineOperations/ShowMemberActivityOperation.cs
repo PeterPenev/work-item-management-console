@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Wim.Core.Contracts;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
@@ -11,15 +12,18 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllMembers allMembers;
+        private readonly IMemberOpertaions memberOperations;
 
         public ShowMemberActivityOperation(
             IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
-            IAllMembers allMembers)
+            IAllMembers allMembers,
+            IMemberOpertaions memberOperations)
         {
             this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allMembers = allMembers;
+            this.memberOperations = memberOperations;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -35,7 +39,8 @@ namespace Wim.Core.Engine.EngineOperations
 
             //Operations
             var selectedMember = this.allMembers.AllMembersList[memberName];
-            var memberActivities = selectedMember.ShowMemberActivityToString();
+
+            var memberActivities = memberOperations.ShowMemberActivityToString(selectedMember);            
 
             return string.Format(memberActivities);
         }

@@ -17,19 +17,22 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IEnumParser enumParser;
         private readonly IFeedbackOperations feedbackOperations;
         private readonly IBusinessLogicValidator businessLogicValidator;
+        private readonly IMemberOpertaions memberOpertaions;
 
         public ChangeFeedbackStatusOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IEnumParser enumParser,
             IFeedbackOperations feedbackOperations,
-            IBusinessLogicValidator businessLogicValidator)
+            IBusinessLogicValidator businessLogicValidator,
+            IMemberOpertaions memberOpertaions)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.enumParser = enumParser;
             this.feedbackOperations = feedbackOperations;
             this.businessLogicValidator = businessLogicValidator;
+            this.memberOpertaions = memberOpertaions;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -84,7 +87,7 @@ namespace Wim.Core.Engine.EngineOperations
 
             boardToAddActivityFor.AddActivityHistoryToBoard(memberToAddActivityFor, feedbackToAddActivityFor, newFeedbackStatus);
 
-            memberToAddActivityFor.AddActivityHistoryToMember(feedbackToAddActivityFor, teamToFindIn, boardToAddActivityFor, newFeedbackStatus);
+            memberOpertaions.AddActivityHistoryToMember(memberToAddActivityFor, feedbackToAddActivityFor, teamToFindIn, boardToAddActivityFor, newFeedbackStatus);
 
             feedbackOperations.AddActivityHistoryToWorkItem(feedbackToAddActivityFor, memberToAddActivityFor, newFeedbackStatus);
 

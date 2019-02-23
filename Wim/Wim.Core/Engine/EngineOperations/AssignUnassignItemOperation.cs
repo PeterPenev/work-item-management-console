@@ -18,6 +18,7 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IStoryOperations storyOperations;
         private readonly IBugOperations bugOperations;
         private readonly IBusinessLogicValidator businessLogicValidator;
+        private readonly IMemberOpertaions memberOpertaions;
 
 
         public AssignUnassignItemOperation(
@@ -26,7 +27,8 @@ namespace Wim.Core.Engine.EngineOperations
             IAllMembers allMembers,
             IStoryOperations storyOperations,
             IBugOperations bugOperations,
-            IBusinessLogicValidator businessLogicValidator)
+            IBusinessLogicValidator businessLogicValidator,
+            IMemberOpertaions memberOpertaions)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
@@ -34,6 +36,7 @@ namespace Wim.Core.Engine.EngineOperations
             this.bugOperations = bugOperations;
             this.storyOperations = storyOperations;
             this.businessLogicValidator = businessLogicValidator;
+            this.memberOpertaions = memberOpertaions;
         }
 
         public string Execute(IList<string> inputParametes)
@@ -79,9 +82,9 @@ namespace Wim.Core.Engine.EngineOperations
 
                 bugOperations.AssignMemberToBug(typedItem, itemMemberToAssign);
 
-                itemMemberBeforeUnssign.RemoveWorkItemIdToMember(typedItem.Id);
+                memberOpertaions.RemoveWorkItemIdToMember(itemMemberToAssign, typedItem.Id);
 
-                itemMemberToAssign.AddWorkItemIdToMember(typedItem.Id);
+                memberOpertaions.AddWorkItemIdToMember(itemMemberToAssign, typedItem.Id);
             }
             else if (itemType == "Story")
             {
@@ -91,9 +94,9 @@ namespace Wim.Core.Engine.EngineOperations
 
                 storyOperations.AssignMemberToStory(typedItem, itemMemberToAssign);
 
-                itemMemberBeforeUnssign.RemoveWorkItemIdToMember(typedItem.Id);
+                memberOpertaions.RemoveWorkItemIdToMember(itemMemberToAssign, typedItem.Id);
 
-                itemMemberToAssign.AddWorkItemIdToMember(typedItem.Id);
+                memberOpertaions.AddWorkItemIdToMember(itemMemberToAssign, typedItem.Id);
             }
 
             //history
@@ -103,6 +106,7 @@ namespace Wim.Core.Engine.EngineOperations
             allTeams.AllTeamsList[teamToAssignUnsignItem].Boards[indexOfBoardInSelectedTeam].AddActivityHistoryAfterAssignUnsignToBoard(itemType, itemToAssignUnsign, itemMemberToAssign, itemMemberBeforeUnssign);
 
             //add history to member before unssign
+
             itemMemberBeforeUnssign.AddActivityHistoryAfterUnsignToMember(itemType, itemToAssignUnsign, itemMemberBeforeUnssign);
 
             //add history to member after assign

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Models
 {
@@ -10,13 +11,15 @@ namespace Wim.Models
         //Fields
         private List<IBoard> boards;
         private List<IMember> members;
+        private IMemberOpertaions memberOpertaions;
 
         //Constructors
-        public Team(string name)
+        public Team(string name, IMemberOpertaions memberOpertaions)
         {
             this.Name = name;
             boards = new List<IBoard>();
             members = new List<IMember>();
+            this.memberOpertaions = memberOpertaions;
         }
 
         //Properties
@@ -85,7 +88,7 @@ namespace Wim.Models
             sb.AppendLine($"==============TEAM: {this.Name}'s Activity History==============");
             foreach (var member in this.Members)
             {                
-                var memberActivityHistory = member.ShowMemberActivityToString();
+                var memberActivityHistory = this.memberOpertaions.ShowMemberActivityToString(member);
                 sb.AppendLine(memberActivityHistory);                
             }
             sb.AppendLine($"****************End Of TEAM{this.Name}'s Activity History*****************");

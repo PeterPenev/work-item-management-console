@@ -17,19 +17,22 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IEnumParser enumParser;
         private readonly IStoryOperations storyOperations;
         private readonly IBusinessLogicValidator businessLogicValidator;
+        private readonly IMemberOpertaions memberOpertaions;
 
         public ChangeStorySizeOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IEnumParser enumParser,
             IStoryOperations storyOperations,
-            IBusinessLogicValidator businessLogicValidator)
+            IBusinessLogicValidator businessLogicValidator,
+            IMemberOpertaions memberOpertaions)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.enumParser = enumParser;
             this.storyOperations = storyOperations;
             this.businessLogicValidator = businessLogicValidator;
+            this.memberOpertaions = memberOpertaions;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -85,7 +88,7 @@ namespace Wim.Core.Engine.EngineOperations
 
             boardToAddActivityFor.AddActivityHistoryToBoard(memberToAddActivityFor, storyToAddActivityFor, newStorySize);
 
-            memberToAddActivityFor.AddActivityHistoryToMember(storyToAddActivityFor, teamToFindIn, boardToAddActivityFor, newStorySize);
+            memberOpertaions.AddActivityHistoryToMember(memberToAddActivityFor, storyToAddActivityFor, teamToFindIn, boardToAddActivityFor, newStorySize);
 
             storyOperations.AddActivityHistoryToWorkItem(storyToAddActivityFor, memberToAddActivityFor, newStorySize);
 

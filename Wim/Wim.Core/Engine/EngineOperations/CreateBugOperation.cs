@@ -5,6 +5,7 @@ using System.Text;
 using Wim.Core.Contracts;
 using Wim.Models.Enums;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
@@ -20,6 +21,7 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IDescriptionBuilder descriptionBuilder;
         private readonly IStepsToReproduceBuilder stepsToReproduceBuilder;
         private readonly IBusinessLogicValidator businessLogicValidator;
+        private readonly IMemberOpertaions memberOpertaions;
 
         public CreateBugOperation(
             IInputValidator inputValidator,
@@ -29,7 +31,8 @@ namespace Wim.Core.Engine.EngineOperations
             IWimFactory factory,
             IDescriptionBuilder descriptionBuilder,
             IStepsToReproduceBuilder stepsToReproduceBuilder,
-            IBusinessLogicValidator businessLogicValidator)
+            IBusinessLogicValidator businessLogicValidator,
+            IMemberOpertaions memberOpertaions)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
@@ -39,6 +42,7 @@ namespace Wim.Core.Engine.EngineOperations
             this.descriptionBuilder = descriptionBuilder;
             this.stepsToReproduceBuilder = stepsToReproduceBuilder;
             this.businessLogicValidator = businessLogicValidator;
+            this.memberOpertaions = memberOpertaions;
         }
         public string Execute(IList<string> inputParameters)
         {
@@ -88,14 +92,15 @@ namespace Wim.Core.Engine.EngineOperations
 
             allTeams.AllTeamsList[teamToAddBugFor].Boards[indexOfBoardInSelectedTeam].AddWorkitemToBoard(bugToAddToCollection);
 
-            allTeams.AllTeamsList[teamToAddBugFor].Members.First(member => member.Name == bugAssignee).AddWorkItemIdToMember(bugToAddToCollection.Id);
+            var memberToTrackActivityFor = allTeams.AllTeamsList[teamToAddBugFor].Members.First(member => member.Name == bugAssignee);
+
+            memberOpertaions.AddWorkItemIdToMember(memberToTrackActivityFor, bugToAddToCollection.Id);
 
             var boardToPutHistoryFor = allTeams.AllTeamsList[teamToAddBugFor].Boards[indexOfBoardInSelectedTeam];
-            var memberToPutHistoryFor = allTeams.AllTeamsList[teamToAddBugFor].Members.First(member => member.Name == bugAssignee);
             var teamToPutHistoryFor = allTeams.AllTeamsList[teamToAddBugFor];
 
-            allTeams.AllTeamsList[teamToAddBugFor].Boards[indexOfBoardInSelectedTeam].AddActivityHistoryToBoard(memberToPutHistoryFor, bugToAddToCollection);
-            allTeams.AllTeamsList[teamToAddBugFor].Members.First(member => member.Name == bugAssignee).AddActivityHistoryToMember(bugToAddToCollection, teamToPutHistoryFor, boardToPutHistoryFor);
+            allTeams.AllTeamsList[teamToAddBugFor].Boards[indexOfBoardInSelectedTeam].AddActivityHistoryToBoard(memberToTrackActivityFor, bugToAddToCollection);
+            memberOpertaions.AddActivityHistoryToMember(memberToTrackActivityFor, bugToAddToCollection, teamToPutHistoryFor, boardToPutHistoryFor);
 
             return string.Format(BugCreated, bugTitle);
         }
