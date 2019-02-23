@@ -20,30 +20,10 @@ namespace Wim.Models
         {
             get
             {
-                return new Dictionary<string, ITeam>(this.allTeamsList);
+                return this.allTeamsList;
             }
         }
 
-        //Methods
-
-        public void AddTeam(ITeam team)
-        {
-            allTeamsList.Add(team.Name, team);
-        }
-
-        public string ShowAllTeamsToString()
-        {
-            StringBuilder sb = new StringBuilder();
-
-            int numberOfTeam = 1;
-
-            foreach (var team in this.AllTeamsList)
-            {
-                sb.AppendLine($"{numberOfTeam}. {team.Key}");
-                numberOfTeam++;
-            }
-
-            return sb.ToString().Trim();
-        }
+       
     }
 }
