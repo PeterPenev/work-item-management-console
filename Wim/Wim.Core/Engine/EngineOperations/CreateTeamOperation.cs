@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Wim.Core.Contracts;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
@@ -15,6 +16,7 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IAllTeams allTeams;
         private readonly IEnumParser enumParser;
         private readonly IWimFactory factory;
+        private readonly IAllTeamsOperations allTeamsOperations;
 
         public CreateTeamOperation(
             IBusinessLogicValidator businessLogicValidator,
@@ -41,7 +43,8 @@ namespace Wim.Core.Engine.EngineOperations
 
             //Operations
             var team = this.factory.CreateTeam(teamName);
-            allTeams.AddTeam(team);
+
+            allTeamsOperations.AddTeam(allTeams, team);
 
             return string.Format(TeamCreated, teamName);
         }
