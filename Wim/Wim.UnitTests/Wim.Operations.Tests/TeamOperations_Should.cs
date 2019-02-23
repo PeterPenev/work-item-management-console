@@ -16,14 +16,10 @@ namespace Wim.UnitTests.Wim.Operations.Tests
         {
             //Arrange
             var mockMemberOperations = new Mock<IMemberOpertaions>();
-
             var teamOperations = new TeamOperations(mockMemberOperations.Object);
-
             var mockMember = new Mock<IMember>();
             mockMember.Setup(x => x.Name).Returns("Gosho");
-
             var mockTeam = new Mock<ITeam>();
-
             mockTeam.Setup(x => x.Members).Returns(new List<IMember>());
 
             //Act
@@ -38,12 +34,9 @@ namespace Wim.UnitTests.Wim.Operations.Tests
         {
             //Arrange
             var mockMemberOperations = new Mock<IMemberOpertaions>();
-
             var teamOperations = new TeamOperations(mockMemberOperations.Object);
-
             var mockBoard = new Mock<IBoard>();
             mockBoard.Setup(x => x.Name).Returns("TestBoard");
-
             var mockTeam = new Mock<ITeam>();
             mockTeam.Setup(x => x.Boards).Returns(new List<IBoard>());
 

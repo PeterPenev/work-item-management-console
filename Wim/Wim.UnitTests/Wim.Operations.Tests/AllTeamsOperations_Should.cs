@@ -20,8 +20,8 @@ namespace Wim.UnitTests.Wim.Operations.Tests
             var mockAllTeams = new Mock<IAllTeams>();
             var mockTeam = new Mock<ITeam>();
             mockTeam.Setup(x => x.Name).Returns("Alpha");
-
             mockAllTeams.Setup(x => x.AllTeamsList).Returns(new Dictionary<string, ITeam>());
+
             //Act
             allTeamsOperation.AddTeam(mockAllTeams.Object, mockTeam.Object);
 
