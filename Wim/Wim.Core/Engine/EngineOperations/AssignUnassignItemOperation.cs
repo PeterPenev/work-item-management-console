@@ -107,10 +107,10 @@ namespace Wim.Core.Engine.EngineOperations
 
             //add history to member before unssign
 
-            itemMemberBeforeUnssign.AddActivityHistoryAfterUnsignToMember(itemType, itemToAssignUnsign, itemMemberBeforeUnssign);
+            memberOpertaions.AddActivityHistoryAfterUnsignToMember(itemMemberBeforeUnssign, itemType, itemToAssignUnsign);
 
             //add history to member after assign
-            itemMemberToAssign.AddActivityHistoryAfterAssignToMember(itemType, itemToAssignUnsign, itemMemberToAssign);
+            memberOpertaions.AddActivityHistoryAfterAssignToMember(itemMemberToAssign, itemType, itemToAssignUnsign);
 
             return string.Format(AssignItemTo, itemType, itemToAssignUnsign, boardToAssignUnsignItem, teamToAssignUnsignItem, memberToAssignItem);
         }

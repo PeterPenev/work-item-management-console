@@ -17,19 +17,24 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IEnumParser enumParser;
         private readonly IWimFactory factory;
         private readonly IAllTeamsOperations allTeamsOperations;
+        private readonly IMemberOpertaions memberOpertaions;
 
         public CreateTeamOperation(
             IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IEnumParser enumParser,
-            IWimFactory factory)
+            IWimFactory factory,
+            IAllTeamsOperations allTeamsOperations,
+            IMemberOpertaions memberOpertaions)
         {
             this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.enumParser = enumParser;
             this.factory = factory;
+            this.allTeamsOperations = allTeamsOperations;
+            this.memberOpertaions = memberOpertaions;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -42,7 +47,7 @@ namespace Wim.Core.Engine.EngineOperations
             businessLogicValidator.ValidateIfTeamExists(allTeams, teamName);
 
             //Operations
-            var team = this.factory.CreateTeam(teamName);
+            var team = this.factory.CreateTeam(teamName, memberOpertaions);
 
             allTeamsOperations.AddTeam(allTeams, team);
 

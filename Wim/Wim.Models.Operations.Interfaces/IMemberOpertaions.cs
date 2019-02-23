@@ -13,9 +13,9 @@ namespace Wim.Models.Operations.Interfaces
 
         void AddActivityHistoryToMember<T>(IMember member, IWorkItem trackedWorkItem, ITeam trackedTeam, IBoard trackedBoard, T changedEnum);
 
-        void AddActivityHistoryAfterAssignToMember(IMember member, string itemType, string workItemTitle, IMember memberToAssign);
+        void AddActivityHistoryAfterAssignToMember(IMember memberToAssign, string itemType, string workItemTitle);
 
-        void AddActivityHistoryAfterUnsignToMember(IMember member, string itemType, string workItemTitle, IMember memberFromUnsign);
+        void AddActivityHistoryAfterUnsignToMember(IMember memberFromUnsign, string itemType, string workItemTitle);
 
         void RemoveWorkItemIdToMember(IMember member, Guid workItemIdInput);
 
