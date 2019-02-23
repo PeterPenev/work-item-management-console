@@ -7,9 +7,5 @@ namespace Wim.Models.Interfaces
     public interface IAllMembers
     {
         IDictionary<string, IMember> AllMembersList { get; }
-
-        void AddMember(IMember member);
-
-        string ShowAllMembersToString();
     }
 }

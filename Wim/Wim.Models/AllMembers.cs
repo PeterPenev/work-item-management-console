@@ -20,29 +20,8 @@ namespace Wim.Models
         {
             get
             {
-                return new Dictionary<string, IMember>(this.allMembersList);
+                return this.allMembersList;
             }
-        }
-
-        //Methods
-        public void AddMember(IMember member)
-        {               
-            allMembersList.Add(member.Name, member);                  
-        }
-
-        public string ShowAllMembersToString()
-        {
-            StringBuilder sb = new StringBuilder();
-
-            int numberOfPerson = 1;
-
-            foreach (var item in this.AllMembersList)
-            {                
-                sb.AppendLine($"{numberOfPerson}. {item.Key}");
-                numberOfPerson++;
-            }
-
-            return sb.ToString().Trim();
-        }
+        }     
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Wim.Core.Contracts;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
@@ -14,23 +15,23 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
         private readonly IAllMembers allMembers;
-        private readonly IEnumParser enumParser;
         private readonly IWimFactory factory;
+        private readonly IAllMembersOperations allMembersOperations;
 
         public CreatePersonOperation(
             IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IAllMembers allMembers,
-            IEnumParser enumParser,
-            IWimFactory factory)
+            IWimFactory factory,
+            IAllMembersOperations allMembersOperations)
         {
             this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.allMembers = allMembers;
-            this.enumParser = enumParser;
             this.factory = factory;
+            this.allMembersOperations = allMembersOperations;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -46,7 +47,7 @@ namespace Wim.Core.Engine.EngineOperations
 
             //Operations
             var person = this.factory.CreateMember(personName);
-            allMembers.AddMember(person);
+            allMembersOperations.AddMember(allMembers, person);
 
             return string.Format(PersonCreated, personName);
         }

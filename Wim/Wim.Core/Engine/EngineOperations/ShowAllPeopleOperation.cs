@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Wim.Core.Contracts;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
@@ -11,15 +12,18 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllMembers allMembers;
+        private readonly IAllMembersOperations allMembersOpertaions;
 
         public ShowAllPeopleOperation(
             IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
-            IAllMembers allMembers)
+            IAllMembers allMembers,
+            IAllMembersOperations allMembersOpertaions)
         {
             this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allMembers = allMembers;
+            this.allMembersOpertaions = allMembersOpertaions;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -28,7 +32,7 @@ namespace Wim.Core.Engine.EngineOperations
             businessLogicValidator.ValdateIfAnyMembersExist(allMembers);
 
             //Operations
-            var peopleToDisplay = allMembers.ShowAllMembersToString();
+            var peopleToDisplay = allMembersOpertaions.ShowAllMembersToString(allMembers);
 
             return string.Format(peopleToDisplay);
         }
