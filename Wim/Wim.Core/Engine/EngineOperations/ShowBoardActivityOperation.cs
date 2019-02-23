@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Wim.Core.Contracts;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
@@ -12,15 +13,18 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
+        private readonly IBoardOperations boardOperations;
 
         public ShowBoardActivityOperation(
             IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
-            IAllTeams allTeams)
+            IAllTeams allTeams,
+            IBoardOperations boardOperations)
         {
             this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
+            this.boardOperations = boardOperations;
         }
 
         public string Execute(IList<string> inputParameters) 
@@ -45,7 +49,7 @@ namespace Wim.Core.Engine.EngineOperations
               .Where(boardInSelectedTeam => boardInSelectedTeam.Name == boardActivityToShow)
                 .FirstOrDefault();
 
-            var boardActivityToString = boardToDisplayActivityFor.ShowBoardActivityToString();
+            var boardActivityToString = boardOperations.ShowBoardActivityToString(boardToDisplayActivityFor);
             return string.Format(boardActivityToString);
         }
     }

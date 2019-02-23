@@ -10,18 +10,6 @@ namespace Wim.Models.Interfaces
 
         List<IBoard> Boards { get; }
 
-        List<IMember> Members { get; }
-
-        void AddMember(IMember addToTeam);
-
-        void AddBoard(IBoard addToBoard);
-
-        string ShowAllTeamMembers();
-
-        string ShowAllTeamBoards();
-
-        string ShowTeamActivityToString();
-
-
+        List<IMember> Members { get; }        
     }
 }

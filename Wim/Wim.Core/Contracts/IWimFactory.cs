@@ -9,7 +9,7 @@ namespace Wim.Core.Contracts
 {
     public interface IWimFactory
     {
-        ITeam CreateTeam(string name, IMemberOpertaions memberOpertaions);
+        ITeam CreateTeam(string name);
 
         IMember CreateMember(string name, IAllTeams allTeams);
 

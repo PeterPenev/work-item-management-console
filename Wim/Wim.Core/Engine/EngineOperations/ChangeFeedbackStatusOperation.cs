@@ -18,6 +18,7 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IFeedbackOperations feedbackOperations;
         private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IMemberOpertaions memberOpertaions;
+        private readonly IBoardOperations boardOperations;
 
         public ChangeFeedbackStatusOperation(
             IInputValidator inputValidator,
@@ -25,7 +26,8 @@ namespace Wim.Core.Engine.EngineOperations
             IEnumParser enumParser,
             IFeedbackOperations feedbackOperations,
             IBusinessLogicValidator businessLogicValidator,
-            IMemberOpertaions memberOpertaions)
+            IMemberOpertaions memberOpertaions,
+            IBoardOperations boardOperations)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
@@ -33,6 +35,7 @@ namespace Wim.Core.Engine.EngineOperations
             this.feedbackOperations = feedbackOperations;
             this.businessLogicValidator = businessLogicValidator;
             this.memberOpertaions = memberOpertaions;
+            this.boardOperations = boardOperations;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -85,7 +88,7 @@ namespace Wim.Core.Engine.EngineOperations
 
             var boardToAddActivityFor = allTeams.FindBoardInTeam(teamToChangeFeedbackStatusFor, boardToChangeFeedbackStatusFor);
 
-            boardToAddActivityFor.AddActivityHistoryToBoard(memberToAddActivityFor, feedbackToAddActivityFor, newFeedbackStatus);
+            boardOperations.AddActivityHistoryToBoard(boardToAddActivityFor, memberToAddActivityFor, feedbackToAddActivityFor, newFeedbackStatus);
 
             memberOpertaions.AddActivityHistoryToMember(memberToAddActivityFor, feedbackToAddActivityFor, teamToFindIn, boardToAddActivityFor, newFeedbackStatus);
 

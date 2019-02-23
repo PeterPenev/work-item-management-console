@@ -18,6 +18,7 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IBugOperations bugOperations;
         private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IMemberOpertaions memberOpertaions;
+        private readonly IBoardOperations boardOperations;
 
         public ChangeBugPriorityOperation(
             IInputValidator inputValidator,
@@ -25,7 +26,8 @@ namespace Wim.Core.Engine.EngineOperations
             IEnumParser enumParser,
             IBugOperations bugOperations,
             IBusinessLogicValidator businessLogicValidator,
-            IMemberOpertaions memberOpertaions)
+            IMemberOpertaions memberOpertaions,
+            IBoardOperations boardOperations)
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
@@ -33,6 +35,7 @@ namespace Wim.Core.Engine.EngineOperations
             this.bugOperations = bugOperations;
             this.businessLogicValidator = businessLogicValidator;
             this.memberOpertaions = memberOpertaions;
+            this.boardOperations = boardOperations;
         }
 
         public string Execute(IList<string> inputParameters)
@@ -88,7 +91,7 @@ namespace Wim.Core.Engine.EngineOperations
 
             var boardToAddActivityFor = allTeams.FindBoardInTeam(teamToChangeBugPriorityFor, boardToChangeBugPriorityFor);
 
-            boardToAddActivityFor.AddActivityHistoryToBoard(memberToAddActivityFor, bugToAddActivityFor, priority);
+            boardOperations.AddActivityHistoryToBoard(boardToAddActivityFor, memberToAddActivityFor, bugToAddActivityFor, priority);
 
             memberOpertaions.AddActivityHistoryToMember(memberToAddActivityFor, bugToAddActivityFor, teamToFindIn, boardToAddActivityFor, priority);
 

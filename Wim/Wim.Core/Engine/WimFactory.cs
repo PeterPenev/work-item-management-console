@@ -11,9 +11,9 @@ namespace Wim.Core.Engine
 {
     public class WimFactory : IWimFactory
     {
-        public ITeam CreateTeam(string name, IMemberOpertaions memberOpertaions)
+        public ITeam CreateTeam(string name)
         {
-            return new Team(name, memberOpertaions);
+            return new Team(name);
         }
 
         public IMember CreateMember(string name, IAllTeams allTeams)
