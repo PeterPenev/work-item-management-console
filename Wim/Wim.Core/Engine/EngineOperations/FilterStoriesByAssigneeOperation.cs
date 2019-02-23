@@ -13,18 +13,15 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
-        private readonly IEnumParser enumParser;
 
         public FilterStoriesByAssigneeOperation(
             IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
-            IAllTeams allTeams,
-            IEnumParser enumParser)
+            IAllTeams allTeams)
         {
             this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
-            this.enumParser = enumParser;
         }
 
         public string Execute(IList<string> inputParameters)

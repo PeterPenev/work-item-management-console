@@ -16,7 +16,6 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
         private readonly IAllMembers allMembers;
-        private readonly IEnumParser enumParser;
         private readonly IWimFactory factory;
         private readonly IDescriptionBuilder descriptionBuilder;
         private readonly IStepsToReproduceBuilder stepsToReproduceBuilder;
@@ -28,7 +27,6 @@ namespace Wim.Core.Engine.EngineOperations
             IInputValidator inputValidator,
             IAllTeams allTeams,
             IAllMembers allMembers,
-            IEnumParser enumParser,
             IWimFactory factory,
             IDescriptionBuilder descriptionBuilder,
             IStepsToReproduceBuilder stepsToReproduceBuilder,
@@ -39,7 +37,6 @@ namespace Wim.Core.Engine.EngineOperations
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
             this.allMembers = allMembers;
-            this.enumParser = enumParser;
             this.factory = factory;
             this.descriptionBuilder = descriptionBuilder;
             this.stepsToReproduceBuilder = stepsToReproduceBuilder;

@@ -13,7 +13,6 @@ namespace Wim.Core.Engine.EngineOperations
 
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
-        private readonly IEnumParser enumParser;
         private readonly IFeedbackOperations feedbackOperations;
         private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IMemberOpertaions memberOpertaions;
@@ -22,7 +21,6 @@ namespace Wim.Core.Engine.EngineOperations
         public ChangeFeedbackRatingOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
-            IEnumParser enumParser,
             IFeedbackOperations feedbackOperations,
             IBusinessLogicValidator businessLogicValidator,
             IMemberOpertaions memberOpertaions,
@@ -30,7 +28,6 @@ namespace Wim.Core.Engine.EngineOperations
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
-            this.enumParser = enumParser;
             this.feedbackOperations = feedbackOperations;
             this.businessLogicValidator = businessLogicValidator;
             this.memberOpertaions = memberOpertaions;

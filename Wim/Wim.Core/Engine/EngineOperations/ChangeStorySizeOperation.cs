@@ -14,7 +14,6 @@ namespace Wim.Core.Engine.EngineOperations
 
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
-        private readonly IEnumParser enumParser;
         private readonly IStoryOperations storyOperations;
         private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IMemberOpertaions memberOpertaions;
@@ -23,7 +22,6 @@ namespace Wim.Core.Engine.EngineOperations
         public ChangeStorySizeOperation(
             IInputValidator inputValidator,
             IAllTeams allTeams,
-            IEnumParser enumParser,
             IStoryOperations storyOperations,
             IBusinessLogicValidator businessLogicValidator,
             IMemberOpertaions memberOpertaions,
@@ -31,7 +29,6 @@ namespace Wim.Core.Engine.EngineOperations
         {
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
-            this.enumParser = enumParser;
             this.storyOperations = storyOperations;
             this.businessLogicValidator = businessLogicValidator;
             this.memberOpertaions = memberOpertaions;

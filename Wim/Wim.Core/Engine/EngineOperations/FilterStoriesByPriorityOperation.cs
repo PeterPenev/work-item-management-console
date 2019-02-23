@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Wim.Core.Contracts;
 using Wim.Models;
+using Wim.Models.Enums;
 using Wim.Models.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
@@ -13,18 +14,16 @@ namespace Wim.Core.Engine.EngineOperations
         private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
-        private readonly IEnumParser enumParser;
 
         public FilterStoriesByPriorityOperation(
             IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
-            IAllTeams allTeams,
-            IEnumParser enumParser)
+            IAllTeams allTeams)
         {
             this.businessLogicValidator = businessLogicValidator;
             this.inputValidator = inputValidator;
             this.allTeams = allTeams;
-            this.enumParser = enumParser;
+
         }      
 
         public string Execute(IList<string> inputParameters)
@@ -41,14 +40,16 @@ namespace Wim.Core.Engine.EngineOperations
             businessLogicValidator.ValidateIfAnyStoriesExist(allTeams);
 
             //Operations
-            var priorityToCheckFor = this.enumParser.GetPriority(priorityToFilterStoryFor);
+            var isStatusEnumConvertable = Enum.TryParse(priorityToFilterStoryFor, out Priority priorityToCheckFor);
+
+            inputValidator.IsEnumConvertable(isStatusEnumConvertable, "Priority");
 
             var filteredStoriesByPriority = allTeams.AllTeamsList.Values
                 .SelectMany(x => x.Boards)
                     .SelectMany(x => x.WorkItems)
                         .Where(x => x.GetType() == typeof(Story))
                             .Select(workItem => (Story)workItem)
-                                .Where(bug => bug.Priority == priorityToCheckFor)
+                                .Where(story => story.Priority == priorityToCheckFor)
                                     .ToList();
 
 
