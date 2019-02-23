@@ -7,14 +7,14 @@ using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Engine.EngineOperations
 {
-    public class ShowTeamActivityOperation : IEngineOperations
+    public class ShowTeamsActivityOperation : IEngineOperations
     {
         private readonly IBusinessLogicValidator businessLogicValidator;
         private readonly IInputValidator inputValidator;
         private readonly IAllTeams allTeams;
         private readonly ITeamOperations teamOperations;
 
-        public ShowTeamActivityOperation(
+        public ShowTeamsActivityOperation(
             IBusinessLogicValidator businessLogicValidator,
             IInputValidator inputValidator,
             IAllTeams allTeams,

@@ -14,7 +14,7 @@ using Wim.Models.Operations.Interfaces;
 
 namespace Wim.CLI
 {
-    public class AutofacBuilder
+    internal sealed class AutofacBuilder
     {
         public IContainer RegisterContainer()
         {
@@ -31,7 +31,7 @@ namespace Wim.CLI
             return container;
         }
 
-        public void RegisterTypes(ContainerBuilder builder)
+        private void RegisterTypes(ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(WorkItem)))
                .AsImplementedInterfaces();
@@ -45,10 +45,6 @@ namespace Wim.CLI
             builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(CreateBugOperation)))
               .AsImplementedInterfaces();
 
-            //builder.RegisterAssemblyTypes.AsImplementedInterfaces();
-
-            builder.RegisterType<TeamOperations>().As<ITeamOperations>();
-
             builder.RegisterType<AllTeams>()
               .As<IAllTeams>()
                     .SingleInstance();
@@ -58,7 +54,7 @@ namespace Wim.CLI
                     .SingleInstance();
         }
 
-        public void RegisterCommandsWithStrings(ContainerBuilder builder, Assembly commandsAssembly)
+        private void RegisterCommandsWithStrings(ContainerBuilder builder, Assembly commandsAssembly)
         {
             var commandTypes = commandsAssembly.DefinedTypes
                .Where(typeInfo => typeInfo.ImplementedInterfaces.Contains(typeof(IEngineOperations)))
