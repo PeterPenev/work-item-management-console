@@ -1,4 +1,5 @@
 ====WimApp ver. 2.0 Highlights====
+
 Team Name: Team 7
 Developers: 
 	·Dimitar Mihov - Gitlab @dimitarmihov
