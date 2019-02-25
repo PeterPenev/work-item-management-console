@@ -62,10 +62,30 @@ namespace Wim.UnitTests.Wim.Operations.Tests
 
             //Act
             var sut = teamOperations.ShowAllTeamBoards(mockTeam.Object);
-
+            
+            //Assert
             Assert.AreEqual(sut, $"Team name: Team1\r\n1. Board01");
         }
 
-        
+        [TestMethod]
+        public void Should_ShowAllTeamMembersCorrectly()
+        {
+            //Arrange
+            var mockTeam = new Mock<ITeam>();
+            var mockMember = new Mock<IMember>();
+            mockMember.Setup(x => x.Name).Returns("Edward");
+            mockTeam.Setup(x => x.Name).Returns("Team1");
+            mockTeam.Setup(x => x.Members).Returns(new List<IMember>());
+            mockTeam.Object.Members.Add(mockMember.Object);
+            var mockMemberOperations = new Mock<IMemberOpertaions>();
+            var teamOperations = new TeamOperations(mockMemberOperations.Object);
+
+            //Act
+            var sut = teamOperations.ShowAllTeamMembers(mockTeam.Object);
+
+            //Assert
+            Assert.AreEqual(sut, $"Team name: Team1\r\n1. Edward");
+
+        }
     }
 }
