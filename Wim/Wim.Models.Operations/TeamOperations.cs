@@ -62,7 +62,7 @@ namespace Wim.Models.Operations
                 var memberActivityHistory = this.memberOperations.ShowMemberActivityToString(member);
                 sb.AppendLine(memberActivityHistory);
             }
-            sb.AppendLine($"****************End Of TEAM{team.Name}'s Activity History*****************");
+            sb.AppendLine($"****************End Of TEAM: {team.Name}'s Activity History*****************");
             return sb.ToString().Trim();
         }
     }
