@@ -52,10 +52,32 @@ namespace Wim.UnitTests.Wim.Operations.Tests
             //Act
             memberOperations.AddActivityHistoryToMember(mockMember.Object, mockTrackedWorkItem.Object, mockTrackedTeam.Object, mockTrackedBoard.Object);
 
-
             //Assert
             Assert.AreEqual(mockMember.Object.ActivityHistory[0].Message, resultToAddAssMessage);
-            
         }
-    }
+
+        [TestMethod]
+        public void RemoveWorkItemIdToMember_ShouldAssignCorrectId()
+        {
+            //Arrange
+            var guid = new Guid();
+            var mockMember = new Mock<IMember>();
+            mockMember.Setup(x => x.WorkItemsId).Returns(new List<Guid>());
+            var mockTrackedWorkItem = new Mock<IBug>();
+            mockTrackedWorkItem.Setup(x => x.Id).Returns(guid);
+
+            var memberOperations = new MemberOperations();
+
+            //Act
+            memberOperations.RemoveWorkItemIdToMember(mockMember.Object, guid);
+
+            //Assert
+            Assert.AreEqual(mockMember.Object.WorkItemsId.Count,0);
+        }
+
+        // public void RemoveWorkItemIdToMember(IMember member, Guid workItemIdInput)
+        //{
+        //    member.WorkItemsId.Remove(workItemIdInput);
+        //}
+}
 }
