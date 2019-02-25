@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Wim.Core.Contracts
 {
-    interface ICommand
+    public interface ICommand
     {
         string Name { get; }
 

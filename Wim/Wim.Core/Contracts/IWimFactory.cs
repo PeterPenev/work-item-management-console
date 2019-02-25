@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Wim.Models.Enums;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Contracts
 {
@@ -10,7 +11,7 @@ namespace Wim.Core.Contracts
     {
         ITeam CreateTeam(string name);
 
-        IMember CreateMember(string name);
+        IMember CreateMember(string name, IAllTeams allTeams);
 
         IBoard CreateBoard(string name);
 

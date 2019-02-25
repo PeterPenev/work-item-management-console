@@ -7,20 +7,12 @@ namespace Wim.Models.Interfaces
 {
     public interface IStory : IWorkItem
     {
-        Priority Priority { get; }
+        Priority Priority { get; set; }
 
-        IMember Assignee { get; }
+        IMember Assignee { get; set; }
 
-        Size Size { get; }
+        Size Size { get; set; }
 
-        StoryStatus StoryStatus { get; }
-
-        void ChangeStoryPriority(Priority priority);
-
-        void ChangeStorySize(Size size);
-
-        void ChangeStoryStatus(StoryStatus status);
-
-        void AssignMemberToStory(IMember memberToAssignStory);
+        StoryStatus StoryStatus { get; set; }
     }
 }

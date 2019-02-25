@@ -11,7 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wim.Core", "Wim.Core\Wim.Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wim.CLI", "Wim.CLI\Wim.CLI.csproj", "{13245D4E-E210-4852-8D06-D1FAE4589882}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wim.Models.Enums", "Wim.Models.Enums\Wim.Models.Enums.csproj", "{E0485EAF-58A4-4A44-A8B7-14089AF90332}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wim.Models.Enums", "Wim.Models.Enums\Wim.Models.Enums.csproj", "{E0485EAF-58A4-4A44-A8B7-14089AF90332}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wim.Models.Operations", "Wim.Models.Operations\Wim.Models.Operations.csproj", "{E5CD51AB-C5C3-4B91-8739-52A5CF9C6202}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wim.Models.Operations.Interfaces", "Wim.Models.Operations.Interfaces\Wim.Models.Operations.Interfaces.csproj", "{0AF53270-C81A-47D9-9AD8-29F172C70D64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wim.UnitTests", "Wim.UnitTests\Wim.UnitTests.csproj", "{07EAFBCD-847C-4194-AD7A-0BB24E0FC746}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +45,18 @@ Global
 		{E0485EAF-58A4-4A44-A8B7-14089AF90332}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0485EAF-58A4-4A44-A8B7-14089AF90332}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0485EAF-58A4-4A44-A8B7-14089AF90332}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5CD51AB-C5C3-4B91-8739-52A5CF9C6202}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5CD51AB-C5C3-4B91-8739-52A5CF9C6202}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5CD51AB-C5C3-4B91-8739-52A5CF9C6202}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5CD51AB-C5C3-4B91-8739-52A5CF9C6202}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AF53270-C81A-47D9-9AD8-29F172C70D64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AF53270-C81A-47D9-9AD8-29F172C70D64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AF53270-C81A-47D9-9AD8-29F172C70D64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AF53270-C81A-47D9-9AD8-29F172C70D64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07EAFBCD-847C-4194-AD7A-0BB24E0FC746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07EAFBCD-847C-4194-AD7A-0BB24E0FC746}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07EAFBCD-847C-4194-AD7A-0BB24E0FC746}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07EAFBCD-847C-4194-AD7A-0BB24E0FC746}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

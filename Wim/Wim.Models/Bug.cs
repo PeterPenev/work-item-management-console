@@ -8,18 +8,16 @@ namespace Wim.Models
 {
     public class Bug : WorkItem, IBug
     {
-        //Fields
-        private IList<string> stepsToReproduce;
-        private Priority priority;
-        private Severity severity;
-        private BugStatus bugStatus = BugStatus.Active;
-        private IMember assignee;
-
         //Constructors
-        public Bug(string title, Priority priority, Severity severity, IMember assignee, IList<string> stepsToReproduce, string description)
+        public Bug(string title, 
+            Priority priority, 
+            Severity severity, 
+            IMember assignee, 
+            IList<string> stepsToReproduce,
+            string description)
             : base(title, description)
         {
-            this.stepsToReproduce = new List<string>(stepsToReproduce);
+            this.StepsToReproduce = new List<string>(stepsToReproduce);
             this.Priority = priority;
             this.Severity = severity;
             this.Assignee = assignee;
@@ -27,81 +25,16 @@ namespace Wim.Models
         }
 
         //Properties
-        public IList<string> StepsToReproduce
-        {
-            get
-            {
-                return new List<string>(stepsToReproduce);
-            }
-        }
+        public IList<string> StepsToReproduce { get; }
 
-        public Priority Priority
-        {
-            get
-            {
-                return this.priority;
-            }
-            private set
-            {
-                this.priority = value;
-            }
-        }
+        public string Test { get; set; }
 
-        public Severity Severity
-        {
-            get
-            {
-                return this.severity;
-            }
-            private set
-            {                
-                this.severity = value;
-            }
-        }
+        public Priority Priority { get; set; }
 
-        public BugStatus BugStatus
-        {
-            get
-            {
-                return this.bugStatus;
-            }
-            private set
-            {                
-                this.bugStatus = value;
-            }
-        }
+        public Severity Severity { get; set; }
 
-        public IMember Assignee
-        {
-            get
-            {
-               return this.assignee;
-            }
-            private set
-            {
-                this.assignee = value;
-            }
-        }
+        public BugStatus BugStatus { get; set; }
 
-        //Methods
-        public void ChangeBugPriority(Priority priority)
-        {
-            this.Priority = priority;
-        }
-
-        public void ChangeBugSeverity(Severity severity)
-        {
-            this.Severity = severity;
-        }
-
-        public void ChangeBugStatus(BugStatus status)
-        {
-            this.BugStatus = status;
-        }
-
-        public void AssignMemberToBug(IMember memberToAssignBug)
-        {
-            this.Assignee = memberToAssignBug;
-        }
+        public IMember Assignee { get; set; }      
     }
 }

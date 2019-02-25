@@ -7,15 +7,13 @@ namespace Wim.Models
 {
     public class Story : WorkItem, IStory
     {
-        //Fields
-        private Priority priority;
-        private Size size;
-        private StoryStatus storyStatus;
-        private IMember assignee;
-
         //Constructors
-        public Story(string title, string description, Priority priority, Size size, StoryStatus storyStatus, IMember assignee)
-            : base(title, description)
+        public Story(string title, string description, 
+            Priority priority, 
+            Size size, 
+            StoryStatus storyStatus, 
+            IMember assignee)
+                : base(title, description)
         {
             this.Priority = priority;
             this.Size = size;
@@ -24,73 +22,12 @@ namespace Wim.Models
         }
 
         //Properties
-        public Priority Priority
-        {
-            get
-            {
-                return this.priority;
-            }
-            private set
-            {
-                this.priority = value;
-            }
-        }
+        public Priority Priority { get; set; }
 
-        public Size Size
-        {
-            get
-            {
-                return this.size;
-            }
-            private set
-            {
-                this.size = value;
-            }
-        }
+        public Size Size { get; set; }
 
-        public StoryStatus StoryStatus
-        {
-            get
-            {
-                return this.storyStatus;
-            }
-            private set
-            {
-                this.storyStatus = value;
-            }
-        }
+        public StoryStatus StoryStatus { get; set; }
 
-        public IMember Assignee
-        {
-            get
-            {
-                return this.assignee;
-            }
-            private set
-            {
-                this.assignee = value;
-            }
-        }
-
-        //Methods
-        public void ChangeStoryPriority(Priority priority)
-        {
-            this.Priority = priority;
-        }
-
-        public void ChangeStorySize(Size size)
-        {
-            this.Size = size;
-        }
-
-        public void ChangeStoryStatus(StoryStatus status)
-        {
-            this.StoryStatus = status;
-        }
-
-        public void AssignMemberToStory(IMember memberToAssignStory)
-        {
-            this.Assignee = memberToAssignStory;
-        }
+        public IMember Assignee { get; set; }
     }
 }

@@ -1,4 +1,33 @@
-Operations List in Application:
+====WimApp ver. 2.0 Highlights====
+Team Name: Team 7
+Developers: 
+	·Dimitar Mihov - Gitlab @dimitarmihov
+	·Petar Penev - GitLab @peterpenev; 
+	·Vasil Prodanov - GitLab @vasilprodanov
+
+Problems from version 1.0:
+1) Application had both business and input validtions in single class.
+2) Application had multiple-responsibilities entrusted onto the Engine.
+3) Application had tightly coupled relationships between classes.
+4) Application had Models containing methods inside them.
+5) Application did not include any Unit Tests.
+6) Application used redundant EnumParser class.	
+	
+Changes Made to version 2.0 since version 1.0:
+1) Seperate Engine Methods into classes with Single Responsibility;
+2) Use AutoFac to resolve Dependencies and Find Commands of IEngineOperations interface;
+3) Inject Dependencies of every class via constructor Injection;
+4) Seperate InputValidator into InputValidator and BusinessValidator;
+5) Refactor EnumParser into Enum.TryParse method;
+6) Seperate Model Classes' methods from the Model itself into Model Operations working on the concrete Model;
+7) Write Unit tests;
+8) Created ClassDiagram for Wim.Models
+
+Design Patterns used:
+1) Factory Design Pattern
+2) Dependency Inversion Pattern
+
+====Operations List in Application====
 
 All Commands are Case sensitive!
 In the bellow document you will find the mapping of commands in such order:

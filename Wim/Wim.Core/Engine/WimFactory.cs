@@ -5,6 +5,7 @@ using Wim.Core.Contracts;
 using Wim.Models;
 using Wim.Models.Enums;
 using Wim.Models.Interfaces;
+using Wim.Models.Operations.Interfaces;
 
 namespace Wim.Core.Engine
 {
@@ -15,9 +16,9 @@ namespace Wim.Core.Engine
             return new Team(name);
         }
 
-        public IMember CreateMember(string name)
+        public IMember CreateMember(string name, IAllTeams allTeams)
         {
-            return new Member(name);
+            return new Member(name, allTeams);
         }
 
         public IBoard CreateBoard(string name)
