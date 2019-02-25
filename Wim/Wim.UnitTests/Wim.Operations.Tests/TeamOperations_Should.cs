@@ -5,6 +5,7 @@ using Wim.Models.Operations;
 using Wim.Models.Operations.Interfaces;
 using System.Linq;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Wim.UnitTests.Wim.Operations.Tests
 {
@@ -85,7 +86,31 @@ namespace Wim.UnitTests.Wim.Operations.Tests
 
             //Assert
             Assert.AreEqual(sut, $"Team name: Team1\r\n1. Edward");
+        }
 
+        [TestMethod]
+        public void Should_ShowteamActivityHistory()
+        {
+            //Arrange
+            var mockTeam = new Mock<ITeam>();
+            var mockMember = new Mock<IMember>();
+            mockMember.Setup(x => x.Name).Returns("Edward");
+            mockTeam.Setup(x => x.Name).Returns("Team1");
+            mockTeam.Setup(x => x.Members).Returns(new List<IMember>());
+            mockMember.Setup(x => x.ActivityHistory).Returns(new List<IActivityHistory>());
+            mockTeam.Object.Members.Add(mockMember.Object);
+            var mockMemberOperations = new Mock<IMemberOpertaions>();
+            var teamOperations = new TeamOperations(mockMemberOperations.Object);
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine("==============TEAM: Team1's Activity History==============");
+            stringBuilder.AppendLine("");
+            stringBuilder.Append("****************End Of TEAM: Team1's Activity History*****************");
+
+            //Act
+            var sut = teamOperations.ShowTeamActivityToString(mockTeam.Object);
+
+            //Assert
+            Assert.AreEqual(sut, stringBuilder.ToString());
         }
     }
 }
