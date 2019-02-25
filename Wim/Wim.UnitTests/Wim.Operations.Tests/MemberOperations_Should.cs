@@ -74,10 +74,5 @@ namespace Wim.UnitTests.Wim.Operations.Tests
             //Assert
             Assert.AreEqual(mockMember.Object.WorkItemsId.Count,0);
         }
-
-        // public void RemoveWorkItemIdToMember(IMember member, Guid workItemIdInput)
-        //{
-        //    member.WorkItemsId.Remove(workItemIdInput);
-        //}
-}
+    }
 }
